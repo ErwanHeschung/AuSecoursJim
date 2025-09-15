@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { OptionSelectionLayoutComponent } from "../../layouts/option-selection-layout/option-selection-layout/option-selection-layout.component";
 import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { LocalStorageService } from '../../shared/services/local-storage-service.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-landing',

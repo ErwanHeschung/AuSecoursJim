@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { OptionSelectionLayoutComponent } from "../../layouts/option-selection-layout/option-selection-layout/option-selection-layout.component";

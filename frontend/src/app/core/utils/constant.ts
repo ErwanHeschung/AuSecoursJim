@@ -1,4 +1,5 @@
 export const ROUTES = {
     landing: '',
-    splitPayment: 'splitPayment'
+    splitPayment: 'splitPayment',
+    paymentSelection: 'payment-selection',
 };

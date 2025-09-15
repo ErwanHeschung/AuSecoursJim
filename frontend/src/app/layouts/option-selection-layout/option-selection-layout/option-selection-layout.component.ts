@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-option-selection-layout',
-  imports: [FontAwesom
+  imports: [FontAwesomeModule],
   templateUrl: './option-selection-layout.component.html',
   styleUrl: './option-selection-layout.component.scss'
 })

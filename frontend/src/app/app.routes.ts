@@ -4,4 +4,5 @@ import { ROUTES } from './core/utils/constant';
 /*lazy loading*/
 export const routes: Routes = [
     { path: ROUTES.landing, loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent) },
+    { path: ROUTES.paymentSelection, loadComponent: () => import('./features/payment-selection/payment-selection.component').then(m => m.PaymentSelectionComponent) }
 ];

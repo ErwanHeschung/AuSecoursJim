@@ -2,10 +2,10 @@
     <img class="logo" src="/logo.webp" alt="Logo" class="logo" />
     <div class="options">
         @for(option of options; track option.label) {
-            <a class="option" (click)="option.onClick()">
-                <fa-icon [icon]="option.icon" size="3x"></fa-icon>
+            <div class="option card" (click)="option.onClick()">
+                <fa-icon [icon]="option.icon" class="icon"></fa-icon>
                 <span class="label">{{ option.label }}</span>
-            </a>
+            </div>
         }
     </div>
 </div>

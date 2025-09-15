@@ -12,3 +12,36 @@
     width: 500px;
     height: auto;
 }
+
+.options{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.option{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 15rem;
+    height: 15rem;
+    transition: transform 0.3s ease;
+
+    .label{
+        margin-top: 1rem;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .icon{
+        font-size: 6rem;
+        color: var(--primary-color);
+    }
+}
+
+.option.card:active{
+  transform: scale(1.1);
+}

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantityCounterComponent } from './quantity-counter.component';
+import { CounterComponent } from './quantity-counter.component';
 
 describe('QuantityCounterComponent', () => {
-  let component: QuantityCounterComponent;
-  let fixture: ComponentFixture<QuantityCounterComponent>;
+  let component: CounterComponent;
+  let fixture: ComponentFixture<CounterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuantityCounterComponent]
+      imports: [CounterComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QuantityCounterComponent);
+    fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -14,9 +14,16 @@ export class SplitPaymentComponent {
   numberOfPersons = 2;
   totalOrder = 20;
 
+  mode: 'euro' | 'items' = 'euro';
+
   persons = [
     { name: 'Personne 1', amount: 10 },
     { name: 'Personne 2', amount: 10 }
+  ];
+
+  items = [
+    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
+    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
   ];
 
   get total(): number {
@@ -28,17 +35,29 @@ export class SplitPaymentComponent {
   }
 
   onNumberOfPersonsChanged(newCount: number) {
-  console.log('Number of persons changed to:', newCount);
+    console.log('Number of persons changed to:', newCount);
 
-  if (newCount > this.numberOfPersons) {
-    for (let i = this.numberOfPersons + 1; i <= newCount; i++) {
-      this.persons.push({ name: `Personne ${i}`, amount: 0 });
+    if (newCount > this.numberOfPersons) {
+      for (let i = this.numberOfPersons + 1; i <= newCount; i++) {
+        this.persons.push({ name: `Personne ${i}`, amount: 0 });
+      }
+    } else if (newCount < this.numberOfPersons) {
+      this.persons.splice(newCount);
     }
-  } else if (newCount < this.numberOfPersons) {
-    this.persons.splice(newCount);
+
+    this.numberOfPersons = newCount;
   }
 
-  this.numberOfPersons = newCount;
-}
+  onModeChange(newMode: 'euro' | 'items') {
+    this.mode = newMode;
+  }
 
+  toggleItemSelection(itemIndex: number, personIndex: number) {
+    const selected = this.items[itemIndex].selected;
+    if (selected.includes(personIndex)) {
+      this.items[itemIndex].selected = selected.filter(i => i !== personIndex);
+    } else {
+      selected.push(personIndex);
+    }
+  }
 }

@@ -22,7 +22,7 @@ export class LocalStorageService {
     }
   }
 
-  publicremoveItem(key: string): void {
+  public removeItem(key: string): void {
     localStorage.removeItem(key);
   }
 

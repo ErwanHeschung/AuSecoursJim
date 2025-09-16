@@ -3,13 +3,6 @@
   --person-col-size: 10vh;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
 .bill-container {
   display: flex;
   flex-direction: column;
@@ -54,8 +47,8 @@ h2 {
 }
 
 .tab {
-  flex: 1; 
-  padding: 1.5vh 0; 
+  flex: 1;
+  padding: 1.5vh 0;
   border: none;
   background: #fff;
   cursor: pointer;
@@ -64,7 +57,6 @@ h2 {
   white-space: nowrap;
   transition: background 0.2s;
 }
-
 
 .tab.active {
   background: #c62828;
@@ -82,7 +74,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5vw;
-  margin: 0; 
+  margin: 0;
   font-size: 2.2vh;
   font-weight: bold;
   margin-top: 4vh;
@@ -92,7 +84,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5vw;
-  margin: 0; 
+  margin: 0;
   font-size: 2.2vh;
   font-weight: bold;
   margin-top: 1vh;
@@ -110,13 +102,12 @@ h2 {
 }
 
 .pay-btn:hover {
-  background: var(--primary-color);;
+  background: var(--primary-color);
 }
 
 .mode-box {
   background: #fdf1eb;
 }
-
 
 .tabs {
   display: flex;
@@ -126,7 +117,6 @@ h2 {
   overflow: hidden;
   margin-bottom: 5vh;
 }
-
 
 .person-row {
   display: flex;
@@ -145,15 +135,6 @@ h2 {
   text-align: right;
 }
 
-/* header above items */
-.header-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5vh;
-  font-weight: bold;
-  font-size: 2.2vh;
-}
-
 .header-spacer {
   width: 6vh;
   min-width: 6vh;
@@ -168,12 +149,10 @@ h2 {
 }
 
 .person-number {
-
   display: flex;
   align-items: center;
   font-size: 2vh;
   margin: 2.8vh;
-
 }
 
 .person-cell {
@@ -182,12 +161,6 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.item-row {
-  display: flex;
-  align-items: center;
-  margin: 0.5vh 0;
 }
 
 .item-img {
@@ -210,3 +183,37 @@ input[type="checkbox"] {
   align-self: center;
 }
 
+.items-grid {
+  display: grid;
+  grid-template-columns: auto auto repeat(var(--person-count), 80px);
+  gap: 10px 10px;
+  align-items: center;
+  justify-content: start;
+}
+
+.grid-header {
+  font-weight: bold;
+  font-size: 2.2vh;
+  text-align: center;
+  white-space: nowrap;
+  background: #f0f0f0;
+}
+
+.grid-image {
+  width: 8vh;
+  height: 8vh;
+  object-fit: contain;
+  justify-self: center;
+}
+
+.grid-price {
+  font-size: 2vh;
+  font-weight: bold;
+  text-align: center;
+}
+
+.grid-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

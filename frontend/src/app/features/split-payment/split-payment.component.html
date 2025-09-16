@@ -1,72 +1,91 @@
-<div class="bill-container">
+<app-payment-layout>
+  <div class="bill-container">
 
-  <!-- Title -->
-  <h2>Partager l addition</h2>
+    <h2>Partager l’addition</h2>
 
-  <!-- Number of persons -->
-  <div class="persons">
-    <label>Nombre de personnes</label>
-    <div class="counter">
-      <app-counter
-  [value]="numberOfPersons"
-  (valueChange)="onNumberOfPersonsChanged($event)">
-</app-counter>
-    </div>
-  </div>
-
-  <div class="card mode-box">
-    <!-- Mode selection tabs -->
-  <div class="tabs">
-    <button class="tab" [class.active]="mode === 'euro'" (click)="onModeChange('euro')">Euro</button>
-    <button class="tab" [class.active]="mode === 'items'" (click)="onModeChange('items')">Par élément</button>
-  </div>
-
-  <!-- EURO mode: persons counters -->
-  <ng-container *ngIf="mode === 'euro'">
-    <div class="person-row" *ngFor="let p of persons; let i = index">
-      <app-counter [(value)]="p.amount"></app-counter>
-      <span class="person">{{ p.name }}</span>
-    </div>
-
-    <div class="totalOrder">
-      <span>Total : </span>
-      <strong>{{ currentTotal }}€</strong>
-    </div>
-
-    <div class="total">
-      <span>Total de la commande : </span>
-      <strong>{{ totalOrder }}€</strong>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="mode === 'items'">
-  <div class="header-row">
-    <div class="header-label">Personne</div>
-    <div class="header-spacer"></div>
-    <ng-container *ngFor="let p of persons; let j = index">
-      <div class="person-number">{{ j + 1 }}</div>
-    </ng-container>
-  </div>
-
-  <div class="header-row" *ngFor="let item of items; let i = index">
-    <img [src]="item.image" alt="{{item.name}}" class="item-img" />
-    <span class="item-price">{{ item.price }}€</span>
-
-    <ng-container *ngFor="let p of persons; let j = index">
-      <div class="person-cell">
-        <input type="checkbox"
-               [checked]="item.selected.includes(j)"
-               (change)="toggleItemSelection(i, j)" />
+    <!-- Number of persons -->
+    <div class="persons">
+      <label>Nombre de personnes</label>
+      <div class="counter">
+        <app-counter
+          [value]="numberOfPersons"
+          (valueChange)="onNumberOfPersonsChanged($event)">
+        </app-counter>
       </div>
-    </ng-container>
+    </div>
+
+    <div class="card mode-box">
+
+      <!-- Mode selection tabs -->
+      <div class="tabs">
+        <button
+          class="tab"
+          [class.active]="mode === 'euro'"
+          (click)="onModeChange('euro')"
+        >
+          Euro
+        </button>
+        <button
+          class="tab"
+          [class.active]="mode === 'items'"
+          (click)="onModeChange('items')"
+        >
+          Par élément
+        </button>
+      </div>
+
+      <!-- EURO mode -->
+      <ng-container *ngIf="mode === 'euro'">
+        <div class="person-row" *ngFor="let p of persons; let i = index">
+          <app-counter [(value)]="p.amount"></app-counter>
+          <span class="person">{{ p.name }}</span>
+        </div>
+
+        <div class="totalOrder">
+          <span>Total : </span>
+          <strong>{{ currentTotal }}€</strong>
+        </div>
+
+        <div class="total">
+          <span>Total de la commande : </span>
+          <strong>{{ totalOrder }}€</strong>
+        </div>
+      </ng-container>
+
+      <!-- ITEMS mode -->
+      <ng-container *ngIf="mode === 'items'">
+        <div
+          class="items-grid"
+          [ngStyle]="{ '--person-count': persons.length }"
+        >
+          <!-- Person number row -->
+          <div class="grid-header">Personne</div>
+          <div class="grid-header"></div>
+          <div class="grid-header" *ngFor="let p of persons; let j = index">
+            {{ j + 1 }}
+          </div>
+
+          <!-- Item rows -->
+          <ng-container *ngFor="let item of items; let i = index">
+            <img [src]="item.image" alt="{{ item.name }}" class="grid-image" />
+            <div class="grid-price">{{ item.price }}€</div>
+            <div class="grid-checkbox" *ngFor="let p of persons; let j = index">
+              <input
+                type="checkbox"
+                [checked]="item.selected.includes(j)"
+                (change)="toggleItemSelection(i, j)"
+              />
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <!-- Pay button -->
+    <div class="pay-box">
+      <button class="button-primary pay-button">Payer</button>
+    </div>
+
   </div>
-</ng-container>
-
-
-</div>
-
-<!-- Pay button remains at the bottom -->
-<div class="pay-box">
-  <button class="button-primary pay-button">Payer</button>
-</div>
-
+</app-payment-layout>

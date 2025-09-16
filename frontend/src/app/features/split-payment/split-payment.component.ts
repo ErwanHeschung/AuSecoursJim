@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
+import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
 
 @Component({
   selector: 'app-split-payment',
   standalone: true,
   templateUrl: './split-payment.component.html',
   styleUrls: ['./split-payment.component.scss'],
-  imports: [CommonModule, CounterComponent]
+  imports: [CommonModule, CounterComponent, PaymentLayoutComponent]
 })
 export class SplitPaymentComponent {
   numberOfPersons = 2;

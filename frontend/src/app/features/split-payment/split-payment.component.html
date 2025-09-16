@@ -14,7 +14,8 @@
     </div>
   </div>
 
-  <div class="mode-box">
+  <div class="card mode-box">
+    <!-- Mode selection tabs -->
   <div class="tabs">
     <button class="tab" [class.active]="mode === 'euro'" (click)="onModeChange('euro')">Euro</button>
     <button class="tab" [class.active]="mode === 'items'" (click)="onModeChange('items')">Par élément</button>
@@ -38,22 +39,34 @@
     </div>
   </ng-container>
 
-  <!-- ITEMS mode: items with checkboxes for each person -->
   <ng-container *ngIf="mode === 'items'">
-    <div class="item-row" *ngFor="let item of items; let i = index">
-      <img [src]="item.image" alt="{{item.name}}" class="item-img" />
-      <span class="item-price">{{ item.price }}€</span>
-      <ng-container *ngFor="let p of persons; let j = index">
+  <div class="header-row">
+    <div class="header-label">Personne</div>
+    <div class="header-spacer"></div>
+    <ng-container *ngFor="let p of persons; let j = index">
+      <div class="person-number">{{ j + 1 }}</div>
+    </ng-container>
+  </div>
+
+  <div class="header-row" *ngFor="let item of items; let i = index">
+    <img [src]="item.image" alt="{{item.name}}" class="item-img" />
+    <span class="item-price">{{ item.price }}€</span>
+
+    <ng-container *ngFor="let p of persons; let j = index">
+      <div class="person-cell">
         <input type="checkbox"
                [checked]="item.selected.includes(j)"
                (change)="toggleItemSelection(i, j)" />
-      </ng-container>
-    </div>
-  </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+
 </div>
 
 <!-- Pay button remains at the bottom -->
 <div class="pay-box">
-  <button class="pay-btn">Payer</button>
+  <button class="button-primary pay-button">Payer</button>
 </div>
 

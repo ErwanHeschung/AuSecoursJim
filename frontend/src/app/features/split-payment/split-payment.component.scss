@@ -1,5 +1,6 @@
 :root {
   font-size: 2vh;
+  --person-col-size: 10vh;
 }
 
 html, body {
@@ -101,14 +102,11 @@ h2 {
   margin-top: 2.5vh;
 }
 
-.pay-btn {
+.pay-button {
   background: var(--primary-color);
   color: var(--secondary-color);
-  border: none;
   padding: 1.5vh 4vw;
-  border-radius: 1.5vh;
   font-size: 3vh;
-  cursor: pointer;
 }
 
 .pay-btn:hover {
@@ -117,13 +115,6 @@ h2 {
 
 .mode-box {
   background: #fdf1eb;
-  padding: 5vh 5vw 5vh 5vw;
-  margin: 1.5vh auto 0 auto;
-  border-radius: 1.5vh;
-  flex-grow: 0;
-  width: fit-content;
-  min-width: 60%;
-  height: auto;
 }
 
 
@@ -131,7 +122,7 @@ h2 {
   display: flex;
   width: 100%;
   margin: 0 auto 2vh auto;
-  border-radius: 1.5vh;
+  border-radius: 15px;
   overflow: hidden;
   margin-bottom: 5vh;
 }
@@ -154,15 +145,54 @@ h2 {
   text-align: right;
 }
 
+/* header above items */
+.header-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5vh;
+  font-weight: bold;
+  font-size: 2.2vh;
+}
+
+.header-spacer {
+  width: 6vh;
+  min-width: 6vh;
+}
+
+.header-label {
+  width: 7ch;
+  min-width: 7ch;
+  text-align: left;
+  padding-left: 0.5vw;
+  margin-right: 1vw;
+}
+
+.person-number {
+
+  display: flex;
+  align-items: center;
+  font-size: 2vh;
+  margin: 2.8vh;
+
+}
+
+.person-cell {
+  width: var(--person-col-size);
+  min-width: var(--person-col-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .item-row {
   display: flex;
   align-items: center;
-  gap: 0.5vw;
   margin: 0.5vh 0;
 }
 
 .item-img {
   width: 8vh;
+  margin-right: 0.3vw;
   height: 8vh;
   object-fit: contain;
 }
@@ -175,9 +205,8 @@ h2 {
 
 input[type="checkbox"] {
   transform: scale(3.5);
-  margin-left: 2vw;
   cursor: pointer;
-  margin-right: 2vw;
+  margin: 2.8vh;
+  align-self: center;
 }
-
 

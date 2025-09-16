@@ -13,7 +13,6 @@ import { CounterComponent } from '../../shared/components/quantity-counter/quant
 export class SplitPaymentComponent {
   numberOfPersons = 2;
   totalOrder = 20;
-
   mode: 'euro' | 'items' = 'euro';
 
   persons = [
@@ -26,8 +25,8 @@ export class SplitPaymentComponent {
     { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
   ];
 
-  get total(): number {
-    return this.totalOrder;
+  ngOnInit() {
+    this.updatePersonsCount();
   }
 
   get currentTotal(): number {
@@ -35,8 +34,6 @@ export class SplitPaymentComponent {
   }
 
   onNumberOfPersonsChanged(newCount: number) {
-    console.log('Number of persons changed to:', newCount);
-
     if (newCount > this.numberOfPersons) {
       for (let i = this.numberOfPersons + 1; i <= newCount; i++) {
         this.persons.push({ name: `Personne ${i}`, amount: 0 });
@@ -46,6 +43,7 @@ export class SplitPaymentComponent {
     }
 
     this.numberOfPersons = newCount;
+    this.updatePersonsCount();
   }
 
   onModeChange(newMode: 'euro' | 'items') {
@@ -59,5 +57,9 @@ export class SplitPaymentComponent {
     } else {
       selected.push(personIndex);
     }
+  }
+
+  private updatePersonsCount() {
+    document.documentElement.style.setProperty('--persons-count', this.persons.length.toString());
   }
 }

@@ -1,0 +1,7 @@
+<div class="steps">
+    @for (step of steps; track step) {
+        <div class="step-container">
+            <div class="step" [ngClass]="{'active': step === currentStep}"></div>
+        </div>
+    }
+</div>

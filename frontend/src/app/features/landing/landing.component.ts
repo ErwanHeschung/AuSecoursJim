@@ -18,6 +18,7 @@ export class LandingComponent {
   }[] = [
     {
       label: 'Sur place',
+
       icon: ICONS['dineIn'],
       onClick: () => this.selectDineIn(),
     },

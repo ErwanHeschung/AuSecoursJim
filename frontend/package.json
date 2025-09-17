@@ -45,8 +45,8 @@
     "typescript": "~5.9.2"
   },
   "lint-staged": {
-    "*.{ts,html}": [
-      "echo 'Add your linting stages here'"
+    "*.{ts,html,css,scss}": [
+      "prettier --write"
     ]
   }
 }

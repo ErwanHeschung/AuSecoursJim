@@ -34,10 +34,25 @@
         </button>
       </div>
 
-      <!-- EURO mode -->
-      <ng-container *ngIf="mode === 'euro'">
+      <!-- 1 person mode -->
+      <ng-container *ngIf="persons.length === 1">
         <div class="person-row" *ngFor="let p of persons; let i = index">
-          <app-counter [(value)]="p.amount"></app-counter>
+          <strong>{{ totalOrder }}€</strong>
+          <span class="person">{{ p.name }}</span>
+        </div>
+
+        <div class="total">
+          <span>Total de la commande : </span>
+          <strong>{{ totalOrder }}€</strong>
+        </div>
+      </ng-container>
+
+
+
+      <!-- EURO mode -->
+      <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
+        <div class="person-row" *ngFor="let p of persons; let i = index">
+          <app-counter [(value)]="p.amount" [limit]="totalOrder"></app-counter>
           <span class="person">{{ p.name }}</span>
         </div>
 
@@ -53,7 +68,7 @@
       </ng-container>
 
       <!-- ITEMS mode -->
-      <ng-container *ngIf="mode === 'items'">
+      <ng-container *ngIf="mode === 'items' && persons.length >= 2">
         <div
           class="items-grid"
           [ngStyle]="{ '--person-count': persons.length }"

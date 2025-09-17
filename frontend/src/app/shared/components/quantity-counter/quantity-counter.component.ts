@@ -14,8 +14,8 @@ export class CounterComponent {
   increase() {
     if (this.value < this.limit) {
       this.value++;
+      this.valueChange.emit(this.value);
     }
-    this.valueChange.emit(this.value);
   }
 
   decrease() {
@@ -23,5 +23,13 @@ export class CounterComponent {
       this.value--;
       this.valueChange.emit(this.value);
     }
+  }
+
+  get isDecreaseDisabled(): boolean {
+    return this.value <= 1;
+  }
+
+  get isIncreaseDisabled(): boolean {
+    return this.value >= this.limit;
   }
 }

@@ -22,12 +22,12 @@
 }
 
 h2 {
-  font-size: 3.5vh;
+  font-size: 3rem;
   margin: 1.5vh 0;
 }
 
 .persons {
-  font-size: 2.5vh;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 4vh;
 }
@@ -75,7 +75,7 @@ h2 {
   align-items: center;
   gap: 0.5vw;
   margin: 0;
-  font-size: 2.2vh;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 4vh;
 }
@@ -85,7 +85,7 @@ h2 {
   align-items: center;
   gap: 0.5vw;
   margin: 0;
-  font-size: 2.2vh;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 1vh;
 }
@@ -98,7 +98,7 @@ h2 {
   background: var(--primary-color);
   color: var(--secondary-color);
   padding: 1.5vh 4vw;
-  font-size: 3vh;
+  font-size: 3rem;
 }
 
 .pay-btn:hover {

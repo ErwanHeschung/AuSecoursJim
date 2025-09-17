@@ -1,0 +1,5 @@
+<div class="counter">
+  <button class="button-primary minus" (click)="decrease()" [disabled]="isDecreaseDisabled">−</button>
+  <span class="count">{{ value }}</span>
+  <button class="button-primary plus" (click)="increase()" [disabled]="isIncreaseDisabled">+</button>
+</div>

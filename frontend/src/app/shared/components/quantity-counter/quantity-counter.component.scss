@@ -1,0 +1,36 @@
+
+
+.button-primary {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0 2vw;
+  background: white;
+  color: white;
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.button-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(60%);
+}
+
+
+.button-primary.minus {
+  background: var(--primary-color);
+  color: white;
+}
+
+
+.button-primary.plus {
+  background: #4caf50;
+  color: white;
+}
+
+.counter .count {
+  display: inline-block;
+  min-width: 4ch;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+}

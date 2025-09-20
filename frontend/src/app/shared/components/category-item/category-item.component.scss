@@ -1,4 +1,4 @@
-.item-card {
+.category-item-card {
     border: 1px solid #ddd;
     background-color: #d0d2d074;
     border-radius: 8px;
@@ -7,17 +7,12 @@
     width: 15vw;
 }
 
-.item-img {
+.category-item-img {
     width: 100%;
     border-radius: 6px;
 }
 
-.item-title {
+.category-item-title {
     font-weight: bold;
     margin: 8px 0 4px;
-}
-
-.item-price {
-    color: #28a745;
-    font-size: 1.1em;
 }

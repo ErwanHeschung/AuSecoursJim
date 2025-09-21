@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Category } from '../../../core/models/category.model';
 
 @Component({
   selector: 'app-category-item',
@@ -7,6 +8,13 @@ import { Component, Input } from '@angular/core';
   styleUrl: './category-item.component.scss'
 })
 export class CategoryItemComponent {
-  @Input() title: string = 'Burgers';
-  @Input() imageUrl: string = 'https://via.placeholder.com/150';
+
+  @Input() category: Category = {
+        id: 1,
+        name: "Burgers",
+        image: "https://via.placeholder.com/150"
+  };
+
+  @Input() selected: boolean = false;
+
 }

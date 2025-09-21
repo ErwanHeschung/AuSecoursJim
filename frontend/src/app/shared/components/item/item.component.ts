@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Item } from '../../../core/models/item.model';
 
 @Component({
   selector: 'app-item',
@@ -6,7 +7,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./item.component.scss']
 })
 export class ItemComponent {
-  @Input() title: string = 'Burger';
-  @Input() price: number = 10.69;
-  @Input() imageUrl: string = 'https://via.placeholder.com/150';
+
+  @Input() item: Item = {
+    id: 0,
+    name: 'Burger',
+    image: 'https://via.placeholder.com/150',
+    price: 10.69,
+    quantity: 1,
+    ingredients: []
+  }
+
 }

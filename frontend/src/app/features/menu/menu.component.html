@@ -1,37 +1,24 @@
-<div id="left">
+<aside>
     <img src="/logo.webp" alt="logo" id="logo-img" />
-
     <div id="categories-container">
-        <app-category-item title="Burgers cat"
-            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-category-item>
-        <app-category-item title="Frites cat"
-            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-category-item>
+        @for (category of categories; track category) {
+            <app-category-item [category]="category" [selected]="category === selectedCategory" (click)="switchCategory(category)"></app-category-item>
+        }
     </div>
-</div>
+</aside>
 
-<div id="right">
+<main>
     <h2>Nos Burgers</h2>
     <div id="items-container">
-        <app-item title="Burger" [price]="10"
-            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-item>
-
-        <app-item title="Burger" [price]="10"
-            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-item>
-
-        <app-item title="Burger" [price]="10"
-            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-item>
+        @for (item of items; track item) {
+            <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
+        }
     </div>
-</div>
+</main>
 
 <footer>
     <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
-    <p>{{ order.quantity }} éléments</p>
-
-    <p>{{ order.amount }} €</p>
+    <span>{{ order.quantity }} éléments</span>
+    <span>{{ order.amount }} €</span>
     <button class="button-primary">Valider</button>
 </footer>

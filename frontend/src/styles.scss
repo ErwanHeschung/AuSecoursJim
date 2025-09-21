@@ -6,6 +6,11 @@
     --primary-color: #C6230B;
     --secondary-color: #FFFFFF;
     --base-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .html, body {
@@ -19,8 +24,8 @@
     color: #333;
 }
 
-
-.on-click {
+.clickable {
+    cursor: pointer;
     transition: transform 0.3s ease;
     transform: scale(1);
     &:active {
@@ -36,13 +41,19 @@
     border-radius: 15px;
     cursor: pointer;
     font-size: 2rem;
-    @extend .on-click;
+    @extend .clickable;
+}
+
+.box {
+    background-color: var(--secondary-color);
+    box-shadow: var(--base-shadow);
+    border-radius: var(--border-radius);
 }
 
 .card {
     background-color: var(--secondary-color);
     box-shadow: var(--base-shadow);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 2rem;
     margin: 1rem;
 }

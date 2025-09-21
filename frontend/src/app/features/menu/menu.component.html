@@ -1,32 +1,34 @@
-<main>
-    <div id="left">
-        <p>logo JIIIIIIIIIIM</p>
-        <app-category-item title="Burgers cat"
+<div id="left">
+    <p>logo JIIIIIIIIIIM</p>
+    <app-category-item title="Burgers cat"
+        imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
+    </app-category-item>
+    <app-category-item title="Frites cat"
+        imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
+    </app-category-item>
+</div>
+
+<div id="right">
+    <h2>Nos Burgers</h2>
+    <div id="items-container">
+        <app-item title="Burger" [price]="10"
             imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-category-item>
-        <app-category-item title="Frites cat"
+        </app-item>
+
+        <app-item title="Burger" [price]="10"
             imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-        </app-category-item>
+        </app-item>
+
+        <app-item title="Burger" [price]="10"
+            imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
+        </app-item>
     </div>
+</div>
 
-    <div id="right">
-        <h2>Nos Burgers</h2>
-        <div id="items-container">
-            <app-item title="Burger" [price]="10"
-                imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-            </app-item>
+<footer>
+    <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
+    <p>{{ order.quantity }} éléments</p>
 
-            <app-item title="Burger" [price]="10"
-                imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-            </app-item>
-
-            <app-item title="Burger" [price]="10"
-                imageUrl="https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png">
-            </app-item>
-        </div>
-    </div>
-
-    <footer>
-        <button>test</button>
-    </footer>
-</main>
+    <p>{{ order.amount }} €</p>
+    <button class="button-primary">Valider</button>
+</footer>

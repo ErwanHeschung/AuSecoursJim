@@ -1,11 +1,7 @@
-export class Item {
+export type Item = {
+    id: number;
     name: string;
-    image?: string;
+    image: string;
     price: number;
-
-    constructor(item?: Partial<Item>) {
-        this.name = item?.name ?? 'item name';
-        this.image = item?.image ?? 'image';
-        this.price = item?.price ?? 0;
-    }
-}
+    quantity: number;
+};

@@ -1,0 +1,19 @@
+.order-tracking-qrcode {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    margin-top: 20px;
+    font-size: 3rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  button {
+    font-size: 2.5rem;
+  }
+}

@@ -3,6 +3,7 @@ import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-l
 import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { CategoryService } from '../../shared/services/no-bff/category.service';
 
 @Component({
   selector: 'app-landing',
@@ -29,7 +30,18 @@ export class LandingComponent {
     },
   ];
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(
+    private localStorageService: LocalStorageService,
+    private categoryService: CategoryService
+  ) {
+    this.categoryService.getAllCategories().subscribe(categories => {
+      console.log('Available categories:', categories);
+    });
+
+    this.categoryService.getItemsByCategory('BEVERAGE').subscribe(items => {
+      console.log('Items in Beverages category:', items);
+    });
+  }
 
   selectTakeaway() {
     this.localStorageService.setItem('orderType', 'takeaway');

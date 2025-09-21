@@ -1,0 +1,5 @@
+<div *ngIf="visible" class="error-banner">
+  <img src="/warning.png" alt="Warning" class="warning" />
+  <div class="message">{{ message }}</div>
+  <button class="close-btn" (click)="hide()">✖</button>
+</div>

@@ -1,8 +1,15 @@
+
 <app-payment-layout>
   <div class="bill-container">
 
+    <app-error-banner
+      [(visible)]="showError"
+      [message]="'La somme totale doit être exactement égale à 20 euros'">
+    </app-error-banner>
+
     <h2>Partager l’addition</h2>
 
+    <div class="page-wrapper" [class.dimmed]="showError">
     <!-- Number of persons -->
     <div class="persons">
       <label>Nombre de personnes</label>
@@ -99,8 +106,8 @@
 
     <!-- Pay button -->
     <div class="pay-box">
-      <button class="button-primary pay-button">Payer</button>
+      <button class="button-primary pay-button" (click)="validateForm()">Payer</button>
     </div>
-
+  </div>
   </div>
 </app-payment-layout>

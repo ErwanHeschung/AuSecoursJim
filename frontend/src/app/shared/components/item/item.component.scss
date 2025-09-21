@@ -1,23 +1,29 @@
 .item-card {
-    border: 1px solid #ddd;
-    background-color: #d0d2d074;
-    border-radius: 8px;
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    width: 15vw;
+    width: 23vw;
+    align-items: center;
 }
 
 .item-img {
-    width: 100%;
-    border-radius: 6px;
+    width: 23vw;
+    height: 10vh;
 }
 
 .item-title {
-    font-weight: bold;
-    margin: 8px 0 4px;
+    font-size: x-large;
+    margin: 10px auto;
+    color: black;
 }
 
 .item-price {
-    color: #28a745;
-    font-size: 1.1em;
+    color: white;
+    background-color: black;
+    width: fit-content;
+    padding: 4px 20px;
+    border-radius: 5px;
+    font-size: x-large;
+    margin: 4px auto;
+
 }

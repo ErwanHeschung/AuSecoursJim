@@ -1,0 +1,28 @@
+<div class="popup-overlay" (click)="onClose()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="onClose()">×</button>
+    <img [src]="menuItem.pictureUrl" alt="{{ menuItem.name }}" class="item-image">
+    <h2>{{ menuItem.name }}</h2>
+    <div class="ingredients-section">
+      <h3>Retirez les ingrédients</h3>
+      <ul>
+        @for (ingredient of menuItem.ingredients; track ingredient) {
+          <li>
+            <div class="quantity-control">
+              <button class="remove-btn" (click)="removeIngredient(ingredient)">-</button>
+              <span class="quantity">{{ ingredient.quantity }}</span>
+              <button class="add-btn" (click)="addIngredient(ingredient)">+</button>
+            </div>
+            <span class="ingredient-name">{{ ingredient.name }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="actions">
+      <button class="delete-btn">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+      <button class="add-to-cart-btn" (click)="onAddToCart()">Ajouter</button>
+    </div>
+  </div>
+</div>

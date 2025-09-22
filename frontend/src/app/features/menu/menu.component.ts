@@ -9,10 +9,12 @@ import { ICONS } from '../../core/utils/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Item } from '../../core/models/item.model';
 import { Category } from '../../core/models/category.model';
+import { PopupComponent } from '../../shared/components/popup/popup.component';
+import { MenuItemDetailComponent } from '../menu-item-detail/menu-item-detail.component';
 
 @Component({
   selector: 'app-menu',
-  imports: [ItemComponent, CategoryItemComponent, FontAwesomeModule],
+  imports: [ItemComponent, CategoryItemComponent, PopupComponent, MenuItemDetailComponent, FontAwesomeModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
@@ -39,6 +41,7 @@ export class MenuComponent {
   ];
 
   protected selectedCategory: Category = this.categories[0];
+
 
   protected items: Item[] = [
     {
@@ -95,6 +98,28 @@ export class MenuComponent {
     },
   ];
 
+  protected selectedItem: Item = this.items[0];
+
+
+  protected filterPopup: boolean = false;
+
+  protected toggleFilterPopup(): void {
+    this.filterPopup = !this.filterPopup;
+  }
+
+
+  protected itemPopup: boolean = false;
+
+  protected toggleItemPopup(): void {
+    this.itemPopup = !this.itemPopup;
+  }
+
+
+  protected cartPopup: boolean = false;
+
+  protected toggleCartPopup(): void {
+    this.cartPopup = !this.cartPopup;
+  }
 
 
   protected order: Order = {
@@ -127,6 +152,8 @@ export class MenuComponent {
   protected openItemDetails(item: Item): void {
     // TODO: Open item details popup
     console.log(item);
+    this.selectedItem = item;
+    this.toggleItemPopup();
   }
 
 }

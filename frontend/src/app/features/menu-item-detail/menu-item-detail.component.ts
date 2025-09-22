@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { MenuItem } from '../../core/models/menu-item.model';
+import { Item } from '../../core/models/item.model';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -13,10 +13,10 @@ import { MenuItem } from '../../core/models/menu-item.model';
 })
 export class MenuItemDetailComponent {
   faTrash = faTrash;
-  @Input() menuItem!: MenuItem;
+  @Input() menuItem!: Item;
 
   @Output() close = new EventEmitter<void>();
-  @Output() addToCart = new EventEmitter<MenuItem>();
+  @Output() addToCart = new EventEmitter<Item>();
 
   removeIngredient(ingredient: { name: string; quantity: number }) {
     if (ingredient.quantity > 0) {

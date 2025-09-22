@@ -9,6 +9,7 @@
 
 <main>
     <h2>Nos Burgers</h2>
+    <button id="filter-button" class="button-primary" (click)="toggleFilterPopup()">Filtrer</button>
     <div id="items-container">
         @for (item of items; track item) {
             <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
@@ -20,5 +21,30 @@
     <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
     <span>{{ order.quantity }} éléments</span>
     <span>{{ order.amount }} €</span>
-    <button class="button-primary">Valider</button>
+    <button class="button-primary" (click)="toggleCartPopup()">Valider</button>
 </footer>
+
+
+<!-- Popups -->
+
+@if (filterPopup) {
+    <app-popup (close)="toggleFilterPopup()">
+        <div id="filter-popup">
+            Filter popup
+        </div>
+    </app-popup>
+}
+
+@if (itemPopup) {
+    <app-popup (close)="toggleItemPopup()">
+        <app-menu-item-detail [menuItem]="selectedItem"></app-menu-item-detail>
+    </app-popup>
+}
+
+@if (cartPopup) {
+    <app-popup (close)="toggleCartPopup()">
+        <div id="cart-popup">
+            Cart popup
+        </div>
+    </app-popup>
+}

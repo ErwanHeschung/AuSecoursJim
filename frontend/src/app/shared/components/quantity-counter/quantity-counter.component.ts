@@ -19,14 +19,14 @@ export class CounterComponent {
   }
 
   decrease() {
-    if (this.value > 1) {
+    if (this.value > 0) {
       this.value--;
       this.valueChange.emit(this.value);
     }
   }
 
   get isDecreaseDisabled(): boolean {
-    return this.value <= 1;
+    return this.value <= 0;
   }
 
   get isIncreaseDisabled(): boolean {

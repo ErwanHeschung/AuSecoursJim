@@ -217,3 +217,12 @@ input[type="checkbox"] {
   justify-content: center;
   align-items: center;
 }
+
+.page-wrapper {
+  transition: opacity 0.3s ease;
+}
+
+.page-wrapper.dimmed {
+  opacity: 0.4;
+  pointer-events: none;
+}

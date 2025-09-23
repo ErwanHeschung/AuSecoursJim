@@ -8,9 +8,8 @@ describe('ErrorBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorBannerComponent]
-    })
-    .compileComponents();
+      imports: [ErrorBannerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ErrorBannerComponent);
     component = fixture.componentInstance;

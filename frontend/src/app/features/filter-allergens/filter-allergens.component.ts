@@ -8,7 +8,7 @@ import { Allergen } from '../../core/models/allergen.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './filter-allergens.component.html',
-  styleUrls: ['./filter-allergens.component.scss']
+  styleUrls: ['./filter-allergens.component.scss'],
 })
 export class FilterAllergensComponent {
   selectedAllergens: string[] = [];
@@ -16,13 +16,13 @@ export class FilterAllergensComponent {
   @Output() allergensChange = new EventEmitter<Allergen[]>();
 
   allergens: (Allergen & { selected?: boolean })[] = [
-    { id: 0, name: "Gluten", image: "🍞" },
-    { id: 1, name: "Arachides", image: "🥜" },
-    { id: 2, name: "Lait", image: "🥛" },
-    { id: 3, name: "Œufs", image: "🥚" },
-    { id: 4, name: "Poissons", image: "🐟" },
-    { id: 5, name: "Soja", image: "🌱" },
-    { id: 6, name: "Fruits à coque", image: "🌰" }
+    { id: 0, name: 'Gluten', image: '🍞' },
+    { id: 1, name: 'Arachides', image: '🥜' },
+    { id: 2, name: 'Lait', image: '🥛' },
+    { id: 3, name: 'Œufs', image: '🥚' },
+    { id: 4, name: 'Poissons', image: '🐟' },
+    { id: 5, name: 'Soja', image: '🌱' },
+    { id: 6, name: 'Fruits à coque', image: '🌰' },
   ];
 
   trackByAllergen(index: number, allergen: Allergen) {

@@ -9,10 +9,14 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
   standalone: true,
   templateUrl: './split-payment.component.html',
   styleUrls: ['./split-payment.component.scss'],
-  imports: [CommonModule, CounterComponent, PaymentLayoutComponent, ErrorBannerComponent]
+  imports: [
+    CommonModule,
+    CounterComponent,
+    PaymentLayoutComponent,
+    ErrorBannerComponent,
+  ],
 })
 export class SplitPaymentComponent {
-
   showError = false;
   numberOfPersons = 2;
   totalOrder = 20;
@@ -20,12 +24,22 @@ export class SplitPaymentComponent {
 
   persons = [
     { name: 'Personne 1', amount: 10 },
-    { name: 'Personne 2', amount: 10 }
+    { name: 'Personne 2', amount: 10 },
   ];
 
   items = [
-    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
-    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
+    {
+      name: 'Burger',
+      price: 5.5,
+      image: '/burger.png',
+      selected: [] as number[],
+    },
+    {
+      name: 'Burger',
+      price: 5.5,
+      image: '/burger.png',
+      selected: [] as number[],
+    },
   ];
 
   ngOnInit() {
@@ -76,6 +90,9 @@ export class SplitPaymentComponent {
   }
 
   private updatePersonsCount() {
-    document.documentElement.style.setProperty('--persons-count', this.persons.length.toString());
+    document.documentElement.style.setProperty(
+      '--persons-count',
+      this.persons.length.toString()
+    );
   }
 }

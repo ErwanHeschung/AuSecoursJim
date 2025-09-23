@@ -16,9 +16,16 @@ import { Allergen } from '../../core/models/allergen.model';
 
 @Component({
   selector: 'app-menu',
-  imports: [ItemComponent, CategoryItemComponent, PopupComponent, MenuItemDetailComponent, FontAwesomeModule, FilterAllergensComponent],
+  imports: [
+    ItemComponent,
+    CategoryItemComponent,
+    PopupComponent,
+    MenuItemDetailComponent,
+    FontAwesomeModule,
+    FilterAllergensComponent,
+  ],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+  styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
   protected ICONS = ICONS;
@@ -26,29 +33,32 @@ export class MenuComponent {
   protected categories: Category[] = [
     {
       id: 0,
-      name: "Burgers",
-      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
+      name: 'Burgers',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
     },
     {
       id: 1,
-      name: "Fast Food",
-      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
+      name: 'Fast Food',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
     },
     {
       id: 2,
-      name: "Snacks",
-      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
-    }
+      name: 'Snacks',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+    },
   ];
 
   protected selectedCategory: Category = this.categories[0];
-
 
   protected items: Item[] = [
     {
       id: 0,
       name: 'burger',
-      image: 'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
       price: 10,
       quantity: 2,
       ingredients: [
@@ -61,7 +71,8 @@ export class MenuComponent {
     {
       id: 1,
       name: 'pizza',
-      image: 'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
       price: 12,
       quantity: 2,
       ingredients: [
@@ -74,7 +85,8 @@ export class MenuComponent {
     {
       id: 2,
       name: 'taco',
-      image: 'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
       price: 8,
       quantity: 2,
       ingredients: [
@@ -87,7 +99,8 @@ export class MenuComponent {
     {
       id: 3,
       name: 'wrap',
-      image: 'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+      image:
+        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
       price: 9,
       quantity: 2,
       ingredients: [
@@ -107,13 +120,11 @@ export class MenuComponent {
     this.selectedAllergens = allergens;
   }
 
-
   protected filterPopup: boolean = false;
 
   protected toggleFilterPopup(): void {
     this.filterPopup = !this.filterPopup;
   }
-
 
   protected itemPopup: boolean = false;
 
@@ -121,13 +132,11 @@ export class MenuComponent {
     this.itemPopup = !this.itemPopup;
   }
 
-
   protected cartPopup: boolean = false;
 
   protected toggleCartPopup(): void {
     this.cartPopup = !this.cartPopup;
   }
-
 
   protected order: Order = {
     id: 0,
@@ -141,14 +150,14 @@ export class MenuComponent {
       {
         id: 0,
         name: 'burger',
-        image: 'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
+        image:
+          'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
         price: 10,
         quantity: 2,
         ingredients: [],
-      }
+      },
     ],
-  }
-
+  };
 
   protected switchCategory(category: Category): void {
     this.selectedCategory = category;
@@ -162,5 +171,4 @@ export class MenuComponent {
     this.selectedItem = item;
     this.toggleItemPopup();
   }
-
 }

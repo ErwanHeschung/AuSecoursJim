@@ -1,49 +1,57 @@
 <aside>
-    <img src="/logo.webp" alt="logo" id="logo-img" />
-    <div id="categories-container">
-        @for (category of categories; track category) {
-        <app-category-item [category]="category" [selected]="category === selectedCategory"
-            (click)="switchCategory(category)"></app-category-item>
-        }
-    </div>
+  <img src="/logo.webp" alt="logo" id="logo-img" />
+  <div id="categories-container">
+    @for (category of categories; track category) {
+      <app-category-item
+        [category]="category"
+        [selected]="category === selectedCategory"
+        (click)="switchCategory(category)"
+      ></app-category-item>
+    }
+  </div>
 </aside>
 
 <main>
-    <h2>Nos Burgers</h2>
-    <button id="filter-button" class="button-primary" (click)="toggleFilterPopup()">Filtrer</button>
-    <div id="items-container">
-        @for (item of items; track item) {
-        <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
-        }
-    </div>
+  <h2>Nos Burgers</h2>
+  <button
+    id="filter-button"
+    class="button-primary"
+    (click)="toggleFilterPopup()"
+  >
+    Filtrer
+  </button>
+  <div id="items-container">
+    @for (item of items; track item) {
+      <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
+    }
+  </div>
 </main>
 
 <footer>
-    <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
-    <span>{{ order.quantity }} éléments</span>
-    <span>{{ order.amount }} €</span>
-    <button class="button-primary" (click)="toggleCartPopup()">Valider</button>
+  <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
+  <span>{{ order.quantity }} éléments</span>
+  <span>{{ order.amount }} €</span>
+  <button class="button-primary" (click)="toggleCartPopup()">Valider</button>
 </footer>
-
 
 <!-- Popups -->
 
 @if (filterPopup) {
-<app-popup (close)="toggleFilterPopup()">
-    <app-filter-allergens (allergensChange)="onAllergensSelected($event)"></app-filter-allergens>
-</app-popup>
+  <app-popup (close)="toggleFilterPopup()">
+    <app-filter-allergens
+      (allergensChange)="onAllergensSelected($event)"
+    ></app-filter-allergens>
+  </app-popup>
 }
 
 @if (itemPopup) {
-<app-popup (close)="toggleItemPopup()">
+  <app-popup (close)="toggleItemPopup()">
     <app-menu-item-detail [menuItem]="selectedItem"></app-menu-item-detail>
-</app-popup>
+  </app-popup>
 }
 
 @if (cartPopup) {
-<app-popup (close)="toggleCartPopup()">
-    <div id="cart-popup">
-        Cart popup
-    </div>
-</app-popup>
+  <app-popup (close)="toggleCartPopup()">
+    <div id="cart-popup">Cart popup</div>
+  </app-popup>
 }

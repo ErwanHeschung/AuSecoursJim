@@ -11,32 +11,33 @@ import { Item } from '../../core/models/item.model';
 import { Category } from '../../core/models/category.model';
 import { PopupComponent } from '../../shared/components/popup/popup.component';
 import { MenuItemDetailComponent } from '../menu-item-detail/menu-item-detail.component';
+import { FilterAllergensComponent } from '../filter-allergens/filter-allergens.component';
+import { Allergen } from '../../core/models/allergen.model';
 
 @Component({
   selector: 'app-menu',
-  imports: [ItemComponent, CategoryItemComponent, PopupComponent, MenuItemDetailComponent, FontAwesomeModule],
+  imports: [ItemComponent, CategoryItemComponent, PopupComponent, MenuItemDetailComponent, FontAwesomeModule, FilterAllergensComponent],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
-
   protected ICONS = ICONS;
 
   protected categories: Category[] = [
     {
-        id: 0,
-        name: "Burgers",
-        image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
+      id: 0,
+      name: "Burgers",
+      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
     },
     {
-        id: 1,
-        name: "Fast Food",
-        image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
+      id: 1,
+      name: "Fast Food",
+      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
     },
     {
-        id: 2,
-        name: "Snacks",
-        image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
+      id: 2,
+      name: "Snacks",
+      image: "https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png"
     }
   ];
 
@@ -99,6 +100,12 @@ export class MenuComponent {
   ];
 
   protected selectedItem: Item = this.items[0];
+
+  protected selectedAllergens: Allergen[] = [];
+
+  protected onAllergensSelected(allergens: Allergen[]) {
+    this.selectedAllergens = allergens;
+  }
 
 
   protected filterPopup: boolean = false;

@@ -38,4 +38,9 @@ export const routes: Routes = [
         './features/order-tracking-qrcode/order-tracking-qrcode.component'
       ).then(m => m.OrderTrackingQRcodeComponent),
   },
+  {
+    path: ROUTES.menu,
+    loadComponent: () =>
+      import('./features/menu/menu.component').then(m => m.MenuComponent),
+  },
 ];

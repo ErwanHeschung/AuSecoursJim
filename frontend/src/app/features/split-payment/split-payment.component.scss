@@ -176,7 +176,7 @@ h2 {
   font-size: 2vh;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   transform: scale(3.5);
   cursor: pointer;
   margin: 2.8vh;
@@ -216,4 +216,13 @@ input[type="checkbox"] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.page-wrapper {
+  transition: opacity 0.3s ease;
+}
+
+.page-wrapper.dimmed {
+  opacity: 0.4;
+  pointer-events: none;
 }

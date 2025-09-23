@@ -1,29 +1,45 @@
 import { Component } from '@angular/core';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
+import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 
 @Component({
   selector: 'app-split-payment',
   standalone: true,
   templateUrl: './split-payment.component.html',
   styleUrls: ['./split-payment.component.scss'],
-  imports: [CommonModule, CounterComponent, PaymentLayoutComponent]
+  imports: [
+    CommonModule,
+    CounterComponent,
+    PaymentLayoutComponent,
+    ErrorBannerComponent,
+  ],
 })
 export class SplitPaymentComponent {
+  showError = false;
   numberOfPersons = 2;
   totalOrder = 20;
   mode: 'euro' | 'items' = 'euro';
 
   persons = [
     { name: 'Personne 1', amount: 10 },
-    { name: 'Personne 2', amount: 10 }
+    { name: 'Personne 2', amount: 10 },
   ];
 
   items = [
-    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
-    { name: 'Burger', price: 5.5, image: '/burger.png', selected: [] as number[] },
+    {
+      name: 'Burger',
+      price: 5.5,
+      image: '/burger.png',
+      selected: [] as number[],
+    },
+    {
+      name: 'Burger',
+      price: 5.5,
+      image: '/burger.png',
+      selected: [] as number[],
+    },
   ];
 
   ngOnInit() {
@@ -60,7 +76,23 @@ export class SplitPaymentComponent {
     }
   }
 
+  validateForm(): void {
+    // Vérification (ici forcée à faux pour test)
+    if (this.currentTotal !== this.totalOrder) {
+      this.showError = true;
+    } else {
+      // TODO: redirect to payment
+    }
+  }
+
+  triggerError() {
+    this.showError = true;
+  }
+
   private updatePersonsCount() {
-    document.documentElement.style.setProperty('--persons-count', this.persons.length.toString());
+    document.documentElement.style.setProperty(
+      '--persons-count',
+      this.persons.length.toString()
+    );
   }
 }

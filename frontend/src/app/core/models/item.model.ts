@@ -1,10 +1,11 @@
-import { Ingredient } from "./ingredient.model";
+import { Ingredient } from './ingredient.model';
 
 export type Item = {
-    id: number;
-    name: string;
-    image: string;
-    price: number;
-    quantity: number;
-    ingredients: Ingredient[];
+  _id: string;
+  fullName: string;
+  shortName: string;
+  price: number;
+  category: string;
+  image: string;
+  ingredients?: Ingredient[];
 };

@@ -30,18 +30,7 @@ export class LandingComponent {
     },
   ];
 
-  constructor(
-    private localStorageService: LocalStorageService,
-    private categoryService: CategoryService
-  ) {
-    this.categoryService.getAllCategories().subscribe(categories => {
-      console.log('Available categories:', categories);
-    });
-
-    this.categoryService.getItemsByCategory('BEVERAGE').subscribe(items => {
-      console.log('Items in Beverages category:', items);
-    });
-  }
+  constructor(private localStorageService: LocalStorageService) {}
 
   selectTakeaway() {
     this.localStorageService.setItem('orderType', 'takeaway');

@@ -110,10 +110,6 @@
       }
     }
   },
-<<<<<<< HEAD
-  "cli": {
-    "analytics": false
-=======
   "schematics": {
     "@schematics/angular:component": {
       "type": "component"
@@ -139,6 +135,5 @@
     "@schematics/angular:resolver": {
       "typeSeparator": "."
     }
->>>>>>> c90997a9deb23f3ef188e363493672bc8fe676fc
   }
 }

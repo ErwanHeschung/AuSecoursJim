@@ -1,6 +1,8 @@
 <div class="popup-overlay" (click)="onClose()">
   <div class="popup-content" (click)="$event.stopPropagation()">
-    <button class="close-btn" (click)="onClose()">×</button>
+    <button class="close-btn" (click)="onClose()">
+      <fa-icon [icon]="crossIcon" class="icon"></fa-icon>
+    </button>
     <ng-content></ng-content>
   </div>
 </div>

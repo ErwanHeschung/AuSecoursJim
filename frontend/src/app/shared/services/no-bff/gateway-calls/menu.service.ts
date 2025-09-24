@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
-import { Menu } from '../../../models/menu';
+import { Item } from '../../../../core/models/item.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
   private apiUrl: string = environment.apiUrl + '/menu';
-  private menus$: Observable<Menu[]> | null = null;
+  private menus$: Observable<Item[]> | null = null;
 
   constructor(private http: HttpClient) {}
 
-  public getAllMenus(): Observable<Menu[]> {
+  public getAllMenus(): Observable<Item[]> {
     if (!this.menus$) {
       this.menus$ = this.http
-        .get<Menu[]>(`${this.apiUrl}/menus`)
+        .get<Item[]>(`${this.apiUrl}/menus`)
         .pipe(shareReplay(1));
     }
     return this.menus$;

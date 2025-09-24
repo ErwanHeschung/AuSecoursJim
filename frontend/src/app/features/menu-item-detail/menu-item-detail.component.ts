@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Item } from '../../core/models/item.model';
-import { MenuItem } from '../../core/models/menu-item.model';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { ICONS } from '../../core/utils/icon';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -14,7 +14,7 @@ import { CounterComponent } from '../../shared/components/quantity-counter/quant
   styleUrls: ['./menu-item-detail.component.scss'],
 })
 export class MenuItemDetailComponent {
-  faTrash = faTrash;
+  public trashIcon: IconDefinition = ICONS['trash'];
   @Input() menuItem!: Item;
 
   @Output() close = new EventEmitter<void>();

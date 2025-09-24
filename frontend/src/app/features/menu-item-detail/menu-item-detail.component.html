@@ -1,19 +1,21 @@
-<img [src]="menuItem.image" alt="{{ menuItem.name }}" class="item-image" />
-<h2>{{ menuItem.name }}</h2>
+<img [src]="menuItem.image" alt="{{ menuItem.fullName }}" class="item-image" />
+<h2>{{ menuItem.fullName }}</h2>
 <div class="ingredients-section">
-  <h3>Retirez les ingrédients</h3>
-  <ul>
-    @for (ingredient of menuItem.ingredients; track ingredient) {
-      <li>
-        <app-counter [(value)]="ingredient.quantity" />
-        <span class="ingredient-name">{{ ingredient.name }}</span>
-      </li>
-    }
-  </ul>
+  @if (menuItem.ingredients) {
+    <h3>Remove ingredients</h3>
+    <ul>
+      @for (ingredient of menuItem.ingredients; track ingredient) {
+        <li>
+          <app-counter [(value)]="ingredient.quantity" />
+          <span class="ingredient-name">{{ ingredient.name }}</span>
+        </li>
+      }
+    </ul>
+  }
 </div>
 <div class="actions">
   <button class="delete-btn">
-    <fa-icon [icon]="faTrash"></fa-icon>
+    <fa-icon [icon]="trashIcon"></fa-icon>
   </button>
-  <button class="add-to-cart-btn" (click)="onAddToCart()">Ajouter</button>
+  <button class="add-to-cart-btn" (click)="onAddToCart()">Add</button>
 </div>

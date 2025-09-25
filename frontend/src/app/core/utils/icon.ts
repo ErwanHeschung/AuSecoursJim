@@ -6,6 +6,8 @@ import {
   faCreditCard,
   faMoneyBill,
   faMoneyBillWave,
+  faTimes,
+  faTrash,
   faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,6 +18,8 @@ export const ICONS: { [key: string]: IconDefinition } = {
   money: faMoneyBillWave,
   complete: faCheckCircle,
   cart: faCartShopping,
+  cross: faTimes,
+  trash: faTrash,
 };
 
 library.add(...Object.values(ICONS));

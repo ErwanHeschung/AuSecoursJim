@@ -3,6 +3,7 @@ import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-l
 import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { CategoryService } from '../../shared/services/no-bff/category.service';
 
 @Component({
   selector: 'app-landing',

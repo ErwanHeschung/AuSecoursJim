@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ItemComponent } from '../../shared/components/item/item.component';
 import { CategoryItemComponent } from '../../shared/components/category-item/category-item.component';
 import { OrderType } from '../../core/models/order-type.model';
@@ -13,6 +13,7 @@ import { PopupComponent } from '../../shared/components/popup/popup.component';
 import { MenuItemDetailComponent } from '../menu-item-detail/menu-item-detail.component';
 import { FilterAllergensComponent } from '../filter-allergens/filter-allergens.component';
 import { Allergen } from '../../core/models/allergen.model';
+import { ICategoryService } from '../../shared/models/interfaces/category';
 
 @Component({
   selector: 'app-menu',
@@ -27,116 +28,23 @@ import { Allergen } from '../../core/models/allergen.model';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   protected ICONS = ICONS;
 
-  protected categories: Category[] = [
-    {
-      id: 0,
-      name: 'Burgers',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-    },
-    {
-      id: 1,
-      name: 'Fast Food',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-    },
-    {
-      id: 2,
-      name: 'Snacks',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-    },
-  ];
+  protected categories: Category[] = [];
+  protected items: Item[] = [];
 
-  protected selectedCategory: Category = this.categories[0];
-
-  protected items: Item[] = [
-    {
-      id: 0,
-      name: 'burger',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-      price: 10,
-      quantity: 2,
-      ingredients: [
-        { name: 'bun', quantity: 1 },
-        { name: 'beef patty', quantity: 1 },
-        { name: 'cheese', quantity: 1 },
-        { name: 'lettuce', quantity: 1 },
-      ],
-    },
-    {
-      id: 1,
-      name: 'pizza',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-      price: 12,
-      quantity: 2,
-      ingredients: [
-        { name: 'dough', quantity: 1 },
-        { name: 'tomato sauce', quantity: 1 },
-        { name: 'mozzarella', quantity: 1 },
-        { name: 'pepperoni', quantity: 5 },
-      ],
-    },
-    {
-      id: 2,
-      name: 'taco',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-      price: 8,
-      quantity: 2,
-      ingredients: [
-        { name: 'tortilla', quantity: 1 },
-        { name: 'ground beef', quantity: 1 },
-        { name: 'cheese', quantity: 1 },
-        { name: 'salsa', quantity: 1 },
-      ],
-    },
-    {
-      id: 3,
-      name: 'wrap',
-      image:
-        'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-      price: 9,
-      quantity: 2,
-      ingredients: [
-        { name: 'tortilla', quantity: 1 },
-        { name: 'chicken', quantity: 1 },
-        { name: 'lettuce', quantity: 1 },
-        { name: 'mayo', quantity: 1 },
-      ],
-    },
-  ];
+  protected selectedCategory!: Category;
 
   protected selectedItem: Item = this.items[0];
 
   protected selectedAllergens: Allergen[] = [];
 
-  protected onAllergensSelected(allergens: Allergen[]) {
-    this.selectedAllergens = allergens;
-  }
-
   protected filterPopup: boolean = false;
-
-  protected toggleFilterPopup(): void {
-    this.filterPopup = !this.filterPopup;
-  }
-
-  protected itemPopup: boolean = false;
-
-  protected toggleItemPopup(): void {
-    this.itemPopup = !this.itemPopup;
-  }
 
   protected cartPopup: boolean = false;
 
-  protected toggleCartPopup(): void {
-    this.cartPopup = !this.cartPopup;
-  }
+  protected itemPopup: boolean = false;
 
   protected order: Order = {
     id: 0,
@@ -146,23 +54,43 @@ export class MenuComponent {
     amount: 20,
     amountSplits: [],
     quantity: 2,
-    items: [
-      {
-        id: 0,
-        name: 'burger',
-        image:
-          'https://blog.swiggy.com/wp-content/uploads/2025/01/Image-9_-meat-burger-1024x538.png',
-        price: 10,
-        quantity: 2,
-        ingredients: [],
-      },
-    ],
+    items: [],
   };
+
+  constructor(
+    @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService
+  ) {}
+
+  ngOnInit(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: categories => {
+        this.categories = categories;
+        this.selectedCategory = categories[0];
+        this.setItemByCategoryName(this.selectedCategory.name);
+      },
+      error: err => console.error(err),
+    });
+  }
+
+  protected onAllergensSelected(allergens: Allergen[]) {
+    this.selectedAllergens = allergens;
+  }
+
+  protected toggleFilterPopup(): void {
+    this.filterPopup = !this.filterPopup;
+  }
+
+  protected toggleItemPopup(): void {
+    this.itemPopup = !this.itemPopup;
+  }
+
+  protected toggleCartPopup(): void {
+    this.cartPopup = !this.cartPopup;
+  }
 
   protected switchCategory(category: Category): void {
     this.selectedCategory = category;
-    // TODO: Ask service to retrieve items of the selected category
-    console.log(category);
+    this.setItemByCategoryName(category.name);
   }
 
   protected openItemDetails(item: Item): void {
@@ -170,5 +98,16 @@ export class MenuComponent {
     console.log(item);
     this.selectedItem = item;
     this.toggleItemPopup();
+  }
+
+  private setItemByCategoryName(categoryName: string) {
+    this.categoryService.getItemsByCategoryName(categoryName).subscribe({
+      next: items => {
+        this.items = items;
+      },
+      error: err => {
+        console.error('Erreur lors du chargement des items:', err);
+      },
+    });
   }
 }

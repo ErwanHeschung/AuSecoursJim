@@ -12,13 +12,13 @@
 </aside>
 
 <main>
-  <h2>Nos Burgers</h2>
+  <h2>{{ selectedCategory.name }}</h2>
   <button
     id="filter-button"
     class="button-primary"
     (click)="toggleFilterPopup()"
   >
-    Filtrer
+    Filter
   </button>
   <div id="items-container">
     @for (item of items; track item) {
@@ -29,9 +29,9 @@
 
 <footer>
   <fa-icon [icon]="ICONS['cart']" class="icon"></fa-icon>
-  <span>{{ order.quantity }} éléments</span>
+  <span>{{ order.quantity }} items</span>
   <span>{{ order.amount }} €</span>
-  <button class="button-primary" (click)="toggleCartPopup()">Valider</button>
+  <button class="button-primary" (click)="toggleCartPopup()">Validate</button>
 </footer>
 
 <!-- Popups -->

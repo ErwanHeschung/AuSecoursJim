@@ -19,7 +19,7 @@
 
 .category-item-img {
   width: 100%;
-  height: 7.5vh;
+  aspect-ratio: 1;
 
   object-fit: cover;
   border-radius: var(--border-radius);

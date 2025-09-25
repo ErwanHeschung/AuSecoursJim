@@ -9,7 +9,6 @@ import { Category } from '../../../core/models/category.model';
 })
 export class CategoryItemComponent {
   @Input() category: Category = {
-    id: 1,
     name: 'Burgers',
     image: 'https://via.placeholder.com/150',
   };

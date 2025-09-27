@@ -3,8 +3,6 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  console.log("testfeur");
-
   const app = await NestFactory.create(AppModule);
   app.enableCors();
 
@@ -17,7 +15,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  console.log("testlogan");
   await app.listen(process.env.PORT ?? 4100);
 }
 bootstrap();

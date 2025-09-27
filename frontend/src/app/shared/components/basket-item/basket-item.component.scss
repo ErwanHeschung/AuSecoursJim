@@ -1,0 +1,41 @@
+.card {
+  height: 150px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  img {
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .information {
+    height: 100%;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    .content {
+      .title {
+        font-weight: 700;
+        font-size: 2.5rem;
+      }
+
+      .sub-information {
+        font-size: 2rem;
+        color: rgb(172, 172, 172);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    .price {
+      align-self: center;
+      font-weight: 700;
+    }
+  }
+}

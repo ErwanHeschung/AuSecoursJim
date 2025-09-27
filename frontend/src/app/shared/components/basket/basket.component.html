@@ -1,0 +1,15 @@
+<app-popup (close)="closePopup()">
+  <div class="wrapper">
+    <h2>My Order</h2>
+    <div class="items">
+      @for (item of basket.items; track item) {
+        <app-basket-item [item]="item"></app-basket-item>
+      }
+    </div>
+    <div class="summary">
+      <span>Items : {{ basketQuantity }}</span>
+      <span>Total : {{ basketTotal }}€</span>
+    </div>
+    <button class="button-primary">Proceed to payment</button>
+  </div>
+</app-popup>

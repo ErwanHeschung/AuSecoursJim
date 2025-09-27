@@ -12,6 +12,7 @@ export class MenuService {
     private readonly config: ConfigService,
   ) {
     this.backendUrl = this.config.get<string>('BACKEND_URL') ?? '';
+    this.backendUrl += '/menu';
   }
 
   async getAllMenus(): Promise<ItemDto[]> {
@@ -19,11 +20,11 @@ export class MenuService {
 
     return data.map((menu: any) => ({
       _id: menu.id,
-      fullName: menu.label,
-      shortName: menu.shortLabel,
+      fullName: menu.fullName,
+      shortName: menu.shortName,
       price: menu.price,
       category: menu.category,
-      image: menu.imageUrl,
+      image: menu.image,
       ingredients: menu.ingredients,
     }));
   }

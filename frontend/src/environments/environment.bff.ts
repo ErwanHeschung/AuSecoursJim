@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   useBff: true,
-  apiUrl: 'BFF_URL', //TODO
+  apiUrl: 'http://localhost:4100',
 };
 
 console.log('Using environment.bff.ts');

@@ -11,11 +11,15 @@ export class MenuService {
     private readonly http: HttpService,
     private readonly config: ConfigService,
   ) {
-    this.backendUrl = this.config.get<string>('BACKEND_URL') ?? '';
+    console.log(this.config.get<string>('GATEWAY_URL_WITH_PORT'));
+    this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
     this.backendUrl += '/menu';
+    console.log(this.backendUrl);
+
   }
 
   async getAllMenus(): Promise<ItemDto[]> {
+    console.log(this.backendUrl);
     const { data } = await this.http.axiosRef.get(`${this.backendUrl}/menus`);
 
     return data.map((menu: any) => ({

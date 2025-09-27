@@ -17,5 +17,7 @@ compile_dir "kitchen-service"
 
 compile_dir "gateway"
 
+compile_dir "../bff"
+
 echo "** Done all"
 

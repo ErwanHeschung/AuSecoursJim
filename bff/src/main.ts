@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle('BFF')
     .setDescription('API documentation for the BFF')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

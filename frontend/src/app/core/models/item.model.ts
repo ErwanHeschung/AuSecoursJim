@@ -9,3 +9,7 @@ export type Item = {
   image: string;
   ingredients?: Ingredient[];
 };
+
+export type BasketItem = Item & {
+  quantity: number;
+};

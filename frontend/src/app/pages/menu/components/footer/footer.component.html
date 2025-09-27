@@ -1,0 +1,10 @@
+<footer>
+  <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
+  <span>{{ basketQuantity }} items</span>
+  <span>{{ basketPrice }} €</span>
+  <button class="button-primary" (click)="toggleBasketPopup()">Validate</button>
+</footer>
+
+@if (basketPopup) {
+  <app-basket (close)="toggleBasketPopup()"></app-basket>
+}

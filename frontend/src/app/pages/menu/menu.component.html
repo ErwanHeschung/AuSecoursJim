@@ -1,0 +1,53 @@
+<main>
+  <aside>
+    <img src="/logo.webp" alt="logo" id="logo-img" />
+    <div id="categories-container">
+      @for (category of categories; track category) {
+        <app-category-item
+          [category]="category"
+          [selected]="category === selectedCategory"
+          (click)="switchCategory(category)"
+        ></app-category-item>
+      }
+    </div>
+  </aside>
+
+  <div class="menu">
+    <div class="menu-header">
+      <h2>{{ selectedCategory.name }}</h2>
+      <button
+        id="filter-button"
+        class="button-primary"
+        (click)="toggleFilterPopup()"
+      >
+        Filter
+      </button>
+    </div>
+    <div id="items-container">
+      @for (item of items; track item) {
+        <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
+      }
+    </div>
+  </div>
+</main>
+
+<app-footer class="footer"></app-footer>
+
+<!-- Popups -->
+
+@if (filterPopup) {
+  <app-popup (close)="toggleFilterPopup()">
+    <app-filter-allergens
+      (allergensChange)="onAllergensSelected($event)"
+    ></app-filter-allergens>
+  </app-popup>
+}
+
+@if (itemPopup) {
+  <app-popup (close)="toggleItemPopup()">
+    <app-menu-item-detail
+      [menuItem]="selectedItem"
+      (close)="toggleItemPopup()"
+    ></app-menu-item-detail>
+  </app-popup>
+}

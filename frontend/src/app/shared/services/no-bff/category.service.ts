@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MenuService } from './gateway-calls/menu.service';
 import { map, Observable } from 'rxjs';
-import { ICategoryService } from '../../models/interfaces/category';
+import { ICategoryService } from '../../../core/models/interfaces/category';
 import { Category } from '../../../core/models/category.model';
 import { Item } from '../../../core/models/item.model';
 

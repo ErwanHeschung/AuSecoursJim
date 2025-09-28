@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import {
+  FaIconComponent,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../../core/utils/icon';
 import { Basket } from '../../../../core/models/basket.model';
@@ -8,7 +11,7 @@ import { BasketComponent } from '../../../../shared/components/basket/basket.com
 
 @Component({
   selector: 'app-footer',
-  imports: [FaIconComponent, BasketComponent],
+  imports: [FontAwesomeModule, BasketComponent],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })

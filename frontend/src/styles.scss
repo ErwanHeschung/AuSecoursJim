@@ -48,6 +48,12 @@ body {
   @extend .clickable;
 }
 
+.button-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(60%);
+}
+
 .box {
   background-color: var(--secondary-color);
   box-shadow: var(--base-shadow);

@@ -28,6 +28,7 @@ export class PaymentSelectionComponent {
   ) {}
 
   selectCash() {
+    this.paymentService.pay().subscribe(result => console.log(result));
     //TODO do payment
   }
 

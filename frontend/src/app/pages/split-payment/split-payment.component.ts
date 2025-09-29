@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
 import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
+import { BasketService } from '../../shared/services/basket.service';
+import { Basket } from '../../core/models/basket.model';
+import { BasketItem } from '../../core/models/item.model';
+
+type BasketSelected = {
+  basketItems: BasketItem;
+  selected: number[];
+};
 
 @Component({
   selector: 'app-split-payment',
@@ -17,33 +25,30 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
   ],
 })
 export class SplitPaymentComponent {
-  showError = false;
-  numberOfPersons = 2;
-  totalOrder = 20;
+  showError: boolean = false;
+  basket!: Basket;
+  items!: BasketSelected[];
+  numberOfPersons: number = 2;
+  totalOrder: number = 0;
   mode: 'euro' | 'items' = 'euro';
 
   persons = [
-    { name: 'Personne 1', amount: 10 },
-    { name: 'Personne 2', amount: 10 },
+    { name: 'Personne 1', amount: 0 },
+    { name: 'Personne 2', amount: 0 },
   ];
 
-  items = [
-    {
-      name: 'Burger',
-      price: 5.5,
-      image: '/burger.png',
-      selected: [] as number[],
-    },
-    {
-      name: 'Burger',
-      price: 5.5,
-      image: '/burger.png',
-      selected: [] as number[],
-    },
-  ];
+  constructor(private basketService: BasketService) {}
 
   ngOnInit() {
     this.updatePersonsCount();
+    this.basketService.basket$.subscribe(basket => {
+      this.basket = basket;
+      this.items = basket.items.map(item => ({
+        basketItems: item,
+        selected: [],
+      }));
+      this.totalOrder = this.basketService.getTotal();
+    });
   }
 
   get currentTotal(): number {

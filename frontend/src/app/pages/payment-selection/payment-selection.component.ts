@@ -3,6 +3,8 @@ import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-layout/option-selection-layout/option-selection-layout.component';
 import { IPaymentService } from '../../core/models/interfaces/payment';
+import { Router } from '@angular/router';
+import { ROUTES } from '../../core/utils/constant';
 
 @Component({
   selector: 'app-payment-selection',
@@ -16,21 +18,20 @@ export class PaymentSelectionComponent {
     icon: IconDefinition;
     onClick: () => void;
   }[] = [
-    { label: 'Espece', icon: ICONS['money'], onClick: () => this.selectCash() },
-    { label: 'Carte', icon: ICONS['card'], onClick: () => this.selectCard() },
+    { label: 'Cash', icon: ICONS['money'], onClick: () => this.selectCash() },
+    { label: 'Card', icon: ICONS['card'], onClick: () => this.selectCard() },
   ];
 
   constructor(
-    @Inject('PAYMENT_SERVICE') private paymentService: IPaymentService
+    @Inject('PAYMENT_SERVICE') private paymentService: IPaymentService,
+    private router: Router
   ) {}
 
   selectCash() {
-    this.paymentService.pay().subscribe(result => console.log(result));
-    //TODO Redirect to cash payment
+    //TODO do payment
   }
 
   selectCard() {
-    this.paymentService.pay().subscribe(result => console.log(result));
-    //TODO Redirect to card payment
+    this.router.navigate([ROUTES.splitPayment]);
   }
 }

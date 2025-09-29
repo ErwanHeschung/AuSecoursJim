@@ -1,5 +1,8 @@
 <app-payment-layout>
   <div class="order-tracking-qrcode">
+    <button class="button-primary" (click)="prepareOrder()">
+      DEBUG : Send order
+    </button>
     <qrcode [qrdata]="orderTrackingUrl" [width]="500"></qrcode>
     <p>Scan the QR code to track your order.</p>
     <button class="button-primary">Ok</button>

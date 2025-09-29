@@ -13,3 +13,9 @@ export type Item = {
 export type BasketItem = Item & {
   quantity: number;
 };
+
+export type OrderItem = {
+  menuItemId: string;
+  menuItemShortName: string;
+  howMany: number;
+};

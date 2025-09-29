@@ -10,6 +10,8 @@
       <span>Items : {{ basketQuantity }}</span>
       <span>Total : {{ basketTotal }}€</span>
     </div>
-    <button class="button-primary">Proceed to payment</button>
+    <button class="button-primary" (click)="choosePaymentMethod()">
+      Proceed to payment
+    </button>
   </div>
 </app-popup>

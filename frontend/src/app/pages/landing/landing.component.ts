@@ -4,6 +4,7 @@ import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Router } from '@angular/router';
+import { ROUTES } from '../../core/utils/constant';
 
 @Component({
   selector: 'app-landing',
@@ -46,6 +47,6 @@ export class LandingComponent {
   }
 
   private navigateToMenus(): void {
-    this.router.navigate(['/menu']);
+    this.router.navigate([ROUTES.menu]);
   }
 }

@@ -3,7 +3,11 @@
     <app-error-banner
       [(visible)]="showError"
       [message]="
-        'Le total doit être égal au total de la commande (' + totalOrder + '€)'
+        mode === 'euro'
+          ? 'Le total doit être égal au total de la commande (' +
+            totalOrder +
+            '€)'
+          : 'Tous les articles doivent être sélectionnés'
       "
     >
     </app-error-banner>

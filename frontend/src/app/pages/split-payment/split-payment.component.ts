@@ -82,16 +82,12 @@ export class SplitPaymentComponent {
   }
 
   validateForm(): void {
-    // Vérification (ici forcée à faux pour test)
-    if (this.currentTotal !== this.totalOrder) {
-      this.showError = true;
+    if (this.mode === 'euro') {
+      this.showError = this.currentTotal !== this.totalOrder;
     } else {
-      // TODO: redirect to payment
+      const allSelected = this.items.every(item => item.selected.length > 0);
+      this.showError = !allSelected;
     }
-  }
-
-  triggerError() {
-    this.showError = true;
   }
 
   private updatePersonsCount() {

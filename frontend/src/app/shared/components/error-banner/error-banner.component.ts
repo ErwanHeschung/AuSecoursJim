@@ -17,4 +17,8 @@ export class ErrorBannerComponent {
     this.visible = false;
     this.visibleChange.emit(false);
   }
+
+  changeText(newMessage: string) {
+    this.message = newMessage;
+  }
 }

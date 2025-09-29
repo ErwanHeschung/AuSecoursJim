@@ -1,7 +1,6 @@
 main {
   width: 100%;
   height: calc(100% - var(--footer-height));
-
   display: grid;
   grid-template: 1fr / 22vw 1fr;
 }
@@ -14,6 +13,7 @@ aside {
   gap: 16px;
   box-shadow: var(--base-shadow);
   border-right: var(--base-border);
+  height: 100%;
 }
 
 #logo-img {
@@ -24,7 +24,6 @@ aside {
 #categories-container {
   width: 100%;
   height: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +37,6 @@ aside {
 
 #items-container {
   height: 80%;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: max-content;

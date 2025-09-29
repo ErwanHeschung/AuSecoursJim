@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaymentService {
 
+  private readonly logger = new Logger(PaymentService.name);
   private backendUrl: string;
 
   constructor(
@@ -17,7 +18,8 @@ export class PaymentService {
 
 
   async pay(): Promise<boolean> {
-    return false;
+    // this.logger.log("payment");
+    return true; // TODO: logic of payment
   }
 
 }

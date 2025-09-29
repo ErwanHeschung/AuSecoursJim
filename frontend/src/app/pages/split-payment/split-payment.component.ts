@@ -6,6 +6,7 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { BasketItem } from '../../core/models/item.model';
+import { OrderService } from '../../shared/services/no-bff/order.service';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -37,7 +38,10 @@ export class SplitPaymentComponent {
     { name: 'Personne 2', amount: 0 },
   ];
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit() {
     this.updatePersonsCount();
@@ -49,6 +53,7 @@ export class SplitPaymentComponent {
       }));
       this.totalOrder = this.basketService.getTotal();
     });
+    this.orderService.prepareOrderOnFirstFreeTable(this.basket);
   }
 
   get currentTotal(): number {
@@ -88,6 +93,16 @@ export class SplitPaymentComponent {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
     }
+    this.processPayment();
+  }
+
+  processPayment(): void {
+    if (this.showError) return;
+    this.orderService.latestOrderId$.subscribe(orderId => {
+      if (orderId) {
+        this.orderService.finishOrder(orderId);
+      }
+    });
   }
 
   private updatePersonsCount() {

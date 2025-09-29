@@ -40,7 +40,7 @@ export class OrderService implements IOrderService {
         });
 
         return forkJoin(addItems$).pipe(
-          switchMap(() => this.tableService.preparOrder(orderId)),
+          switchMap(() => this.tableService.prepareOrder(orderId)),
           map(() => {
             this.latestOrderIdSubject.next(orderId);
             return;
@@ -54,5 +54,9 @@ export class OrderService implements IOrderService {
     return this.tableService
       .getTables()
       .pipe(map(tables => tables.find(table => !table.taken)));
+  }
+
+  public finishOrder(orderId: string): Observable<void> {
+    return this.tableService.finishOrder(orderId);
   }
 }

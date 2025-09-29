@@ -3,7 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { CATEGORY_SERVICE_PROVIDER } from './service.provider';
+import {
+  CATEGORY_SERVICE_PROVIDER,
+  PAYMENT_SERVICE_PROVIDER,
+} from './service.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     CATEGORY_SERVICE_PROVIDER,
+    PAYMENT_SERVICE_PROVIDER,
   ],
 };

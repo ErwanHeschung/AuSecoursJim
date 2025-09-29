@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  bff:
+    image: "nestjs-restaurant/bff"
+    restart: always
+    ports:
+      - 4100:4100
+    depends_on:
+      - ${GATEWAY}
+    environment:
+      - GATEWAY_URL_WITH_PORT=http://${GATEWAY}:3000
+    networks:
+      - nestjs-restaurant-network
+networks:
+  nestjs-restaurant-network:
+    driver: bridge

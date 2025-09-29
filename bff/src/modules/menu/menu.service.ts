@@ -11,7 +11,7 @@ export class MenuService {
     private readonly http: HttpService,
     private readonly config: ConfigService,
   ) {
-    this.backendUrl = this.config.get<string>('BACKEND_URL') ?? '';
+    this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
     this.backendUrl += '/menu';
   }
 

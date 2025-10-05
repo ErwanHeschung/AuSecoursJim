@@ -7,7 +7,7 @@ function compile_dir()  # $1 is the dir to get it
     cd ..
 }
 
-echo "** Compiling all"
+echo "** Compiling all backend services"
 
 compile_dir "menu-service"
 
@@ -17,7 +17,5 @@ compile_dir "kitchen-service"
 
 compile_dir "gateway"
 
-compile_dir "../bff"
-
-echo "** Done all"
+echo "** Done all backend services"
 

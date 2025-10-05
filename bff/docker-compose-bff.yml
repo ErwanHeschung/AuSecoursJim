@@ -6,10 +6,8 @@ services:
     restart: always
     ports:
       - 4100:4100
-    depends_on:
-      - ${GATEWAY}
     environment:
-      - GATEWAY_URL_WITH_PORT=http://${GATEWAY}:3000
+      - GATEWAY_URL_WITH_PORT=${GATEWAY}
     networks:
       - nestjs-restaurant-network
 networks:

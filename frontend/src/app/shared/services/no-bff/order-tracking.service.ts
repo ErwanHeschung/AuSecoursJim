@@ -17,7 +17,7 @@ export class OrderTrackingService implements IOrderTrackingService {
   public trackPreparation(
     orderId: string,
     pollIntervalMs = 2000
-  ): Observable<OrderTrackingStatus> {
+  ): Observable<number> {
     return interval(pollIntervalMs).pipe(
       startWith(0),
       switchMap(() =>
@@ -29,13 +29,14 @@ export class OrderTrackingService implements IOrderTrackingService {
                 map(preparations => {
                   const orderPrepIds = order.preparations.map(p => p._id);
                   const readyIds = preparations.map(p => p._id);
-                  const allReady = orderPrepIds.every(id =>
-                    readyIds.includes(id)
-                  );
 
-                  return allReady
-                    ? OrderTrackingStatus.Completed
-                    : OrderTrackingStatus.InProgress;
+                  const readyCount = orderPrepIds.filter(id =>
+                    readyIds.includes(id)
+                  ).length;
+                  const total = orderPrepIds.length;
+                  console.log({ orderPrepIds, readyIds, readyCount });
+
+                  return total > 0 ? Math.round((readyCount / total) * 100) : 0;
                 })
               )
           )

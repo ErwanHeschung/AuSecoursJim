@@ -18,6 +18,12 @@ export class TableService {
     return this.http.get<Table[]>(`${this.apiUrl}/tables`);
   }
 
+  public addTable(tableNumber: number): Observable<Table> {
+    return this.http.post<Table>(`${this.apiUrl}/tables`, {
+      number: tableNumber,
+    });
+  }
+
   public openOrder(tableNumber: number): Observable<string> {
     return this.http
       .post<{

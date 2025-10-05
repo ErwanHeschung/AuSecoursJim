@@ -20,10 +20,7 @@ export class OrderTrackingComponent {
   public completedIcon: IconDefinition = ICONS['complete'];
 
   public currentIcon: IconDefinition = this.inProgressIcon;
-
-  public stepNumber: number = 2;
-  public currentStep: number = 0;
-
+  public progress: number = 0;
   public orderId!: string;
 
   constructor(
@@ -37,15 +34,17 @@ export class OrderTrackingComponent {
 
     this.orderTrackingService
       .trackPreparation(this.orderId, 2000)
-      .subscribe((status: OrderTrackingStatus) => {
-        this.status = status;
-        this.updateStatus(status);
+      .subscribe((progress: number) => {
+        this.progress = progress;
+        this.status =
+          progress === 100
+            ? OrderTrackingStatus.Completed
+            : OrderTrackingStatus.InProgress;
+        this.updateStatusIcon(this.status);
       });
   }
 
-  public updateStatus(newStatus: OrderTrackingStatus): void {
-    this.status = newStatus;
-    this.currentStep = newStatus === OrderTrackingStatus.InProgress ? 0 : 1;
+  public updateStatusIcon(newStatus: OrderTrackingStatus): void {
     this.currentIcon =
       newStatus === OrderTrackingStatus.InProgress
         ? this.inProgressIcon

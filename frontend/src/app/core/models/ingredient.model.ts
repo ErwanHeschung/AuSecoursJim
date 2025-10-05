@@ -1,4 +1,4 @@
-export type Ingredient = {
+export interface Ingredient {
   name: string;
   quantity: number;
-};
+}

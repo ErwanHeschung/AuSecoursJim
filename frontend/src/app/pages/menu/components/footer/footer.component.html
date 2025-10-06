@@ -1,14 +1,14 @@
 <footer>
-  <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
-  <span>{{ basketQuantity }} items</span>
-  <span>{{ basketPrice }} €</span>
-  <button
-    class="button-primary"
+  <div
+    id="validate"
     (click)="toggleBasketPopup()"
-    [disabled]="!basketQuantity"
+    [class.disabled]="!basketQuantity"
   >
-    Validate
-  </button>
+    <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
+    <span>{{ basketQuantity }} items</span>
+    <span>{{ basketPrice }} €</span>
+    <button class="button-primary">Validate</button>
+  </div>
 </footer>
 
 @if (basketPopup) {

@@ -1,6 +1,22 @@
+<header>
+  <img src="/logo.webp" alt="logo" id="logo-img" />
+  <div class="menu-header">
+    <h1>Au Secours Jim</h1>
+    <div id="category-name">
+      <h2>{{ selectedCategory?.name }}</h2>
+      <button
+        id="filter-button"
+        class="button-primary"
+        (click)="toggleFilterPopup()"
+      >
+        Filter
+      </button>
+    </div>
+  </div>
+</header>
+
 <main>
   <aside>
-    <img src="/logo.webp" alt="logo" id="logo-img" />
     <div id="categories-container">
       @for (category of categories; track category) {
         <app-category-item
@@ -13,16 +29,6 @@
   </aside>
 
   <div class="menu">
-    <div class="menu-header">
-      <h2>{{ selectedCategory.name }}</h2>
-      <button
-        id="filter-button"
-        class="button-primary"
-        (click)="toggleFilterPopup()"
-      >
-        Filter
-      </button>
-    </div>
     <div id="items-container">
       @for (item of items; track item) {
         <app-item [item]="item" (click)="openItemDetails(item)"></app-item>

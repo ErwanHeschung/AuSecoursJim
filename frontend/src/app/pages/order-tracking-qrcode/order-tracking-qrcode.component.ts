@@ -28,11 +28,6 @@ export class OrderTrackingQRcodeComponent implements OnInit {
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
       if (orderId) this.orderTrackingUrl = `${this.baseUrl}/${orderId}`;
     });
-
-    //TODO remove from here, do this after payment
-    this.basketService.basket$.subscribe((basket: Basket) => {
-      this.basket = basket;
-    });
   }
 
   //TODO remove from here, do this after payment

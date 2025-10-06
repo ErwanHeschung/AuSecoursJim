@@ -6,9 +6,10 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { BasketItem } from '../../core/models/item.model';
-import { IOrderService } from '../../core/models/interfaces/order';
+import { OrderService } from '../../shared/services/no-bff/order.service';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
+import { PaymentService } from '../../shared/services/no-bff/payment.service';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -42,7 +43,8 @@ export class SplitPaymentComponent {
 
   constructor(
     private basketService: BasketService,
-    @Inject('ORDER_SERVICE') private orderService: IOrderService,
+    private orderService: OrderService,
+    private paymentService: PaymentService,
     private router: Router
   ) {}
 
@@ -96,12 +98,19 @@ export class SplitPaymentComponent {
       this.showError = !allSelected;
     }
     if (!this.showError) {
-      this.orderService
-        .prepareOrderOnFirstFreeOrderNumber(this.basket)
-        .subscribe(() => {
-          this.trackOrder();
-        });
+      this.processPayment();
     }
+  }
+
+  private processPayment(): void {
+    for (let i = 0; i < this.persons.length; i++) {
+      this.paymentService.pay(this.persons[i].amount);
+    }
+    this.orderService
+      .prepareOrderOnFirstFreeOrderNumber(this.basket)
+      .subscribe(() => {
+        this.trackOrder();
+      });
   }
 
   private updatePersonsCount() {

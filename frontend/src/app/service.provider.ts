@@ -5,6 +5,7 @@ import { CategoryServiceBFF } from './shared/services/bff/category.service';
 import { OrderService } from './shared/services/no-bff/order.service';
 import { OrderServiceBFF } from './shared/services/bff/order.service';
 import { OrderTrackingService } from './shared/services/no-bff/order-tracking.service';
+import { PaymentService } from './shared/services/no-bff/payment.service';
 
 export const CATEGORY_SERVICE_PROVIDER: FactoryProvider = {
   provide: 'CATEGORY_SERVICE',
@@ -29,5 +30,13 @@ export const ORDER_TRACKING_SERVICE_PROVIDER: FactoryProvider = {
     return config.useBff
       ? inject(OrderTrackingService)
       : inject(OrderTrackingService);
+  },
+};
+
+export const PAYMENT_SERVICE_PROVIDER: FactoryProvider = {
+  provide: 'PAYMENT_SERVICE',
+  useFactory: () => {
+    const config = inject(APP_CONFIG);
+    return config.useBff ? inject(PaymentService) : inject(PaymentService);
   },
 };

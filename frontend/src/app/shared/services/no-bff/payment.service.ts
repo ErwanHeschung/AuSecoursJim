@@ -8,8 +8,7 @@ import { IPaymentService } from '../../../core/models/interfaces/payment';
 export class PaymentService implements IPaymentService {
   constructor() {}
 
-  public pay(): Observable<boolean> {
-    // TODO: logic of payment
+  public pay(amount: number): Observable<boolean> {
     return of(true);
   }
 }

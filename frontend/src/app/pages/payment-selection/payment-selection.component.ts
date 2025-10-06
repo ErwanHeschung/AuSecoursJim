@@ -4,6 +4,9 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-layout/option-selection-layout/option-selection-layout.component';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
+import { BasketService } from '../../shared/services/basket.service';
+import { OrderService } from '../../shared/services/no-bff/order.service';
+import { PaymentService } from '../../shared/services/no-bff/payment.service';
 
 @Component({
   selector: 'app-payment-selection',
@@ -21,10 +24,17 @@ export class PaymentSelectionComponent {
     { label: 'Card', icon: ICONS['card'], onClick: () => this.selectCard() },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private basketService: BasketService,
+    private orderService: OrderService,
+    private paymentService: PaymentService
+  ) {}
 
   selectCash() {
-    //TODO do payment
+    this.paymentService
+      .pay(this.basketService.getTotal())
+      .subscribe(result => console.log(result));
   }
 
   selectCard() {

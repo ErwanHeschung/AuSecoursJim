@@ -4,24 +4,13 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay, catchError } from 'rxjs/operators';
 import { Ingredient } from '../../../core/models/ingredient.model';
 import { IIngredientService } from '../../../core/models/interfaces/ingredient';
+import { ingredientData } from '../../../../assets/ingredients';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IngredientService implements IIngredientService {
-  private ingredientData$: Observable<Record<string, Ingredient[]>>;
-
-  constructor(private http: HttpClient) {
-    this.ingredientData$ = this.http
-      .get<Record<string, Ingredient[]>>('assets/ingredients.json')
-      .pipe(
-        shareReplay(1),
-        catchError(error => {
-          console.error('Failed to load ingredients data:', error);
-          return of({});
-        })
-      );
-  }
+  private ingredientData$: Observable<Record<string, Ingredient[]>> = of(ingredientData);
 
   getItemIngredients(itemName: string): Observable<Ingredient[]> {
     return this.ingredientData$.pipe(map(data => data[itemName] || []));

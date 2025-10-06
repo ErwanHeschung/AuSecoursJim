@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay, catchError } from 'rxjs/operators';
 import { Allergen } from '../../../core/models/allergen.model';
 import { IAllergenService } from '../../../core/models/interfaces/allergen';
+import { allergenData } from '../../../../assets/allergens';
 
 export interface Dish {
   name: string;
@@ -19,17 +20,8 @@ export interface AllergenData {
   providedIn: 'root',
 })
 export class AllergenService implements IAllergenService {
-  private allergenData$: Observable<AllergenData>;
+  private allergenData$: Observable<AllergenData> = of(allergenData);
 
-  constructor(private http: HttpClient) {
-    this.allergenData$ = this.http.get<AllergenData>('assets/allergens.json').pipe(
-      shareReplay(1),
-      catchError(error => {
-        console.error('Failed to load allergens data:', error);
-        return of({ allergens: [], dishes: [] });
-      })
-    );
-  }
 
   getAllergens(): Observable<Allergen[]> {
     return this.allergenData$.pipe(map(data => data.allergens));

@@ -1,4 +1,4 @@
-{
+export const allergenData = {
     "allergens": [
         {
             "id": "gluten",

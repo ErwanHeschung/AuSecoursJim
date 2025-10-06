@@ -1,4 +1,4 @@
-{
+export const ingredientData = {
   "Homemade foie gras terrine": [
     { "name": "Cognac", "quantity": 1 },
     { "name": "Port wine", "quantity": 1 },

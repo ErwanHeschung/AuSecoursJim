@@ -107,13 +107,11 @@ export class MenuComponent implements OnInit {
 
           this.items = filteredItems;
 
-          console.log('Items filtrés avec allergènes:', this.items);
         });
       },
       error: err => {
-        console.error('Erreur lors du chargement des items:', err);
+        console.error('Error during processing items:', err);
       }
     });
   }
-
 }

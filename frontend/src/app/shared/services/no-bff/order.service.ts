@@ -55,4 +55,8 @@ export class OrderService implements IOrderService {
       .getTables()
       .pipe(map(tables => tables.find(table => !table.taken)));
   }
+
+  public finishOrder(orderId: string): Observable<void> {
+    return this.tableService.finishOrder(orderId);
+  }
 }

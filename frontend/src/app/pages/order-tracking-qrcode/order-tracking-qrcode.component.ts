@@ -31,11 +31,4 @@ export class OrderTrackingQRcodeComponent implements OnInit {
       }
     });
   }
-
-  //TODO remove from here, do this after payment
-  prepareOrder() {
-    this.orderService
-      .prepareOrderOnFirstFreeOrderNumber(this.basket)
-      .subscribe();
-  }
 }

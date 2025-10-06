@@ -18,8 +18,12 @@ export class OrderServiceBFF implements IOrderService {
 
   prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void> {
     console.log('BFF prepareOrderOnFirstFreeOrderNumber');
-    console.log(this.apiUrl);
     this.http.get<string>(this.apiUrl).subscribe(result => console.log(result));
     return of();
+  }
+
+  finishOrder(orderId: string): Observable<void> {
+    console.log('BFF finishOrder');
+    throw of();
   }
 }

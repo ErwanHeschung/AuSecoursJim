@@ -96,8 +96,11 @@ export class SplitPaymentComponent {
       this.showError = !allSelected;
     }
     if (!this.showError) {
-      this.orderService.prepareOrderOnFirstFreeOrderNumber(this.basket);
-      this.trackOrder();
+      this.orderService
+        .prepareOrderOnFirstFreeOrderNumber(this.basket)
+        .subscribe(() => {
+          this.trackOrder();
+        });
     }
   }
 
@@ -109,9 +112,10 @@ export class SplitPaymentComponent {
   }
 
   private trackOrder() {
-    this.router.navigate([
-      ROUTES.orderTracking,
-      this.orderService.latestOrderId$,
-    ]);
+    this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
+      if (orderId) {
+        this.router.navigate(['order-tracking', orderId]);
+      }
+    });
   }
 }

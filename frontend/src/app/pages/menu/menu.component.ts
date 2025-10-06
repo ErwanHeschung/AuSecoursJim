@@ -84,6 +84,7 @@ export class MenuComponent implements OnInit {
   private setItemByCategoryName(categoryName: string) {
     this.categoryService.getItemsByCategoryName(categoryName).subscribe({
       next: items => {
+        console.log(items);
         this.items = items;
       },
       error: err => {

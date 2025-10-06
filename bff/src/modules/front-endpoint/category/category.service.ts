@@ -29,7 +29,6 @@ export class CategoryService {
     const menus: ItemDto[] = await this.menuService.getAllMenus();
 
     const filteredMenus = menus.filter(menu => menu.category === category);
-
     return Promise.all(
       filteredMenus.map(async menu => ({
         ...menu,

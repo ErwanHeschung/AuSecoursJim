@@ -6,7 +6,7 @@ export class ItemIngredient {
     @PrimaryGeneratedColumn('uuid')
     _id: string;
 
-    @Column()
+    @Column({ name: 'item_id' })
     itemId: string;
 
     @ManyToOne(() => Ingredient)

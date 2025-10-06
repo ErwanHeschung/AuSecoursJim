@@ -10,7 +10,7 @@ export class IngredientService {
         @InjectRepository(ItemIngredient)
         private itemIngredientRepo: Repository<ItemIngredient>,
     ) { }
-
+    
     async getIngredientsForItem(itemId: string): Promise<IngredientDto[]> {
         const itemIngredients = await this.itemIngredientRepo.find({
             where: { itemId },

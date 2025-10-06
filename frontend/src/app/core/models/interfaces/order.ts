@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Basket } from '../basket.model';
 
 export interface IOrderService {
-  prepareOrderOnFirstFreeTable(basket: Basket): Observable<void>;
+  latestOrderId$: Observable<string | null>;
 
-  prepareOrder(tableNumber: number, basket: Basket): Observable<void>;
+  prepareOrderOnFirstFreeTable(basket: Basket): Observable<void>;
 }

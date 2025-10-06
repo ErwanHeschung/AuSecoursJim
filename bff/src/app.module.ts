@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { MenuModule } from './modules/menu/menu.module';
 import { CategoryModule } from './modules/category/category.module';
-import { PaymentModule } from './modules/payment/payment.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { PaymentModule } from './modules/payment/payment.module';
     HttpModule.register({}),
     MenuModule,
     CategoryModule,
-    PaymentModule,
+    OrderModule,
   ],
 })
 export class AppModule {}

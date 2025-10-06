@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
-import { OrderService } from '../../shared/services/no-bff/order.service';
 import { ROUTES } from '../../core/utils/constant';
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
+import { IOrderService } from '../../core/models/interfaces/order';
 
 @Component({
   selector: 'app-order-tracking-qrcode',
@@ -20,7 +20,7 @@ export class OrderTrackingQRcodeComponent implements OnInit {
   private basket!: Basket;
 
   constructor(
-    private orderService: OrderService,
+    @Inject('ORDER_SERVICE') private orderService: IOrderService,
     private basketService: BasketService
   ) {}
 

@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class PaymentService {
+export class OrderService {
 
-  private readonly logger = new Logger(PaymentService.name);
+  private readonly logger = new Logger(OrderService.name);
   private backendUrl: string;
 
   constructor(
@@ -13,13 +13,12 @@ export class PaymentService {
     private readonly config: ConfigService,
   ) {
     this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
-    this.backendUrl += '/payment';
+    this.backendUrl += '/order';
   }
 
-
-  async pay(): Promise<boolean> {
-    // this.logger.log("payment");
-    return true; // TODO: logic of payment
+  async prepareOrderOnFirstFreeTable(): Promise<string> {
+    this.logger.log("order");
+    return "ORDER_ID";
   }
 
 }

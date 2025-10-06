@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { ICONS } from '../../core/utils/icon';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-layout/option-selection-layout/option-selection-layout.component';
-import { IPaymentService } from '../../core/models/interfaces/payment';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 
@@ -22,13 +21,9 @@ export class PaymentSelectionComponent {
     { label: 'Card', icon: ICONS['card'], onClick: () => this.selectCard() },
   ];
 
-  constructor(
-    @Inject('PAYMENT_SERVICE') private paymentService: IPaymentService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   selectCash() {
-    this.paymentService.pay().subscribe(result => console.log(result));
     //TODO do payment
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
@@ -6,7 +6,7 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { BasketItem } from '../../core/models/item.model';
-import { OrderService } from '../../shared/services/no-bff/order.service';
+import { IOrderService } from '../../core/models/interfaces/order';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -40,7 +40,7 @@ export class SplitPaymentComponent {
 
   constructor(
     private basketService: BasketService,
-    private orderService: OrderService
+    @Inject('ORDER_SERVICE') private orderService: IOrderService
   ) {}
 
   ngOnInit() {

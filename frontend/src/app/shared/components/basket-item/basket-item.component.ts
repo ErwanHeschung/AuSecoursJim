@@ -4,10 +4,11 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
-import { IngredientService } from '../../../core/services/ingredient.service';
+import { IngredientService } from '../../services/no-bff/ingredient.service';
 
 @Component({
   selector: 'app-basket-item',
+  standalone: true,
   imports: [FaIconComponent],
   templateUrl: './basket-item.component.html',
   styleUrl: './basket-item.component.scss',
@@ -28,9 +29,9 @@ export class BasketItemComponent {
 
   ngOnInit() {
     if (this.item?.fullName) {
-      this.ingredientService.getIngredients(this.item.fullName).subscribe({
-        next: ingredients => {
-          ingredients.forEach(ing => {
+      this.ingredientService.getItemIngredients(this.item.fullName).subscribe({
+        next: (ingredients: any) => {
+          ingredients.forEach((ing: any) => {
             this.originalIngredients[ing.name] = ing.quantity;
           });
         },

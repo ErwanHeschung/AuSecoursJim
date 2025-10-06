@@ -11,7 +11,7 @@ import { Allergen } from '../../core/models/allergen.model';
 import { ICategoryService } from '../../core/models/interfaces/category';
 import { FilterAllergensComponent } from '../../shared/components/filter-allergens/filter-allergens.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { AllergenService } from '../../shared/services/no-bff/allergen.service';
+import { IAllergenService } from '../../core/models/interfaces/allergen';
 
 @Component({
   selector: 'app-menu',
@@ -45,7 +45,7 @@ export class MenuComponent implements OnInit {
 
   constructor(
     @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
-    private allergenService: AllergenService,
+    @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService,
   ) { }
 
   ngOnInit(): void {
@@ -91,14 +91,18 @@ export class MenuComponent implements OnInit {
 
     this.categoryService.getItemsByCategoryName(categoryName).subscribe({
       next: items => {
-        this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe(filteredDishes => {
-          const filteredNames = new Set(filteredDishes.map(d => d.name));
+        this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe((filteredDishes: string[][]) => {
+          console.log(filteredDishes);
+          const filteredNames = new Set(filteredDishes.map(d => d[0]));
+
+          console.log(filteredNames);
 
           const filteredItems = items
             .filter(item => filteredNames.has(item.fullName))
             .map(item => {
-              const dish = filteredDishes.find(d => d.name === item.fullName);
-              return { ...item, allergens: dish?.allergens || [] };
+              const dishArray = filteredDishes.find(d => d[0] === item.fullName) || [];
+              const allergens = dishArray.slice(1);
+              return { ...item, allergens };
             });
 
           this.items = filteredItems;
@@ -111,4 +115,5 @@ export class MenuComponent implements OnInit {
       }
     });
   }
+
 }

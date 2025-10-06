@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Item } from '../../../core/models/item.model';
@@ -27,7 +27,7 @@ export class MenuItemDetailComponent implements OnInit {
 
   constructor(
     private basketService: BasketService,
-    private ingredientService: IngredientService
+    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
   ) { }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class MenuItemDetailComponent implements OnInit {
     }
 
     if (this.menuItem?.fullName && !this.menuItem.ingredients) {
-      this.ingredientService.getIngredients(this.menuItem.fullName).subscribe({
+      this.ingredientService.getItemIngredients(this.menuItem.fullName).subscribe({
         next: ingredients => {
           this.menuItem.ingredients = ingredients;
         },

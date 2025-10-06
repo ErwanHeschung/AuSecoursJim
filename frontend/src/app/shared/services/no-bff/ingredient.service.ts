@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, catchError } from 'rxjs/operators';
 import { Ingredient } from '../../../core/models/ingredient.model';
+import { IIngredientService } from '../../../core/models/interfaces/ingredient';
 
 @Injectable({
   providedIn: 'root',
 })
-export class IngredientService {
+export class IngredientService implements IIngredientService {
   private ingredientData$: Observable<Record<string, Ingredient[]>>;
 
   constructor(private http: HttpClient) {
@@ -22,7 +23,7 @@ export class IngredientService {
       );
   }
 
-  getIngredients(itemName: string): Observable<Ingredient[]> {
+  getItemIngredients(itemName: string): Observable<Ingredient[]> {
     return this.ingredientData$.pipe(map(data => data[itemName] || []));
   }
 

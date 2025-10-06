@@ -105,10 +105,6 @@ export const allergenData = {
             ]
         },
         {
-            "name": "Beef chuck cooked 48 hours at low temperature",
-            "allergens": []
-        },
-        {
             "name": "Half cooked tuna and octopus grilled on the plancha",
             "allergens": [
                 "poisson",
@@ -138,19 +134,11 @@ export const allergenData = {
             ]
         },
         {
-            "name": "Fresh raspberries and peaches",
-            "allergens": []
-        },
-        {
             "name": "Dessert of fresh strawberries and vanilla mascarpone mousse",
             "allergens": [
                 "lactose",
                 "oeufs"
             ]
-        },
-        {
-            "name": "Fresh seasonal fruit",
-            "allergens": []
         },
         {
             "name": "Speculoos tiramisu",
@@ -159,22 +147,6 @@ export const allergenData = {
                 "lactose",
                 "oeufs"
             ]
-        },
-        {
-            "name": "Bottled coke (33cl)",
-            "allergens": []
-        },
-        {
-            "name": "Ice Tea (33cl)",
-            "allergens": []
-        },
-        {
-            "name": "Bottled water",
-            "allergens": []
-        },
-        {
-            "name": "Sparkling water",
-            "allergens": []
         },
         {
             "name": "Spritz",
@@ -205,22 +177,6 @@ export const allergenData = {
             "allergens": [
                 "alcool"
             ]
-        },
-        {
-            "name": "Lemonade",
-            "allergens": []
-        },
-        {
-            "name": "Apple juice",
-            "allergens": []
-        },
-        {
-            "name": "Café",
-            "allergens": []
-        },
-        {
-            "name": "Orange juice (25cl)",
-            "allergens": []
         }
     ]
 }

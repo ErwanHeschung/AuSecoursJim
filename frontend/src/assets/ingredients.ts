@@ -41,8 +41,6 @@ export const ingredientData = {
     { "name": "Mushrooms", "quantity": 1 },
     { "name": "Oregano", "quantity": 1 }
   ],
-  "Lasagna al forno": [
-  ],
   "Homemade beef burger": [
     { "name": "Beef patty", "quantity": 1 },
     { "name": "Brioche bun", "quantity": 1 },
@@ -53,24 +51,11 @@ export const ingredientData = {
     { "name": "Onion", "quantity": 2 },
     { "name": "Special sauce Jim", "quantity": 1 }
   ],
-  "Beef chuck cooked 48 hours at low temperature": [
-  ],
   "Half cooked tuna and octopus grilled on the plancha": [
     { "name": "Octopus", "quantity": 1 },
     { "name": "Olive oil", "quantity": 1 },
     { "name": "Lemon", "quantity": 1 },
     { "name": "Garlic", "quantity": 2 }
-  ],
-  "Brownie (home made)": [
-  ],
-  "Valrhona chocolate declination with salted chocolate ice cream": [
-  ],
-  "Marmalade of Menton's lemon - Lemon cream - Limoncello jelly and sorbet - Homemade meringue": [
-  ],
-  "Fresh raspberries and peaches": [
-  ],
-  "Dessert of fresh strawberries and vanilla mascarpone mousse": [
-
   ],
   "Fresh seasonal fruit": [
     { "name": "Strawberries", "quantity": 1 },
@@ -79,33 +64,5 @@ export const ingredientData = {
     { "name": "Mango", "quantity": 1 },
     { "name": "Grapes", "quantity": 1 },
     { "name": "Pineapple", "quantity": 1 }
-  ],
-  "Speculoos tiramisu": [
-  ],
-  "Bottled coke (33cl)": [
-  ],
-  "Ice Tea (33cl)": [
-  ],
-  "Bottled water": [
-  ],
-  "Sparkling water": [
-  ],
-  "Spritz": [
-  ],
-  "Margarita": [
-  ],
-  "Tequila sunrise": [
-  ],
-  "Mojito": [
-  ],
-  "Martini": [
-  ],
-  "Lemonade": [
-  ],
-  "Apple juice": [
-  ],
-  "Café": [
-  ],
-  "Orange juice (25cl)": [
   ]
 }

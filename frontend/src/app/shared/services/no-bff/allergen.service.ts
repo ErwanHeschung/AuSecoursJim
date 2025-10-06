@@ -31,11 +31,10 @@ export class AllergenService implements IAllergenService {
     return this.allergenData$.pipe(map(data => data.dishes));
   }
 
-  getDishesWithoutAllergens(excluded: string[]): Observable<string[][]> {
+  getDishesWithAllergens(): Observable<string[][]> {
     return this.getDishes().pipe(
       map(dishes =>
         dishes
-          .filter(dish => excluded.every(ex => !dish.allergens.includes(ex)))
           .map(dish => [dish.name, ...dish.allergens])
       )
     );

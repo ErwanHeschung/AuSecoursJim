@@ -12,6 +12,7 @@ import { ICategoryService } from '../../core/models/interfaces/category';
 import { FilterAllergensComponent } from '../../shared/components/filter-allergens/filter-allergens.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { IAllergenService } from '../../core/models/interfaces/allergen';
+import { switchMap, map } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -43,6 +44,9 @@ export class MenuComponent implements OnInit {
 
   protected itemPopup: boolean = false;
 
+  private allItemsWithAllergens: Item[] = [];
+
+
   constructor(
     @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
     @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService,
@@ -53,18 +57,10 @@ export class MenuComponent implements OnInit {
       next: categories => {
         this.categories = categories;
         this.selectedCategory = categories[0];
-        this.setItemByCategoryName(this.selectedCategory.name);
+        this.initializeItems(this.selectedCategory.name);
       },
       error: err => console.error(err),
     });
-  }
-
-  public onAllergensSelected(allergens: Allergen[]): void {
-    this.selectedAllergens = allergens;
-
-    if (this.selectedCategory) {
-      this.setItemByCategoryName(this.selectedCategory.name);
-    }
   }
 
   public toggleFilterPopup(): void {
@@ -75,43 +71,56 @@ export class MenuComponent implements OnInit {
     this.itemPopup = !this.itemPopup;
   }
 
-  public switchCategory(category: Category): void {
-    this.selectedCategory = category;
-    this.setItemByCategoryName(category.name);
-  }
-
   public openItemDetails(item: Item): void {
     // TODO: Open item details popup
     this.selectedItem = item;
     this.toggleItemPopup();
   }
 
-  private setItemByCategoryName(categoryName: string) {
-    const excludedAllergens = this.selectedAllergens.map(a => a.id);
+  private initializeItems(categoryName: string) {
+    this.categoryService.getItemsByCategoryName(categoryName).pipe(
+      switchMap((items: Item[]) =>
+        this.allergenService.getDishesWithAllergens().pipe(
+          map((dishesWithAllergens: string[][]) => {
+            const dishMap = new Map<string, string[]>(
+              dishesWithAllergens.map(d => [d[0], d.slice(1)])
+            );
 
-    this.categoryService.getItemsByCategoryName(categoryName).subscribe({
-      next: items => {
-        this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe((filteredDishes: string[][]) => {
-          console.log(filteredDishes);
-          const filteredNames = new Set(filteredDishes.map(d => d[0]));
+            return items.map(item => ({
+              ...item,
+              allergens: dishMap.get(item.fullName) || []
+            }));
+          })
+        )
+      )
+    ).subscribe({
+      next: (initializedItems: Item[]) => {
+        this.allItemsWithAllergens = initializedItems;
 
-          console.log(filteredNames);
-
-          const filteredItems = items
-            .filter(item => filteredNames.has(item.fullName))
-            .map(item => {
-              const dishArray = filteredDishes.find(d => d[0] === item.fullName) || [];
-              const allergens = dishArray.slice(1);
-              return { ...item, allergens };
-            });
-
-          this.items = filteredItems;
-
-        });
+        this.applyFilters();
       },
-      error: err => {
-        console.error('Error during processing items:', err);
-      }
+      error: err => console.error('Erreur lors de l’initialisation des items :', err)
     });
+  }
+
+  private applyFilters() {
+    const excludedIds = this.selectedAllergens.map(a => a.id);
+
+    this.items = this.allItemsWithAllergens.filter(item =>
+      excludedIds.every(ex => !(item.allergens || []).includes(ex))
+    );
+
+    console.log('Items filtrés selon allergènes et catégorie :', this.items);
+  }
+
+  public onAllergensSelected(allergens: Allergen[]): void {
+    this.selectedAllergens = allergens;
+
+    this.applyFilters();
+  }
+
+  public switchCategory(category: Category): void {
+    this.selectedCategory = category;
+    this.initializeItems(category.name);
   }
 }

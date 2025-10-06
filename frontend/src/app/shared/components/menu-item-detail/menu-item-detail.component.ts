@@ -43,12 +43,16 @@ export class MenuItemDetailComponent implements OnInit {
     if (this.menuItem?.fullName && !this.menuItem.ingredients) {
       this.ingredientService.getItemIngredients(this.menuItem.fullName).subscribe({
         next: ingredients => {
-          this.menuItem.ingredients = ingredients;
+          this.menuItem.ingredients = ingredients || [];
+          console.log('Ingrédients chargés:', this.menuItem.ingredients);
         },
         error: err => {
           console.error('Failed to load ingredients:', err);
+          this.menuItem.ingredients = [];
         },
       });
+    } else if (!this.menuItem.ingredients) {
+      this.menuItem.ingredients = [];
     }
   }
 

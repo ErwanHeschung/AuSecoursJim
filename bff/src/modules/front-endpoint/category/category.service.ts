@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { MenuService } from '../menu/menu.service';
-import { ItemDto } from '../../common/dto/item.dto';
-import { CategoryDto } from '../../common/dto/category.dto';
+import { MenuService } from 'src/modules/back-proxy/menu/menu.service';
+import { ItemDto } from 'src/common/dto/item.dto';
+import { CategoryDto } from 'src/common/dto/category.dto';
+import { IngredientService } from 'src/modules/data-provider/ingredient/ingredient.service';
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(private readonly menuService: MenuService,
+    private readonly ingredientService:IngredientService) { }
 
   async getAllCategories(): Promise<CategoryDto[]> {
     const menus: ItemDto[] = await this.menuService.getAllMenus();
@@ -25,6 +27,15 @@ export class CategoryService {
 
   async getItemsByCategoryName(category: string): Promise<ItemDto[]> {
     const menus: ItemDto[] = await this.menuService.getAllMenus();
-    return menus.filter(menu => menu.category === category);
+
+    const filteredMenus = menus.filter(menu => menu.category === category);
+
+    return Promise.all(
+      filteredMenus.map(async menu => ({
+        ...menu,
+        ingredients: await this.ingredientService.getIngredientsForItem(menu._id),
+      })),
+    );
   }
+
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoryDto } from '../../common/dto/category.dto';
-import { ItemDto } from '../../common/dto/item.dto';
+import { CategoryDto } from 'src/common/dto/category.dto';
+import { ItemDto } from 'src/common/dto/item.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('category')

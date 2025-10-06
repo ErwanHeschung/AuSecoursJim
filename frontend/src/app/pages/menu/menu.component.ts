@@ -11,6 +11,8 @@ import { Allergen } from '../../core/models/allergen.model';
 import { ICategoryService } from '../../core/models/interfaces/category';
 import { FilterAllergensComponent } from '../../shared/components/filter-allergens/filter-allergens.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { AllergenService } from '../../shared/services/no-bff/allergen.service';
 
 @Component({
   selector: 'app-menu',
@@ -43,8 +45,11 @@ export class MenuComponent implements OnInit {
   protected itemPopup: boolean = false;
 
   constructor(
-    @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService
-  ) {}
+    @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
+    private allergenService: AllergenService,
+
+    private localStorageService: LocalStorageService
+  ) { }
 
   ngOnInit(): void {
     this.categoryService.getAllCategories().subscribe({
@@ -76,7 +81,6 @@ export class MenuComponent implements OnInit {
 
   public openItemDetails(item: Item): void {
     // TODO: Open item details popup
-    console.log(item);
     this.selectedItem = item;
     this.toggleItemPopup();
   }
@@ -84,11 +88,22 @@ export class MenuComponent implements OnInit {
   private setItemByCategoryName(categoryName: string) {
     this.categoryService.getItemsByCategoryName(categoryName).subscribe({
       next: items => {
-        this.items = items;
+        const excludedAllergens = this.selectedAllergens.map(a => a.id);
+
+        this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe(filteredDishes => {
+          const filteredItems = items.filter(item =>
+            filteredDishes.some(dish => dish.name === item.fullName)
+          );
+
+          this.items = filteredItems;
+        });
       },
       error: err => {
         console.error('Erreur lors du chargement des items:', err);
       },
     });
   }
+
+
+
 }

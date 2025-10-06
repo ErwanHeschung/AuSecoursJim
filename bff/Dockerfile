@@ -44,6 +44,6 @@ FROM node:16.16.0-alpine As production
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
-COPY --chown=node:node --from=build /usr/src/app/.env.production ./.env
+COPY --chown=node:node --from=build /usr/src/app/.env ./.env
 
 CMD [ "node", "dist/main.js" ]

@@ -4,11 +4,7 @@
     <h1>Au Secours Jim</h1>
     <div id="category-name">
       <h2>{{ selectedCategory?.name }}</h2>
-      <button
-        id="filter-button"
-        class="button-primary"
-        (click)="toggleFilterPopup()"
-      >
+      <button id="filter-button" class="button-primary" (click)="toggleFilterPopup()">
         Filter
       </button>
     </div>
@@ -19,11 +15,8 @@
   <aside>
     <div id="categories-container">
       @for (category of categories; track category) {
-        <app-category-item
-          [category]="category"
-          [selected]="category === selectedCategory"
-          (click)="switchCategory(category)"
-        ></app-category-item>
+      <app-category-item [category]="category" [selected]="category === selectedCategory"
+        (click)="switchCategory(category)"></app-category-item>
       }
     </div>
   </aside>
@@ -31,7 +24,7 @@
   <div class="menu">
     <div id="items-container">
       @for (item of items; track item) {
-        <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
+      <app-item [item]="item" (click)="openItemDetails(item)"></app-item>
       }
     </div>
   </div>
@@ -42,18 +35,15 @@
 <!-- Popups -->
 
 @if (filterPopup) {
-  <app-popup (close)="toggleFilterPopup()">
-    <app-filter-allergens
-      (allergensChange)="onAllergensSelected($event)"
-    ></app-filter-allergens>
-  </app-popup>
+<app-popup (close)="toggleFilterPopup()">
+  <app-filter-allergens [preSelectedAllergens]="selectedAllergens" (allergensChange)="onAllergensSelected($event)">
+  </app-filter-allergens>
+
+</app-popup>
 }
 
 @if (itemPopup) {
-  <app-popup (close)="toggleItemPopup()">
-    <app-menu-item-detail
-      [menuItem]="selectedItem"
-      (close)="toggleItemPopup()"
-    ></app-menu-item-detail>
-  </app-popup>
+<app-popup (close)="toggleItemPopup()">
+  <app-menu-item-detail [menuItem]="selectedItem" (close)="toggleItemPopup()"></app-menu-item-detail>
+</app-popup>
 }

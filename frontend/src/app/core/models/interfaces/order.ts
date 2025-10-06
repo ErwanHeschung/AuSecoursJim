@@ -6,4 +6,6 @@ export interface IOrderService {
   prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void>;
 
   prepareOrder(orderNumber: number, basket: Basket): Observable<void>;
+
+  finishOrder(orderId: string): Observable<void>;
 }

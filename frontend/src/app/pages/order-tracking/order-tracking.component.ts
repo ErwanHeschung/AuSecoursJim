@@ -6,6 +6,7 @@ import { ICONS } from '../../core/utils/icon';
 import { ProgressBarComponent } from '../../shared/components/progress-bar/progress-bar.component';
 import { ActivatedRoute } from '@angular/router';
 import { IOrderTrackingService } from '../../core/models/interfaces/order-tracking';
+import { IOrderService } from '../../core/models/interfaces/order';
 
 @Component({
   selector: 'app-order-tracking',
@@ -22,11 +23,14 @@ export class OrderTrackingComponent {
   public currentIcon: IconDefinition = this.inProgressIcon;
   public progress: number = 0;
   public orderId!: string;
+  private orderCompleted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     @Inject('ORDER_TRACKING_SERVICE')
-    private orderTrackingService: IOrderTrackingService
+    private orderTrackingService: IOrderTrackingService,
+    @Inject('ORDER_SERVICE')
+    private orderService: IOrderService
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +45,15 @@ export class OrderTrackingComponent {
             ? OrderTrackingStatus.Completed
             : OrderTrackingStatus.InProgress;
         this.updateStatusIcon(this.status);
+        if (
+          this.status === OrderTrackingStatus.Completed &&
+          !this.orderCompleted
+        ) {
+          this.orderService.finishOrder(this.orderId).subscribe(() => {
+            console.log('Order marked as finished');
+            this.orderCompleted = true;
+          });
+        }
       });
   }
 

@@ -7,6 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
 import { FormsModule } from '@angular/forms';
+import { IngredientService } from '../../../core/services/ingredient.service';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -24,7 +25,10 @@ export class MenuItemDetailComponent implements OnInit {
 
   @Output() close = new EventEmitter<void>();
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private ingredientService: IngredientService
+  ) {}
 
   ngOnInit() {
     const itemQuantity: number = this.getItemQuantity();
@@ -34,6 +38,17 @@ export class MenuItemDetailComponent implements OnInit {
     } else {
       this.mode = 'add';
       this.quantity = 1;
+    }
+
+    if (this.menuItem?.fullName && !this.menuItem.ingredients) {
+      this.ingredientService.getIngredients(this.menuItem.fullName).subscribe({
+        next: ingredients => {
+          this.menuItem.ingredients = ingredients;
+        },
+        error: err => {
+          console.error('Failed to load ingredients:', err);
+        },
+      });
     }
   }
 

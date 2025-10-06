@@ -1,7 +1,17 @@
-<div class="steps">
-    @for (step of steps; track step) {
-        <div class="step-container">
-            <div class="step" [ngClass]="{'active': step === currentStep}"></div>
-        </div>
-    }
+<div class="progress">
+  <div class="progress-container">
+    <div
+      class="progress-bar"
+      [style.width.%]="progress"
+      [class.complete]="progress === 100"
+    >
+      <div
+        class="percentage"
+        [style.left.%]="progress"
+        [style.transform]="'translateX(-50%)'"
+      >
+        {{ progress }}%
+      </div>
+    </div>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Table } from '../../../../core/models/table.model';
 import { BasketItem, OrderItem } from '../../../../core/models/item.model';
+import { Order } from '../../../../core/models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,12 @@ export class TableService {
 
   public getTables(): Observable<Table[]> {
     return this.http.get<Table[]>(`${this.apiUrl}/tables`);
+  }
+
+  public addTable(tableNumber: number): Observable<Table> {
+    return this.http.post<Table>(`${this.apiUrl}/tables`, {
+      number: tableNumber,
+    });
   }
 
   public openOrder(tableNumber: number): Observable<string> {
@@ -34,5 +41,9 @@ export class TableService {
       `${this.apiUrl}/tableOrders/${orderId}/prepare`,
       {}
     );
+  }
+
+  public getOrder(orderId: string): Observable<Order> {
+    return this.http.get<Order>(`${this.apiUrl}/tableOrders/${orderId}`);
   }
 }

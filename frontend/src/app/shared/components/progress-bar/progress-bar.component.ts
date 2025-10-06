@@ -5,15 +5,12 @@ import { Component, Input } from '@angular/core';
   selector: 'app-progress-bar',
   imports: [CommonModule],
   templateUrl: './progress-bar.component.html',
-  styleUrl: './progress-bar.component.scss'
+  styleUrl: './progress-bar.component.scss',
 })
 export class ProgressBarComponent {
-
-  @Input() stepNumber: number = 2;
-  @Input() currentStep: number = 1;
+  @Input() progress: number = 0;
 
   get steps(): number[] {
-    return Array.from({ length: this.stepNumber }, (_, i) => i);
+    return Array.from({ length: this.progress }, (_, i) => i);
   }
-
 }

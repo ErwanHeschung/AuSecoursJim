@@ -1,5 +1,9 @@
 <footer>
-  <div id="validate" (click)="toggleBasketPopup()" [class.disabled]="!basketQuantity">
+  <div
+    id="validate"
+    (click)="toggleBasketPopup()"
+    [class.disabled]="!basketQuantity"
+  >
     <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
     <span>{{ basketQuantity }} items</span>
     <span>{{ basketPrice }} €</span>
@@ -8,5 +12,5 @@
 </footer>
 
 @if (basketPopup) {
-<app-basket (close)="toggleBasketPopup()"></app-basket>
+  <app-basket (close)="toggleBasketPopup()"></app-basket>
 }

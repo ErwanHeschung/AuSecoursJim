@@ -64,7 +64,11 @@ export class MenuComponent implements OnInit {
 
   public onAllergensSelected(allergens: Allergen[]) {
     this.selectedAllergens = allergens;
+    if (this.selectedCategory) {
+      this.setItemByCategoryName(this.selectedCategory.name);
+    }
   }
+
 
   public toggleFilterPopup(): void {
     this.filterPopup = !this.filterPopup;
@@ -86,24 +90,19 @@ export class MenuComponent implements OnInit {
   }
 
   private setItemByCategoryName(categoryName: string) {
+    const excludedAllergens = this.selectedAllergens.map(a => a.id);
+
     this.categoryService.getItemsByCategoryName(categoryName).subscribe({
       next: items => {
-        const excludedAllergens = this.selectedAllergens.map(a => a.id);
-
         this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe(filteredDishes => {
-          const filteredItems = items.filter(item =>
-            filteredDishes.some(dish => dish.name === item.fullName)
-          );
-
+          const filteredNames = new Set(filteredDishes.map(d => d.name));
+          const filteredItems = items.filter(item => filteredNames.has(item.fullName));
           this.items = filteredItems;
         });
       },
       error: err => {
         console.error('Erreur lors du chargement des items:', err);
-      },
+      }
     });
   }
-
-
-
 }

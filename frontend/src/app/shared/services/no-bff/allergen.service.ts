@@ -37,7 +37,6 @@ export class AllergenService {
   }
 
   getDishes(): Observable<Dish[]> {
-    console.log(this.allergenData$.pipe(map(data => data.dishes)));
     return this.allergenData$.pipe(map(data => data.dishes));
   }
 

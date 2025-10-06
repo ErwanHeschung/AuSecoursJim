@@ -2,8 +2,11 @@
   <div class="wrapper">
     <h2>My Order</h2>
     <div class="items">
-      @for (item of basket.items; track item) {
-        <app-basket-item [item]="item"></app-basket-item>
+      @for (item of basket.items; track item.basketId) {
+        <app-basket-item
+          [item]="item"
+          (edit)="onEditItem($event)"
+        ></app-basket-item>
       }
     </div>
     <div class="summary">
@@ -15,3 +18,13 @@
     </button>
   </div>
 </app-popup>
+
+@if (editingItem) {
+  <app-popup (close)="closeEditPopup()">
+    <app-menu-item-detail
+      [menuItem]="editingItem"
+      [isEditMode]="true"
+      (close)="closeEditPopup()"
+    ></app-menu-item-detail>
+  </app-popup>
+}

@@ -18,7 +18,12 @@ export class BasketService {
   constructor(private localStorageService: LocalStorageService) {
     const saved = this.localStorageService.getItem<Basket>(this.STORAGE_KEY);
     if (saved) {
+      saved.items = saved.items.map(item => ({
+        ...item,
+        basketId: item.basketId || this.generateBasketId(),
+      }));
       this.basketSubject.next(saved);
+      this.save();
     } else {
       this.basketSubject.next({ _id: undefined, items: [] });
     }
@@ -26,21 +31,65 @@ export class BasketService {
 
   public addItem(item: BasketItem): void {
     const basket = this.basketSubject.value!;
-    const existing = basket.items.find(i => i._id === item._id);
+
+    const existing = basket.items.find(
+      i =>
+        i._id === item._id &&
+        this.areIngredientsEqual(i.ingredients, item.ingredients)
+    );
 
     if (existing) {
       existing.quantity += item.quantity;
     } else {
-      basket.items.push({ ...item });
+      const newItem = {
+        ...item,
+        basketId: this.generateBasketId(),
+      };
+      basket.items.push(newItem);
     }
 
     this.basketSubject.next(basket);
     this.save();
   }
 
-  public removeItem(itemId: string): void {
+  private generateBasketId(): string {
+    return `basket_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  public updateItem(item: BasketItem): void {
     const basket = this.basketSubject.value!;
-    basket.items = basket.items.filter(i => i._id !== itemId);
+    const index = basket.items.findIndex(i => i.basketId === item.basketId);
+    if (index !== -1) {
+      basket.items[index] = { ...item };
+      this.basketSubject.next(basket);
+      this.save();
+    }
+  }
+
+  private areIngredientsEqual(
+    ingredients1: any[] | undefined,
+    ingredients2: any[] | undefined
+  ): boolean {
+    if (!ingredients1 || ingredients1.length === 0) {
+      return !ingredients2 || ingredients2.length === 0;
+    }
+    if (!ingredients2 || ingredients2.length === 0) {
+      return false;
+    }
+
+    if (ingredients1.length !== ingredients2.length) {
+      return false;
+    }
+
+    return ingredients1.every((ing1, index) => {
+      const ing2 = ingredients2[index];
+      return ing1.name === ing2.name && ing1.quantity === ing2.quantity;
+    });
+  }
+
+  public removeItem(basketId: string): void {
+    const basket = this.basketSubject.value!;
+    basket.items = basket.items.filter(i => i.basketId !== basketId);
     this.basketSubject.next(basket);
     this.save();
   }

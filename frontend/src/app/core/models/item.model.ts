@@ -15,6 +15,7 @@ export type Item = {
 
 export type BasketItem = Item & {
   quantity: number;
+  basketId?: string;
 };
 
 export type OrderItem = {

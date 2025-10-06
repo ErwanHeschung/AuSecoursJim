@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./quantity-counter.component.scss'],
 })
 export class CounterComponent {
-  @Input() limit: number = 6;
+  @Input() limit: number = 2;
   @Input() value: number = 0;
   @Output() valueChange = new EventEmitter<number>();
 

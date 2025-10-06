@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Item } from '../../../core/models/item.model';
+import { Item, BasketItem } from '../../../core/models/item.model';
 import { CounterComponent } from '../quantity-counter/quantity-counter.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
@@ -21,30 +21,29 @@ export class MenuItemDetailComponent implements OnInit {
   public quantity: number = 1;
   public maxQuantity: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   public mode!: 'add' | 'update';
-  @Input() menuItem!: Item;
+  @Input() menuItem!: Item | BasketItem;
+  @Input() isEditMode: boolean = false;
 
   @Output() close = new EventEmitter<void>();
 
   constructor(
     private basketService: BasketService,
-    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
+    private ingredientService: IngredientService
   ) { }
 
   ngOnInit() {
-    const itemQuantity: number = this.getItemQuantity();
-    if (itemQuantity > 0) {
-      this.mode = 'update';
-      this.quantity = itemQuantity;
-    } else {
-      this.mode = 'add';
-      this.quantity = 1;
-    }
+    this.mode = this.isEditMode ? 'update' : 'add';
+    this.quantity = this.isBasketItem(this.menuItem)
+      ? this.menuItem.quantity
+      : 1;
 
-    if (this.menuItem?.fullName && !this.menuItem.ingredients) {
+    // when editing, don't reload ingredients but use the ones from basket
+    // when adding new, always load fresh ingredients
+    if (!this.isEditMode && this.menuItem?.fullName) {
       this.ingredientService.getItemIngredients(this.menuItem.fullName).subscribe({
         next: ingredients => {
-          this.menuItem.ingredients = ingredients || [];
-          console.log('Ingrédients chargés:', this.menuItem.ingredients);
+          // deep clone ingredients to avoid reference sharing
+          this.menuItem.ingredients = JSON.parse(JSON.stringify(ingredients));
         },
         error: err => {
           console.error('Failed to load ingredients:', err);
@@ -56,20 +55,36 @@ export class MenuItemDetailComponent implements OnInit {
     }
   }
 
+  private isBasketItem(item: Item | BasketItem): item is BasketItem {
+    return 'quantity' in item && 'basketId' in item;
+  }
+
   get isPresentInBasket() {
     return this.getItemQuantity() !== 0;
   }
 
   public addToBasket(): void {
-    if (this.mode === 'add')
-      this.basketService.addItem({ ...this.menuItem, quantity: this.quantity });
-    else
-      this.basketService.updateItemQuantity(this.menuItem._id, this.quantity);
+    // deep clone the item to avoid reference issues with ingredients
+    const itemToAdd = {
+      ...this.menuItem,
+      quantity: this.quantity,
+      ingredients: this.menuItem.ingredients
+        ? JSON.parse(JSON.stringify(this.menuItem.ingredients))
+        : undefined,
+    };
+
+    if (this.isEditMode && this.isBasketItem(this.menuItem)) {
+      this.basketService.updateItem(itemToAdd as BasketItem);
+    } else {
+      this.basketService.addItem(itemToAdd as BasketItem);
+    }
     this.close.emit();
   }
 
   public deleteFromBasket(): void {
-    this.basketService.removeItem(this.menuItem._id);
+    if (this.isBasketItem(this.menuItem) && this.menuItem.basketId) {
+      this.basketService.removeItem(this.menuItem.basketId);
+    }
     this.close.emit();
   }
 

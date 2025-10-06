@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
   protected categories: Category[] = [];
   protected items: Item[] = [];
 
-  protected selectedCategory!: Category;
+  protected selectedCategory: Category | null = null;
 
   protected selectedItem: Item = this.items[0];
 

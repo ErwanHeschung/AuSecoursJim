@@ -26,12 +26,16 @@ export class OrderTrackingQRcodeComponent implements OnInit {
 
   ngOnInit() {
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
-      if (orderId) this.orderTrackingUrl = `${this.baseUrl}/${orderId}`;
+      if (orderId) {
+        this.orderTrackingUrl = `${this.baseUrl}/${orderId}`;
+      }
     });
   }
 
   //TODO remove from here, do this after payment
   prepareOrder() {
-    this.orderService.prepareOrderOnFirstFreeTable(this.basket).subscribe();
+    this.orderService
+      .prepareOrderOnFirstFreeOrderNumber(this.basket)
+      .subscribe();
   }
 }

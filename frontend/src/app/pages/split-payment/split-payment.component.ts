@@ -96,7 +96,7 @@ export class SplitPaymentComponent {
       this.showError = !allSelected;
     }
     if (!this.showError) {
-      this.orderService.prepareOrderOnFirstFreeTable(this.basket);
+      this.orderService.prepareOrderOnFirstFreeOrderNumber(this.basket);
       this.trackOrder();
     }
   }

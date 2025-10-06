@@ -141,7 +141,7 @@ npm start
 * **BFF-enabled development**:
 
 ```bash
-npm start:bff
+npm run start:bff
 ```
 
 ---

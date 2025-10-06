@@ -93,16 +93,6 @@ export class SplitPaymentComponent {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
     }
-    this.processPayment();
-  }
-
-  processPayment(): void {
-    if (this.showError) return;
-    this.orderService.latestOrderId$.subscribe(orderId => {
-      if (orderId) {
-        this.orderService.finishOrder(orderId);
-      }
-    });
   }
 
   private updatePersonsCount() {

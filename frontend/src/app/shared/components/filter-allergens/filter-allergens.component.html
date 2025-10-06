@@ -4,15 +4,10 @@
   <div class="allergens-container">
     <div class="allergen-card">
       @for (allergen of allergens; track allergen) {
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="allergen.selected"
-            (change)="onCheckboxChange()"
-          />
-          <span class="allergen-icon">{{ allergen.image }}</span>
-          <span class="allergen-name">{{ allergen.name }}</span>
-        </label>
+      <label>
+        <input type="checkbox" [(ngModel)]="allergen.selected" (change)="onCheckboxChange()" />
+        <span class="allergen-name">{{ allergen.display }}</span>
+      </label>
       }
     </div>
   </div>

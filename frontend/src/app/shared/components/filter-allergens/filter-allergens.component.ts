@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AllergenService } from '../../services/no-bff/allergen.service';
 import { Allergen } from '../../../core/models/allergen.model';
 
 @Component({
@@ -10,20 +11,22 @@ import { Allergen } from '../../../core/models/allergen.model';
   templateUrl: './filter-allergens.component.html',
   styleUrls: ['./filter-allergens.component.scss'],
 })
-export class FilterAllergensComponent {
-  selectedAllergens: string[] = [];
-
+export class FilterAllergensComponent implements OnInit {
   @Output() allergensChange = new EventEmitter<Allergen[]>();
+  @Input() preSelectedAllergens: Allergen[] = [];
 
-  allergens: (Allergen & { selected?: boolean })[] = [
-    { id: 0, name: 'Gluten', image: '🍞' },
-    { id: 1, name: 'Arachides', image: '🥜' },
-    { id: 2, name: 'Lait', image: '🥛' },
-    { id: 3, name: 'Œufs', image: '🥚' },
-    { id: 4, name: 'Poissons', image: '🐟' },
-    { id: 5, name: 'Soja', image: '🌱' },
-    { id: 6, name: 'Fruits à coque', image: '🌰' },
-  ];
+  allergens: (Allergen & { selected?: boolean })[] = [];
+
+  constructor(private allergenService: AllergenService) { }
+
+  ngOnInit() {
+    this.allergenService.getAllergens().subscribe((allergens: Allergen[]) => {
+      this.allergens = allergens.map(a => ({
+        ...a,
+        selected: this.preSelectedAllergens.some(sel => sel.id === a.id)
+      }));
+    });
+  }
 
   trackByAllergen(index: number, allergen: Allergen) {
     return allergen.id;
@@ -34,7 +37,7 @@ export class FilterAllergensComponent {
     this.allergensChange.emit(selected);
   }
 
-  getSelectedAllergens() {
-    return this.allergens.filter(a => a.selected);
+  getSelectedAllergens(): string[] {
+    return this.allergens.filter(a => a.selected).map(a => a.display);
   }
 }

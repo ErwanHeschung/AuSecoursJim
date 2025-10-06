@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Item } from '../../../core/models/item.model';
@@ -7,7 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
 import { FormsModule } from '@angular/forms';
-import { IngredientService } from '../../../core/services/ingredient.service';
+import { IngredientService } from '../../services/no-bff/ingredient.service';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -27,8 +27,8 @@ export class MenuItemDetailComponent implements OnInit {
 
   constructor(
     private basketService: BasketService,
-    private ingredientService: IngredientService
-  ) {}
+    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
+  ) { }
 
   ngOnInit() {
     const itemQuantity: number = this.getItemQuantity();
@@ -41,14 +41,18 @@ export class MenuItemDetailComponent implements OnInit {
     }
 
     if (this.menuItem?.fullName && !this.menuItem.ingredients) {
-      this.ingredientService.getIngredients(this.menuItem.fullName).subscribe({
+      this.ingredientService.getItemIngredients(this.menuItem.fullName).subscribe({
         next: ingredients => {
-          this.menuItem.ingredients = ingredients;
+          this.menuItem.ingredients = ingredients || [];
+          console.log('Ingrédients chargés:', this.menuItem.ingredients);
         },
         error: err => {
           console.error('Failed to load ingredients:', err);
+          this.menuItem.ingredients = [];
         },
       });
+    } else if (!this.menuItem.ingredients) {
+      this.menuItem.ingredients = [];
     }
   }
 

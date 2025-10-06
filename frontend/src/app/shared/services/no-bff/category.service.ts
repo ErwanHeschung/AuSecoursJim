@@ -9,7 +9,7 @@ import { Item } from '../../../core/models/item.model';
   providedIn: 'root',
 })
 export class CategoryService implements ICategoryService {
-  constructor(public menuService: MenuService) {}
+  constructor(public menuService: MenuService) { }
 
   public getAllCategories(): Observable<Category[]> {
     return this.menuService.getAllMenus().pipe(

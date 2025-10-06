@@ -10,7 +10,7 @@ export class ItemIngredient {
     itemId: string;
 
     @ManyToOne(() => Ingredient)
-    @JoinColumn({ name: 'ingredientId' })
+    @JoinColumn({ name: 'ingredient_id' })
     ingredient: Ingredient;
 
     @Column('int', { default: 1 })

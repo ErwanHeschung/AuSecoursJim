@@ -7,7 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
 import { FormsModule } from '@angular/forms';
-import { IngredientService } from '../../../core/services/ingredient.service';
+import { IngredientService } from '../../services/no-bff/ingredient.service';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -28,7 +28,7 @@ export class MenuItemDetailComponent implements OnInit {
   constructor(
     private basketService: BasketService,
     private ingredientService: IngredientService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const itemQuantity: number = this.getItemQuantity();

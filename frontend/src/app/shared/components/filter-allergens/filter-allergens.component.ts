@@ -20,7 +20,7 @@ export class FilterAllergensComponent implements OnInit {
   constructor(private allergenService: AllergenService) { }
 
   ngOnInit() {
-    this.allergenService.getAllergens().subscribe(allergens => {
+    this.allergenService.getAllergens().subscribe((allergens: Allergen[]) => {
       this.allergens = allergens.map(a => ({
         ...a,
         selected: this.preSelectedAllergens.some(sel => sel.id === a.id)

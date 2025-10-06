@@ -11,7 +11,6 @@ import { Allergen } from '../../core/models/allergen.model';
 import { ICategoryService } from '../../core/models/interfaces/category';
 import { FilterAllergensComponent } from '../../shared/components/filter-allergens/filter-allergens.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { AllergenService } from '../../shared/services/no-bff/allergen.service';
 
 @Component({
@@ -47,8 +46,6 @@ export class MenuComponent implements OnInit {
   constructor(
     @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
     private allergenService: AllergenService,
-
-    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -62,13 +59,13 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  public onAllergensSelected(allergens: Allergen[]) {
+  public onAllergensSelected(allergens: Allergen[]): void {
     this.selectedAllergens = allergens;
+
     if (this.selectedCategory) {
       this.setItemByCategoryName(this.selectedCategory.name);
     }
   }
-
 
   public toggleFilterPopup(): void {
     this.filterPopup = !this.filterPopup;
@@ -96,8 +93,17 @@ export class MenuComponent implements OnInit {
       next: items => {
         this.allergenService.getDishesWithoutAllergens(excludedAllergens).subscribe(filteredDishes => {
           const filteredNames = new Set(filteredDishes.map(d => d.name));
-          const filteredItems = items.filter(item => filteredNames.has(item.fullName));
+
+          const filteredItems = items
+            .filter(item => filteredNames.has(item.fullName))
+            .map(item => {
+              const dish = filteredDishes.find(d => d.name === item.fullName);
+              return { ...item, allergens: dish?.allergens || [] };
+            });
+
           this.items = filteredItems;
+
+          console.log('Items filtrés avec allergènes:', this.items);
         });
       },
       error: err => {

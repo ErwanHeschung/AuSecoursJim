@@ -1,7 +1,7 @@
 <img [src]="menuItem.image" alt="{{ menuItem.fullName }}" class="item-image" />
 <h2>{{ menuItem.fullName }}</h2>
 <div class="ingredients-section">
-  @if (menuItem.ingredients) {
+  @if (menuItem.ingredients && menuItem.ingredients.length > 0) {
     <h3>Remove ingredients</h3>
     <ul>
       @for (ingredient of menuItem.ingredients; track ingredient) {

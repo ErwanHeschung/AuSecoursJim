@@ -6,10 +6,10 @@ import { ErrorBannerComponent } from '../../shared/components/error-banner/error
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { BasketItem } from '../../core/models/item.model';
-import { OrderService } from '../../shared/services/no-bff/order.service';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
-import { PaymentService } from '../../shared/services/no-bff/payment.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { PersonList } from '../../core/models/person-list.model';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -29,6 +29,7 @@ type BasketSelected = {
   ],
 })
 export class SplitPaymentComponent {
+  private readonly STORAGE_KEY = 'payment';
   showError: boolean = false;
   basket!: Basket;
   items!: BasketSelected[];
@@ -43,10 +44,17 @@ export class SplitPaymentComponent {
 
   constructor(
     private basketService: BasketService,
-    private orderService: OrderService,
-    private paymentService: PaymentService,
+    private localStorageService: LocalStorageService,
     private router: Router
-  ) {}
+  ) {
+    const saved = this.localStorageService.getItem<PersonList>(
+      this.STORAGE_KEY
+    );
+    if (saved) {
+      console.log('Saved payment data found. Redirect to payment page');
+      this.router.navigate([ROUTES.payment]);
+    }
+  }
 
   ngOnInit() {
     this.updatePersonsCount();
@@ -103,14 +111,9 @@ export class SplitPaymentComponent {
   }
 
   private processPayment(): void {
-    for (let i = 0; i < this.persons.length; i++) {
-      this.paymentService.pay(this.persons[i].amount);
-    }
-    this.orderService
-      .prepareOrderOnFirstFreeOrderNumber(this.basket)
-      .subscribe(() => {
-        this.trackOrder();
-      });
+    this.save();
+    console.log('Redirect to payment page');
+    this.router.navigate([ROUTES.payment]);
   }
 
   private updatePersonsCount() {
@@ -120,11 +123,15 @@ export class SplitPaymentComponent {
     );
   }
 
-  private trackOrder() {
-    this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
-      if (orderId) {
-        this.router.navigate(['order-tracking', orderId]);
-      }
-    });
+  private save(): void {
+    const filteredPersons = this.persons.filter(p => p.amount > 0);
+    const personList: PersonList = {
+      persons: filteredPersons.map((p, index) => ({
+        name: p.name,
+        amount: p.amount,
+        hasPayed: false,
+      })),
+    };
+    this.localStorageService.setItem<PersonList>(this.STORAGE_KEY, personList);
   }
 }

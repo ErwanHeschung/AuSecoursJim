@@ -7,6 +7,7 @@ import { ProgressBarComponent } from '../../shared/components/progress-bar/progr
 import { ActivatedRoute } from '@angular/router';
 import { IOrderTrackingService } from '../../core/models/interfaces/order-tracking';
 import { IOrderService } from '../../core/models/interfaces/order';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-order-tracking',
@@ -30,7 +31,8 @@ export class OrderTrackingComponent {
     @Inject('ORDER_TRACKING_SERVICE')
     private orderTrackingService: IOrderTrackingService,
     @Inject('ORDER_SERVICE')
-    private orderService: IOrderService
+    private orderService: IOrderService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class OrderTrackingComponent {
           this.orderService.finishOrder(this.orderId).subscribe(() => {
             console.log('Order marked as finished');
             this.orderCompleted = true;
+            this.localStorageService.clear();
           });
         }
       });

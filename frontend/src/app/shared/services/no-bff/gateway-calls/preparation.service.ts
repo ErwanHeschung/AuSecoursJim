@@ -21,8 +21,17 @@ export class PreparationService {
     );
   }
 
-  public getPreparations(): Observable<Preparation[]> {
-    return this.http.get<Preparation[]>(`${this.apiUrl}/preparations`);
+  public getPreparations(
+    state: 'readyToBeServed' | 'preparationStarted',
+    tableNumber?: number
+  ): Observable<Preparation[]> {
+    const params: any = { state };
+    if (tableNumber !== undefined) {
+      params.tableNumber = tableNumber;
+    }
+    return this.http.get<Preparation[]>(`${this.apiUrl}/preparations`, {
+      params,
+    });
   }
 
   public createPreparation(

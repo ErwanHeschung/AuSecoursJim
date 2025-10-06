@@ -9,9 +9,9 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get()
-  @ApiOkResponse({ schema: { type: 'string' } })
-  prepareOrderOnFirstFreeTable(): Promise<string> {
-    return this.orderService.prepareOrderOnFirstFreeTable();
+  @ApiOkResponse({ schema: { type: 'object', properties: { orderId: { type: 'string' } } } })
+  async prepareOrderOnFirstFreeOrderNumber(): Promise<{ orderId: string }> {
+    return this.orderService.prepareOrderOnFirstFreeOrderNumber();
   }
 
 }

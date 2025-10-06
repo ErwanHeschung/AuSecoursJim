@@ -7,6 +7,8 @@ import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { BasketItem } from '../../core/models/item.model';
 import { IOrderService } from '../../core/models/interfaces/order';
+import { Router } from '@angular/router';
+import { ROUTES } from '../../core/utils/constant';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -40,7 +42,8 @@ export class SplitPaymentComponent {
 
   constructor(
     private basketService: BasketService,
-    @Inject('ORDER_SERVICE') private orderService: IOrderService
+    @Inject('ORDER_SERVICE') private orderService: IOrderService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -53,7 +56,6 @@ export class SplitPaymentComponent {
       }));
       this.totalOrder = this.basketService.getTotal();
     });
-    this.orderService.prepareOrderOnFirstFreeTable(this.basket);
   }
 
   get currentTotal(): number {
@@ -93,6 +95,10 @@ export class SplitPaymentComponent {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
     }
+    if (!this.showError) {
+      this.orderService.prepareOrderOnFirstFreeOrderNumber(this.basket);
+      this.trackOrder();
+    }
   }
 
   private updatePersonsCount() {
@@ -100,5 +106,12 @@ export class SplitPaymentComponent {
       '--persons-count',
       this.persons.length.toString()
     );
+  }
+
+  private trackOrder() {
+    this.router.navigate([
+      ROUTES.orderTracking,
+      this.orderService.latestOrderId$,
+    ]);
   }
 }

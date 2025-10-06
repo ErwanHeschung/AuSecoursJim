@@ -2,10 +2,7 @@
   <img src="logo.webp" alt="logo" class="logo" />
   <div class="content">
     <fa-icon [icon]="currentIcon" class="icon"></fa-icon>
-    <app-progress-bar
-      [stepNumber]="stepNumber"
-      [currentStep]="currentStep"
-    ></app-progress-bar>
+    <app-progress-bar [progress]="progress"></app-progress-bar>
     <h2 class="status">{{ status }}</h2>
   </div>
 </div>

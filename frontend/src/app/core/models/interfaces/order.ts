@@ -4,5 +4,5 @@ import { Basket } from '../basket.model';
 export interface IOrderService {
   latestOrderId$: Observable<string | null>;
 
-  prepareOrderOnFirstFreeTable(basket: Basket): Observable<void>;
+  prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void>;
 }

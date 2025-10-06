@@ -16,9 +16,10 @@ export class OrderServiceBFF implements IOrderService {
 
   constructor(private http: HttpClient) {}
 
-  prepareOrderOnFirstFreeTable(basket: Basket): Observable<void> {
-    console.log('BFF prepareOrderOnFirstFreeTable');
-    this.http.get<string>(this.apiUrl);
+  prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void> {
+    console.log('BFF prepareOrderOnFirstFreeOrderNumber');
+    console.log(this.apiUrl);
+    this.http.get<string>(this.apiUrl).subscribe(result => console.log(result));
     return of();
   }
 }

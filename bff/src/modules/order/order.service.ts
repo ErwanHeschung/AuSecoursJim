@@ -16,9 +16,8 @@ export class OrderService {
     this.backendUrl += '/order';
   }
 
-  async prepareOrderOnFirstFreeTable(): Promise<string> {
-    this.logger.log("order");
-    return "ORDER_ID";
+  async prepareOrderOnFirstFreeOrderNumber(): Promise<{ orderId: string }> {
+    return { orderId: "ORDER_ID" };
   }
 
 }

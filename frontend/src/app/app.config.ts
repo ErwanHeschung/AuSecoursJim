@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import {
   CATEGORY_SERVICE_PROVIDER,
   ORDER_SERVICE_PROVIDER,
+  ORDER_TRACKING_SERVICE_PROVIDER,
 } from './service.provider';
 
 export const appConfig: ApplicationConfig = {
@@ -14,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     CATEGORY_SERVICE_PROVIDER,
+    ORDER_TRACKING_SERVICE_PROVIDER,
     ORDER_SERVICE_PROVIDER,
   ],
 };

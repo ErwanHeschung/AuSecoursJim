@@ -16,8 +16,8 @@ export class OrderService implements IOrderService {
 
   constructor(private tableService: TableService) {}
 
-  public prepareOrderOnFirstFreeTable(basket: Basket): Observable<void> {
-    return this.getFirstFreeTable().pipe(
+  public prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void> {
+    return this.getFirstFreeOrderNumber().pipe(
       switchMap(table => {
         if (!table) {
           throw new Error('No free table available');
@@ -27,8 +27,8 @@ export class OrderService implements IOrderService {
     );
   }
 
-  public prepareOrder(tableNumber: number, basket: Basket): Observable<void> {
-    return this.tableService.openOrder(tableNumber).pipe(
+  public prepareOrder(orderNumber: number, basket: Basket): Observable<void> {
+    return this.tableService.openOrder(orderNumber).pipe(
       switchMap(orderId => {
         const addItems$ = basket.items.map((item: BasketItem) => {
           const orderItem: OrderItem = {
@@ -50,7 +50,7 @@ export class OrderService implements IOrderService {
     );
   }
 
-  private getFirstFreeTable(): Observable<Table | undefined> {
+  private getFirstFreeOrderNumber(): Observable<Table | undefined> {
     return this.tableService
       .getTables()
       .pipe(map(tables => tables.find(table => !table.taken)));

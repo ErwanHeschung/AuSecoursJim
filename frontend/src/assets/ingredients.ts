@@ -1,68 +1,55 @@
 export const ingredientData = {
-  "Homemade foie gras terrine": [
-    { "name": "Cognac", "quantity": 1 },
-    { "name": "Port wine", "quantity": 1 },
-    { "name": "Sea salt", "quantity": 1 },
-    { "name": "Black pepper", "quantity": 1 },
-    { "name": "Brioche toast", "quantity": 1 }
+  'Homemade foie gras terrine': [
+    { name: 'Cognac', quantity: 1 },
+    { name: 'Port wine', quantity: 1 },
+    { name: 'Brioche toast', quantity: 1 },
   ],
-  "Soft-boiled egg breaded with breadcrumbs and nuts": [
-    { "name": "Eggs", "quantity": 2 },
-    { "name": "Breadcrumbs", "quantity": 1 },
-    { "name": "Mixed nuts", "quantity": 1 }
+  'Soft-boiled egg breaded with breadcrumbs and nuts': [
+    { name: 'Breadcrumbs', quantity: 1 },
+    { name: 'Mixed nuts', quantity: 1 },
   ],
-  "Goat cheese foom from \"Valbonne goat farm\"": [
-    { "name": "Goat cheese", "quantity": 1 },
-    { "name": "Mixed greens", "quantity": 1 },
-    { "name": "Honey", "quantity": 2 },
-    { "name": "Walnuts", "quantity": 1 },
-    { "name": "Olive oil", "quantity": 1 }
+  'Goat cheese foom from "Valbonne goat farm"': [
+    { name: 'Mixed greens', quantity: 1 },
+    { name: 'Honey', quantity: 1 },
+    { name: 'Walnuts', quantity: 1 },
+    { name: 'Olive oil', quantity: 1 },
   ],
-  "Homemade dill salmon gravlax": [
-    { "name": "Fresh salmon", "quantity": 1 },
-    { "name": "Fresh dill", "quantity": 1 },
-    { "name": "Sea salt", "quantity": 1 }
+  'Crab maki with fresh mango': [
+    { name: 'Avocado', quantity: 1 },
+    { name: 'Sesame seeds', quantity: 1 },
   ],
-  "Crab maki with fresh mango": [
-    { "name": "Avocado", "quantity": 1 },
-    { "name": "Sesame seeds", "quantity": 1 }
+  'Burrata Mozzarella': [
+    { name: 'Cherry tomatoes', quantity: 1 },
+    { name: 'Fresh basil', quantity: 1 },
+    { name: 'Extra virgin olive oil', quantity: 1 },
+    { name: 'Balsamic glaze', quantity: 1 },
   ],
-  "Burrata Mozzarella": [
-    { "name": "Burrata cheese", "quantity": 1 },
-    { "name": "Cherry tomatoes", "quantity": 1 },
-    { "name": "Fresh basil", "quantity": 10 },
-    { "name": "Extra virgin olive oil", "quantity": 1 },
-    { "name": "Balsamic glaze", "quantity": 1 }
+  'Delicious Pizza Regina': [
+    { name: 'Mozzarella', quantity: 1 },
+    { name: 'Ham', quantity: 1 },
+    { name: 'Mushrooms', quantity: 1 },
+    { name: 'Oregano', quantity: 1 },
   ],
-  "Delicious Pizza Regina": [
-    { "name": "Tomato sauce", "quantity": 1 },
-    { "name": "Mozzarella", "quantity": 1 },
-    { "name": "Ham", "quantity": 1 },
-    { "name": "Mushrooms", "quantity": 1 },
-    { "name": "Oregano", "quantity": 1 }
+  'Homemade beef burger': [
+    { name: 'Cheddar cheese', quantity: 1 },
+    { name: 'Lettuce', quantity: 1 },
+    { name: 'Tomato', quantity: 1 },
+    { name: 'Pickles', quantity: 1 },
+    { name: 'Onion', quantity: 1 },
+    { name: 'Special sauce Jim', quantity: 1 },
   ],
-  "Homemade beef burger": [
-    { "name": "Beef patty", "quantity": 1 },
-    { "name": "Brioche bun", "quantity": 1 },
-    { "name": "Cheddar cheese", "quantity": 2 },
-    { "name": "Lettuce", "quantity": 2 },
-    { "name": "Tomato", "quantity": 2 },
-    { "name": "Pickles", "quantity": 3 },
-    { "name": "Onion", "quantity": 2 },
-    { "name": "Special sauce Jim", "quantity": 1 }
+  'Half cooked tuna and octopus grilled on the plancha': [
+    { name: 'Octopus', quantity: 1 },
+    { name: 'Olive oil', quantity: 1 },
+    { name: 'Lemon', quantity: 1 },
+    { name: 'Garlic', quantity: 1 },
   ],
-  "Half cooked tuna and octopus grilled on the plancha": [
-    { "name": "Octopus", "quantity": 1 },
-    { "name": "Olive oil", "quantity": 1 },
-    { "name": "Lemon", "quantity": 1 },
-    { "name": "Garlic", "quantity": 2 }
+  'Fresh seasonal fruit': [
+    { name: 'Strawberries', quantity: 1 },
+    { name: 'Blueberries', quantity: 1 },
+    { name: 'Kiwi', quantity: 1 },
+    { name: 'Mango', quantity: 1 },
+    { name: 'Grapes', quantity: 1 },
+    { name: 'Pineapple', quantity: 1 },
   ],
-  "Fresh seasonal fruit": [
-    { "name": "Strawberries", "quantity": 1 },
-    { "name": "Blueberries", "quantity": 1 },
-    { "name": "Kiwi", "quantity": 1 },
-    { "name": "Mango", "quantity": 1 },
-    { "name": "Grapes", "quantity": 1 },
-    { "name": "Pineapple", "quantity": 1 }
-  ]
-}
+};

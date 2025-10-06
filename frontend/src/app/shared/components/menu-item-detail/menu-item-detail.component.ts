@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Item, BasketItem } from '../../../core/models/item.model';
@@ -28,8 +35,8 @@ export class MenuItemDetailComponent implements OnInit {
 
   constructor(
     private basketService: BasketService,
-    private ingredientService: IngredientService
-  ) { }
+    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
+  ) {}
 
   ngOnInit() {
     this.mode = this.isEditMode ? 'update' : 'add';
@@ -40,23 +47,25 @@ export class MenuItemDetailComponent implements OnInit {
     // when editing, don't reload ingredients but use the ones from basket
     // when adding new, always load fresh ingredients
     if (!this.isEditMode && this.menuItem?.fullName) {
-      this.ingredientService.getItemIngredients(this.menuItem.fullName).subscribe({
-        next: ingredients => {
-          // deep clone ingredients to avoid reference sharing
-          this.menuItem.ingredients = JSON.parse(JSON.stringify(ingredients));
-        },
-        error: err => {
-          console.error('Failed to load ingredients:', err);
-          this.menuItem.ingredients = [];
-        },
-      });
+      this.ingredientService
+        .getItemIngredients(this.menuItem.fullName)
+        .subscribe({
+          next: ingredients => {
+            // deep clone ingredients to avoid reference sharing
+            this.menuItem.ingredients = JSON.parse(JSON.stringify(ingredients));
+          },
+          error: err => {
+            console.error('Failed to load ingredients:', err);
+            this.menuItem.ingredients = [];
+          },
+        });
     } else if (!this.menuItem.ingredients) {
       this.menuItem.ingredients = [];
     }
   }
 
   private isBasketItem(item: Item | BasketItem): item is BasketItem {
-    return 'quantity' in item && 'basketId' in item;
+    return 'quantity' in item && 'basketItemId' in item;
   }
 
   get isPresentInBasket() {
@@ -82,8 +91,8 @@ export class MenuItemDetailComponent implements OnInit {
   }
 
   public deleteFromBasket(): void {
-    if (this.isBasketItem(this.menuItem) && this.menuItem.basketId) {
-      this.basketService.removeItem(this.menuItem.basketId);
+    if (this.isBasketItem(this.menuItem) && this.menuItem.basketItemId) {
+      this.basketService.removeItem(this.menuItem.basketItemId);
     }
     this.close.emit();
   }

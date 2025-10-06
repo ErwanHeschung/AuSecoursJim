@@ -10,12 +10,11 @@ export type Item = {
   image: string;
   ingredients?: Ingredient[];
   allergens?: string[];
-
 };
 
 export type BasketItem = Item & {
   quantity: number;
-  basketId?: string;
+  basketItemId?: string;
 };
 
 export type OrderItem = {

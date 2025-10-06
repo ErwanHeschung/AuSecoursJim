@@ -18,12 +18,7 @@ export class BasketService {
   constructor(private localStorageService: LocalStorageService) {
     const saved = this.localStorageService.getItem<Basket>(this.STORAGE_KEY);
     if (saved) {
-      saved.items = saved.items.map(item => ({
-        ...item,
-        basketId: item.basketId || this.generateBasketId(),
-      }));
       this.basketSubject.next(saved);
-      this.save();
     } else {
       this.basketSubject.next({ _id: undefined, items: [] });
     }
@@ -43,7 +38,7 @@ export class BasketService {
     } else {
       const newItem = {
         ...item,
-        basketId: this.generateBasketId(),
+        basketItemId: this.generateBasketItemId(),
       };
       basket.items.push(newItem);
     }
@@ -52,13 +47,15 @@ export class BasketService {
     this.save();
   }
 
-  private generateBasketId(): string {
+  private generateBasketItemId(): string {
     return `basket_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   public updateItem(item: BasketItem): void {
     const basket = this.basketSubject.value!;
-    const index = basket.items.findIndex(i => i.basketId === item.basketId);
+    const index = basket.items.findIndex(
+      i => i.basketItemId === item.basketItemId
+    );
     if (index !== -1) {
       basket.items[index] = { ...item };
       this.basketSubject.next(basket);
@@ -87,9 +84,9 @@ export class BasketService {
     });
   }
 
-  public removeItem(basketId: string): void {
+  public removeItem(basketItemId: string): void {
     const basket = this.basketSubject.value!;
-    basket.items = basket.items.filter(i => i.basketId !== basketId);
+    basket.items = basket.items.filter(i => i.basketItemId !== basketItemId);
     this.basketSubject.next(basket);
     this.save();
   }

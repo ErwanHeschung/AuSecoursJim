@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Inject } from '@angular/core';
 import { BasketItem, Item } from '../../../core/models/item.model';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -24,7 +24,7 @@ export class BasketItemComponent {
 
   constructor(
     private basketService: BasketService,
-    private ingredientService: IngredientService
+    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
   ) {}
 
   ngOnInit() {
@@ -39,9 +39,9 @@ export class BasketItemComponent {
     }
   }
 
-  public deleteFromBasket(basketId: string | undefined): void {
-    if (basketId) {
-      this.basketService.removeItem(basketId);
+  public deleteFromBasket(basketItemId: string | undefined): void {
+    if (basketItemId) {
+      this.basketService.removeItem(basketItemId);
     }
   }
 

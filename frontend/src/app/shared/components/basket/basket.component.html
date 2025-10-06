@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h2>My Order</h2>
     <div class="items">
-      @for (item of basket.items; track item.basketId) {
+      @for (item of basket.items; track item.basketItemId) {
         <app-basket-item
           [item]="item"
           (edit)="onEditItem($event)"

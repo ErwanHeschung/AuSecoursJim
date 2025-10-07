@@ -19,7 +19,7 @@ export class MenuService {
     const { data } = await this.http.axiosRef.get(`${this.backendUrl}/menus`);
 
     return data.map((menu: any) => ({
-      _id: menu.id,
+      _id: menu._id, 
       fullName: menu.fullName,
       shortName: menu.shortName,
       price: menu.price,

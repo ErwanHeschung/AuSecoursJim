@@ -17,13 +17,13 @@ export class FilterAllergensComponent implements OnInit {
 
   allergens: (Allergen & { selected?: boolean })[] = [];
 
-  constructor(private allergenService: AllergenService) { }
+  constructor(private allergenService: AllergenService) {}
 
   ngOnInit() {
     this.allergenService.getAllergens().subscribe((allergens: Allergen[]) => {
       this.allergens = allergens.map(a => ({
         ...a,
-        selected: this.preSelectedAllergens.some(sel => sel.id === a.id)
+        selected: this.preSelectedAllergens.some(sel => sel.id === a.id),
       }));
     });
   }

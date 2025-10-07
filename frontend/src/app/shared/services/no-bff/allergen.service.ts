@@ -22,7 +22,6 @@ export interface AllergenData {
 export class AllergenService implements IAllergenService {
   private allergenData$: Observable<AllergenData> = of(allergenData);
 
-
   getAllergens(): Observable<Allergen[]> {
     return this.allergenData$.pipe(map(data => data.allergens));
   }
@@ -33,10 +32,7 @@ export class AllergenService implements IAllergenService {
 
   getDishesWithAllergens(): Observable<string[][]> {
     return this.getDishes().pipe(
-      map(dishes =>
-        dishes
-          .map(dish => [dish.name, ...dish.allergens])
-      )
+      map(dishes => dishes.map(dish => [dish.name, ...dish.allergens]))
     );
   }
 

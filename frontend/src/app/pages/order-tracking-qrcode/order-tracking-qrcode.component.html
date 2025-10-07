@@ -1,8 +1,6 @@
 <app-payment-layout>
   <div class="order-tracking-qrcode">
-    <button class="button-primary" (click)="prepareOrder()">
-      DEBUG : Send order
-    </button>
+    <button class="button-primary">DEBUG : Send order</button>
     <span>{{ orderTrackingUrl }}</span>
     <qrcode [qrdata]="orderTrackingUrl" [width]="500"></qrcode>
     <p>Scan the QR code to track your order.</p>

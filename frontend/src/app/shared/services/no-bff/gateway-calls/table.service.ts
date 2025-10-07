@@ -36,13 +36,19 @@ export class TableService {
     return this.http.post<void>(`${this.apiUrl}/tableOrders/${orderId}`, item);
   }
 
-  public preparOrder(orderId: string): Observable<void> {
+  public prepareOrder(orderId: string): Observable<void> {
     return this.http.post<void>(
       `${this.apiUrl}/tableOrders/${orderId}/prepare`,
       {}
     );
   }
 
+  public finishOrder(orderId: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.apiUrl}/tableOrders/${orderId}/bill`,
+      {}
+    );
+  }
   public getOrder(orderId: string): Observable<Order> {
     return this.http.get<Order>(`${this.apiUrl}/tableOrders/${orderId}`);
   }

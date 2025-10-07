@@ -6,4 +6,5 @@ export const ROUTES = {
   orderTracking: 'order-tracking/:orderId',
   orderTrackingWithoutId: 'order-tracking',
   orderTrackingQRcode: 'order-tracking-qrcode',
+  payment: 'payment',
 };

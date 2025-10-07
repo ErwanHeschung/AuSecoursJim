@@ -10,7 +10,8 @@ import { ingredientData } from '../../../../assets/ingredients';
   providedIn: 'root',
 })
 export class IngredientService implements IIngredientService {
-  private ingredientData$: Observable<Record<string, Ingredient[]>> = of(ingredientData);
+  private ingredientData$: Observable<Record<string, Ingredient[]>> =
+    of(ingredientData);
 
   getItemIngredients(itemName: string): Observable<Ingredient[]> {
     return this.ingredientData$.pipe(map(data => data[itemName] || []));

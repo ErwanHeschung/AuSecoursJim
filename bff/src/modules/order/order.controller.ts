@@ -22,11 +22,4 @@ export class OrderController {
     return this.orderService.finishOrder(orderId);
   }
 
-  @Post('test')
-  @ApiOkResponse()
-  @ApiBody({ schema: { properties: { orderId: { type: 'string' } } } })
-  async test(@Body('orderId') orderId: string): Promise<void> {
-    return;
-  }
-
 }

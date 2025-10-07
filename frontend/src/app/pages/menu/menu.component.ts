@@ -46,11 +46,10 @@ export class MenuComponent implements OnInit {
 
   private allItemsWithAllergens: Item[] = [];
 
-
   constructor(
     @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
-    @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService,
-  ) { }
+    @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService
+  ) {}
 
   ngOnInit(): void {
     this.categoryService.getAllCategories().subscribe({
@@ -78,29 +77,33 @@ export class MenuComponent implements OnInit {
   }
 
   private initializeItems(categoryName: string) {
-    this.categoryService.getItemsByCategoryName(categoryName).pipe(
-      switchMap((items: Item[]) =>
-        this.allergenService.getDishesWithAllergens().pipe(
-          map((dishesWithAllergens: string[][]) => {
-            const dishMap = new Map<string, string[]>(
-              dishesWithAllergens.map(d => [d[0], d.slice(1)])
-            );
+    this.categoryService
+      .getItemsByCategoryName(categoryName)
+      .pipe(
+        switchMap((items: Item[]) =>
+          this.allergenService.getDishesWithAllergens().pipe(
+            map((dishesWithAllergens: string[][]) => {
+              const dishMap = new Map<string, string[]>(
+                dishesWithAllergens.map(d => [d[0], d.slice(1)])
+              );
 
-            return items.map(item => ({
-              ...item,
-              allergens: dishMap.get(item.fullName) || []
-            }));
-          })
+              return items.map(item => ({
+                ...item,
+                allergens: dishMap.get(item.fullName) || [],
+              }));
+            })
+          )
         )
       )
-    ).subscribe({
-      next: (initializedItems: Item[]) => {
-        this.allItemsWithAllergens = initializedItems;
+      .subscribe({
+        next: (initializedItems: Item[]) => {
+          this.allItemsWithAllergens = initializedItems;
 
-        this.applyFilters();
-      },
-      error: err => console.error('Erreur lors de l’initialisation des items :', err)
-    });
+          this.applyFilters();
+        },
+        error: err =>
+          console.error('Erreur lors de l’initialisation des items :', err),
+      });
   }
 
   private applyFilters() {
@@ -109,8 +112,6 @@ export class MenuComponent implements OnInit {
     this.items = this.allItemsWithAllergens.filter(item =>
       excludedIds.every(ex => !(item.allergens || []).includes(ex))
     );
-
-    console.log('Items filtrés selon allergènes et catégorie :', this.items);
   }
 
   public onAllergensSelected(allergens: Allergen[]): void {

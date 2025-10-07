@@ -57,11 +57,10 @@ export class PaymentComponent {
   validateForm(): void {
     if (this.currentPersonIndex < this.people.persons.length - 1) {
       this.people.persons[this.currentPersonIndex].hasPayed = true;
-      this.paymentService.pay(this.currentPerson.amount);
-      this.save();
-      this.currentPersonIndex = this.people.persons
-        .map(p => p.hasPayed)
-        .indexOf(false);
+      this.paymentService.pay(this.currentPerson.amount).subscribe((result: boolean) => {
+        this.save();
+        this.currentPersonIndex = this.people.persons.map(p => p.hasPayed).indexOf(false);
+      }); 
     } else {
       console.log('All payments completed. Order can be created');
       this.createOrder();

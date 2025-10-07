@@ -34,7 +34,9 @@ export class LandingComponent {
   constructor(
     private localStorageService: LocalStorageService,
     private router: Router
-  ) {}
+  ) {
+    this.localStorageService.clear();
+  }
 
   public selectTakeaway(): void {
     this.localStorageService.setItem('orderType', 'takeaway');

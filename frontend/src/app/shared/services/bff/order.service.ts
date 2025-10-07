@@ -26,9 +26,7 @@ export class OrderServiceBFF implements IOrderService {
   }
 
   finishOrder(orderId: string): Observable<void> {
-    this.http
-      .post(`${this.apiUrl}/finish`, { orderId })
-      .subscribe(result => console.log(result));
+    this.http.post(`${this.apiUrl}/finish`, { orderId }).subscribe();
     return of();
   }
 }

@@ -47,6 +47,7 @@ export class PaymentComponent {
     this.basketService.basket$.subscribe(basket => {
       this.basket = basket;
     });
+    this.trackOrder();
   }
 
   get currentPerson(): Person {
@@ -69,10 +70,7 @@ export class PaymentComponent {
 
   private createOrder(): void {
     this.orderService
-      .prepareOrderOnFirstFreeOrderNumber(this.basket)
-      .subscribe(() => {
-        this.trackOrder();
-      });
+      .prepareOrderOnFirstFreeOrderNumber(this.basket).subscribe();
   }
 
   private trackOrder() {

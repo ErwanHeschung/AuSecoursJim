@@ -23,3 +23,15 @@ export class ItemDto {
   @ApiProperty({ type: [IngredientDto], required: false })
   ingredients?: IngredientDto[];
 }
+
+
+export class BasketItemDto extends ItemDto {
+    @ApiProperty() quantity: number;
+}
+
+
+export class OrderItemDto {
+  @ApiProperty() menuItemId: string;
+  @ApiProperty() menuItemShortName: string;
+  @ApiProperty() howMany: number;
+};

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
+import { TableProxy } from 'src/proxies/table.proxy';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { OrderService } from './order.service';
     ConfigModule,
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, TableProxy],
 })
 export class OrderModule {}

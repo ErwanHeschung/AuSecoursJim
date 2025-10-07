@@ -1,5 +1,5 @@
 export type Allergen = {
-  id: number;
+  id: string;
   name: string;
-  image: string;
+  display: string;
 };

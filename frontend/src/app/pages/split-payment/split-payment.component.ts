@@ -98,6 +98,19 @@ export class SplitPaymentComponent {
     }
   }
 
+  computeAmountPerPersonItemMode(): void {
+    this.persons.forEach(p => (p.amount = 0));
+    this.items.forEach(item => {
+      const numSelected = item.selected.length;
+      if (numSelected > 0) {
+        const amountPerPerson = item.basketItems.price / numSelected;
+        item.selected.forEach(personIndex => {
+          this.persons[personIndex].amount += amountPerPerson;
+        });
+      }
+    });
+  }
+
   validateForm(): void {
     if (this.mode === 'euro') {
       this.showError = this.currentTotal !== this.totalOrder;
@@ -111,6 +124,9 @@ export class SplitPaymentComponent {
   }
 
   private processPayment(): void {
+    if (this.mode === 'items') {
+      this.computeAmountPerPersonItemMode();
+    }
     this.save();
     console.log('Redirect to payment page');
     this.router.navigate([ROUTES.payment]);

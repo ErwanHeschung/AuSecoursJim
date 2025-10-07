@@ -6,6 +6,7 @@ import {
   faCreditCard,
   faMoneyBill,
   faMoneyBillWave,
+  faPen,
   faTimes,
   faTrash,
   faUtensils,
@@ -20,6 +21,7 @@ export const ICONS: { [key: string]: IconDefinition } = {
   cart: faCartShopping,
   cross: faTimes,
   trash: faTrash,
+  edit: faPen,
 };
 
 library.add(...Object.values(ICONS));

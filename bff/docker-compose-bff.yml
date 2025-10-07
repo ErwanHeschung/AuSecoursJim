@@ -10,6 +10,8 @@ services:
       - GATEWAY_URL_WITH_PORT=${GATEWAY}
     networks:
       - nestjs-restaurant-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 networks:
   nestjs-restaurant-network:
     driver: bridge

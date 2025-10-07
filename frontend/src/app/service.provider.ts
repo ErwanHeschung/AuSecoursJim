@@ -7,6 +7,8 @@ import { OrderServiceBFF } from './shared/services/bff/order.service';
 import { OrderTrackingService } from './shared/services/no-bff/order-tracking.service';
 import { PaymentService } from './shared/services/no-bff/payment.service';
 import { PaymentServiceBFF } from './shared/services/bff/payment.service';
+import { IngredientService } from './shared/services/no-bff/ingredient.service';
+import { AllergenService } from './shared/services/no-bff/allergen.service';
 
 export const CATEGORY_SERVICE_PROVIDER: FactoryProvider = {
   provide: 'CATEGORY_SERVICE',
@@ -39,5 +41,23 @@ export const PAYMENT_SERVICE_PROVIDER: FactoryProvider = {
   useFactory: () => {
     const config = inject(APP_CONFIG);
     return config.useBff ? inject(PaymentServiceBFF) : inject(PaymentService);
+  },
+};
+
+export const INGREDIENT_SERVICE_PROVIDER: FactoryProvider = {
+  provide: 'INGREDIENT_SERVICE',
+  useFactory: () => {
+    const config = inject(APP_CONFIG);
+    return config.useBff
+      ? inject(IngredientService)
+      : inject(IngredientService);
+  },
+};
+
+export const ALLERGEN_SERVICE_PROVIDER: FactoryProvider = {
+  provide: 'ALLERGEN_SERVICE',
+  useFactory: () => {
+    const config = inject(APP_CONFIG);
+    return config.useBff ? inject(AllergenService) : inject(AllergenService);
   },
 };

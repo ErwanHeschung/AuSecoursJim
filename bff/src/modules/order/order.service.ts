@@ -1,23 +1,49 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
+import { BasketDto } from 'src/common/dto/basket.dto';
+import { OrderItemDto } from 'src/common/dto/item.dto';
+import { TableProxy } from 'src/proxies/table.proxy';
 
 @Injectable()
 export class OrderService {
 
   private readonly logger = new Logger(OrderService.name);
-  private backendUrl: string;
 
   constructor(
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-  ) {
-    this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
-    this.backendUrl += '/order';
+    private readonly tableProxy: TableProxy
+  ) {}
+
+
+  async prepareOrderOnFirstFreeOrderNumber(basket: BasketDto): Promise<{ orderId: string }> {
+
+    // getFirstFreeOrderNumber
+    const tables = await this.tableProxy.getTables();
+    const freeTable = tables.find(t => !t.taken);
+
+    if (!freeTable) {
+      this.logger.error('No free table available');
+      throw new Error('No free table available');
+    }
+
+    // prepareOrder
+    const orderId = await this.tableProxy.openOrder(freeTable.number);
+
+    for (const item of basket.items) {
+      const orderItem: OrderItemDto = {
+        menuItemId: item._id,
+        menuItemShortName: item.shortName,
+        howMany: Number(item.quantity),
+      };
+      await this.tableProxy.addMenuToOrder(orderId, orderItem);
+    }
+
+    await this.tableProxy.prepareOrder(orderId);
+
+    return { orderId };
   }
 
-  async prepareOrderOnFirstFreeOrderNumber(): Promise<{ orderId: string }> {
-    return { orderId: "ORDER_ID" };
+
+  async finishOrder(orderId: string): Promise<void> {
+    await this.tableProxy.finishOrder(orderId);
   }
 
 }

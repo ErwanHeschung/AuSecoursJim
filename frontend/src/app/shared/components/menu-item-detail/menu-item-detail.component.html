@@ -6,7 +6,7 @@
     <ul>
       @for (ingredient of menuItem.ingredients; track ingredient.name) {
         <li>
-          <app-counter [(value)]="ingredient.quantity" />
+          <app-counter [(value)]="ingredient.quantity" [limit]="2" />
           <span class="ingredient-name">{{ ingredient.name }}</span>
         </li>
       }

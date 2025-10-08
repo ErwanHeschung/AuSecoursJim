@@ -2,7 +2,13 @@
   <div class="bill-container">
     <app-error-banner
       [(visible)]="showError"
-      [message]="'La somme totale doit être exactement égale à 20 euros'"
+      [message]="
+        mode === 'euro'
+          ? 'Le total doit être égal au total de la commande (' +
+            totalOrder +
+            '€)'
+          : 'Tous les articles doivent être sélectionnés'
+      "
     >
     </app-error-banner>
 
@@ -90,11 +96,11 @@
             <!-- Item rows -->
             <ng-container *ngFor="let item of items; let i = index">
               <img
-                [src]="item.image"
-                alt="{{ item.name }}"
+                [src]="item.basketItems.image"
+                alt="{{ item.basketItems.fullName }}"
                 class="grid-image"
               />
-              <div class="grid-price">{{ item.price }}€</div>
+              <div class="grid-price">{{ item.basketItems.price }}€</div>
               <div
                 class="grid-checkbox"
                 *ngFor="let p of persons; let j = index"

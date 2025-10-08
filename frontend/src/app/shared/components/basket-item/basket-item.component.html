@@ -1,16 +1,31 @@
-<div class="card">
+<div class="card" [class.has-modifications]="hasModifications">
   <img [src]="item.image" />
   <div class="information">
     <div class="content">
       <span class="title">{{ item.shortName }}</span>
+      @if (removedIngredientsSummary) {
+        <span class="modifications removed">{{
+          removedIngredientsSummary
+        }}</span>
+      }
+      @if (addedIngredientsSummary) {
+        <span class="modifications added">{{ addedIngredientsSummary }}</span>
+      }
       <div class="sub-information">
         <span class="quantity"
           >{{ item.quantity }} {{ item.quantity > 1 ? 'items' : 'item' }}</span
         >
-        <fa-icon
-          [icon]="trashIcon"
-          (click)="deleteFromBasket(item._id)"
-        ></fa-icon>
+        <div class="actions">
+          <fa-icon
+            [icon]="editIcon"
+            (click)="editItem()"
+            class="edit-icon"
+          ></fa-icon>
+          <fa-icon
+            [icon]="trashIcon"
+            (click)="deleteFromBasket(item.basketItemId)"
+          ></fa-icon>
+        </div>
       </div>
     </div>
 

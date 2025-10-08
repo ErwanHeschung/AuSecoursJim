@@ -44,8 +44,10 @@
 @if (filterPopup) {
   <app-popup (close)="toggleFilterPopup()">
     <app-filter-allergens
+      [preSelectedAllergens]="selectedAllergens"
       (allergensChange)="onAllergensSelected($event)"
-    ></app-filter-allergens>
+    >
+    </app-filter-allergens>
   </app-popup>
 }
 

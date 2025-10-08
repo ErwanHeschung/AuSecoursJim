@@ -41,4 +41,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/menu/menu.component').then(m => m.MenuComponent),
   },
+  {
+    path: ROUTES.payment,
+    loadComponent: () =>
+      import('./pages/payment/payment.component').then(m => m.PaymentComponent),
+  },
 ];

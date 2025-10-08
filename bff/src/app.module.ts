@@ -7,6 +7,8 @@ import { CategoryModule } from './modules/front-endpoint/category/category.modul
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientModule } from './modules/data-provider/ingredient/ingredient.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { OrderModule } from './modules/front-endpoint/order/order.module';
+import { PaymentModule } from './modules/front-endpoint/payment/payment.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     HttpModule.register({}),
     MenuModule,
     CategoryModule,
+    OrderModule,
+    PaymentModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DB_URL,

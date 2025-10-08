@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 import { Basket } from '../basket.model';
-import { Order } from '../order.model';
 
 export interface IOrderService {
+  latestOrderId$: Observable<string | null>;
+
   prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void>;
 
-  prepareOrder(orderNumber: number, basket: Basket): Observable<void>;
+  finishOrder(orderId: string): Observable<void>;
 }

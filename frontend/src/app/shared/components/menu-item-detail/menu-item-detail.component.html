@@ -4,9 +4,9 @@
   @if (menuItem.ingredients && menuItem.ingredients.length > 0) {
     <h3>Remove ingredients</h3>
     <ul>
-      @for (ingredient of menuItem.ingredients; track ingredient) {
+      @for (ingredient of menuItem.ingredients; track ingredient.name) {
         <li>
-          <app-counter [(value)]="ingredient.quantity" />
+          <app-counter [(value)]="ingredient.quantity" [limit]="2" />
           <span class="ingredient-name">{{ ingredient.name }}</span>
         </li>
       }
@@ -29,6 +29,6 @@
     </select>
   </div>
   <button class="add-to-cart-btn" (click)="addToBasket()">
-    {{ mode }} - {{ menuItem.price * quantity }}€
+    {{ isEditMode ? 'Update' : 'Add' }} - {{ menuItem.price * quantity }}€
   </button>
 </div>

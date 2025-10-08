@@ -10,8 +10,7 @@
             [(ngModel)]="allergen.selected"
             (change)="onCheckboxChange()"
           />
-          <span class="allergen-icon">{{ allergen.image }}</span>
-          <span class="allergen-name">{{ allergen.name }}</span>
+          <span class="allergen-name">{{ allergen.display }}</span>
         </label>
       }
     </div>

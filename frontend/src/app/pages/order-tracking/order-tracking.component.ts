@@ -4,8 +4,11 @@ import { OrderTrackingStatus } from '../../core/models/order-tracking-status';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../core/utils/icon';
 import { ProgressBarComponent } from '../../shared/components/progress-bar/progress-bar.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IOrderTrackingService } from '../../core/models/interfaces/order-tracking';
+import { IOrderService } from '../../core/models/interfaces/order';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { ROUTES } from '../../core/utils/constant';
 
 @Component({
   selector: 'app-order-tracking',
@@ -22,11 +25,16 @@ export class OrderTrackingComponent {
   public currentIcon: IconDefinition = this.inProgressIcon;
   public progress: number = 0;
   public orderId!: string;
+  private orderCompleted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     @Inject('ORDER_TRACKING_SERVICE')
-    private orderTrackingService: IOrderTrackingService
+    private orderTrackingService: IOrderTrackingService,
+    @Inject('ORDER_SERVICE')
+    private orderService: IOrderService,
+    private localStorageService: LocalStorageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +49,19 @@ export class OrderTrackingComponent {
             ? OrderTrackingStatus.Completed
             : OrderTrackingStatus.InProgress;
         this.updateStatusIcon(this.status);
+        if (
+          this.status === OrderTrackingStatus.Completed &&
+          !this.orderCompleted
+        ) {
+          this.orderService.finishOrder(this.orderId).subscribe(() => {
+            this.orderCompleted = true;
+            this.localStorageService.clear();
+            console.log('Order marked as finished');
+            setTimeout(() => {
+              this.router.navigate([ROUTES.landing]);
+            }, 4000);
+          });
+        }
       });
   }
 

@@ -1,3 +1,4 @@
+import { Allergen } from './allergen.model';
 import { Ingredient } from './ingredient.model';
 
 export type Item = {
@@ -8,10 +9,12 @@ export type Item = {
   category: string;
   image: string;
   ingredients?: Ingredient[];
+  allergens?: string[];
 };
 
 export type BasketItem = Item & {
   quantity: number;
+  basketItemId?: string;
 };
 
 export type OrderItem = {

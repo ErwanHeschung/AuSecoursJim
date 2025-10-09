@@ -9,6 +9,7 @@ import { IngredientModule } from './modules/data-provider/ingredient/ingredient.
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { OrderModule } from './modules/front-endpoint/order/order.module';
 import { PaymentModule } from './modules/front-endpoint/payment/payment.module';
+import { AllergenModule } from './modules/data-provider/allergen/allergen.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PaymentModule } from './modules/front-endpoint/payment/payment.module';
       namingStrategy: new SnakeNamingStrategy(),
     }),
     IngredientModule,
+    AllergenModule
   ],
 })
 export class AppModule {}

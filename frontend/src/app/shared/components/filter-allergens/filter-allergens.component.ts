@@ -1,8 +1,16 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  OnInit,
+  Inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AllergenService } from '../../services/no-bff/allergen.service';
 import { Allergen } from '../../../core/models/allergen.model';
+import { IAllergenService } from '../../../core/models/interfaces/allergen';
 
 @Component({
   selector: 'app-filter-allergens',
@@ -17,19 +25,17 @@ export class FilterAllergensComponent implements OnInit {
 
   allergens: (Allergen & { selected?: boolean })[] = [];
 
-  constructor(private allergenService: AllergenService) {}
+  constructor(
+    @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService
+  ) {}
 
   ngOnInit() {
     this.allergenService.getAllergens().subscribe((allergens: Allergen[]) => {
       this.allergens = allergens.map(a => ({
         ...a,
-        selected: this.preSelectedAllergens.some(sel => sel.id === a.id),
+        selected: this.preSelectedAllergens.some(sel => sel.name === a.name),
       }));
     });
-  }
-
-  trackByAllergen(index: number, allergen: Allergen) {
-    return allergen.id;
   }
 
   onCheckboxChange() {

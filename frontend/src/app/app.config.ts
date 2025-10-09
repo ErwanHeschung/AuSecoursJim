@@ -4,12 +4,11 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import {
+  ALLERGEN_SERVICE_PROVIDER,
   CATEGORY_SERVICE_PROVIDER,
   ORDER_SERVICE_PROVIDER,
   ORDER_TRACKING_SERVICE_PROVIDER,
   PAYMENT_SERVICE_PROVIDER,
-  INGREDIENT_SERVICE_PROVIDER,
-  ALLERGEN_SERVICE_PROVIDER,
 } from './service.provider';
 
 export const appConfig: ApplicationConfig = {
@@ -21,7 +20,6 @@ export const appConfig: ApplicationConfig = {
     ORDER_TRACKING_SERVICE_PROVIDER,
     ORDER_SERVICE_PROVIDER,
     PAYMENT_SERVICE_PROVIDER,
-    INGREDIENT_SERVICE_PROVIDER,
     ALLERGEN_SERVICE_PROVIDER,
   ],
 };

@@ -11,9 +11,9 @@ export class IngredientService {
         private itemIngredientRepo: Repository<ItemIngredient>,
     ) { }
     
-    async getIngredientsForItem(itemId: string): Promise<IngredientDto[]> {
+    async getIngredientsForItem(itemName: string): Promise<IngredientDto[]> {
         const itemIngredients = await this.itemIngredientRepo.find({
-            where: { itemId },
+            where: { itemName },
             relations: ['ingredient'],
         });
 

@@ -8,11 +8,13 @@ services:
       - 4100:4100
     environment:
       - GATEWAY_URL_WITH_PORT=${GATEWAY}
-      - DATABASE_URL=${DB_URL}
+      - DB_URL=${DB_URL}
     depends_on:
       - postgres
     networks:
       - nestjs-restaurant-network
+    volumes:
+      - ./db-init:/db-init
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -22,12 +24,11 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydb
+      POSTGRES_DB: bffdb
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db-init:/docker-entrypoint-initdb.d:ro
     networks:
       - nestjs-restaurant-network
 

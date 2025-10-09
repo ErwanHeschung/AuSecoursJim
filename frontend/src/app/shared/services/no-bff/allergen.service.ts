@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, shareReplay, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Allergen } from '../../../core/models/allergen.model';
 import { IAllergenService } from '../../../core/models/interfaces/allergen';
 import { allergenData } from '../../../../assets/allergens';
 
 export interface Dish {
   name: string;
-  allergens: string[];
+  allergens: Allergen[];
 }
 
 export interface AllergenData {
@@ -20,7 +19,17 @@ export interface AllergenData {
   providedIn: 'root',
 })
 export class AllergenService implements IAllergenService {
-  private allergenData$: Observable<AllergenData> = of(allergenData);
+  private allergenData$: Observable<AllergenData> = of(allergenData).pipe(
+    map(data => ({
+      ...data,
+      dishes: data.dishes.map(dish => ({
+        ...dish,
+        allergens: dish.allergens.map(
+          name => data.allergens.find(a => a.name === name)!
+        ),
+      })),
+    }))
+  );
 
   getAllergens(): Observable<Allergen[]> {
     return this.allergenData$.pipe(map(data => data.allergens));
@@ -32,7 +41,9 @@ export class AllergenService implements IAllergenService {
 
   getDishesWithAllergens(): Observable<string[][]> {
     return this.getDishes().pipe(
-      map(dishes => dishes.map(dish => [dish.name, ...dish.allergens]))
+      map(dishes =>
+        dishes.map(dish => [dish.name, ...dish.allergens.map(a => a.name)])
+      )
     );
   }
 

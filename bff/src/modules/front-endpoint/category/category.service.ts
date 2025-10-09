@@ -3,11 +3,13 @@ import { MenuService } from 'src/modules/back-proxy/menu/menu.service';
 import { ItemDto } from 'src/common/dto/item.dto';
 import { CategoryDto } from 'src/common/dto/category.dto';
 import { IngredientService } from 'src/modules/data-provider/ingredient/ingredient.service';
+import { AllergenService } from 'src/modules/data-provider/allergen/allergen.service';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly menuService: MenuService,
-    private readonly ingredientService:IngredientService) { }
+    private readonly ingredientService: IngredientService,
+    private readonly allergenService: AllergenService) { }
 
   async getAllCategories(): Promise<CategoryDto[]> {
     const menus: ItemDto[] = await this.menuService.getAllMenus();
@@ -27,14 +29,19 @@ export class CategoryService {
 
   async getItemsByCategoryName(category: string): Promise<ItemDto[]> {
     const menus: ItemDto[] = await this.menuService.getAllMenus();
-
     const filteredMenus = menus.filter(menu => menu.category === category);
+
     return Promise.all(
-      filteredMenus.map(async menu => ({
-        ...menu,
-        ingredients: await this.ingredientService.getIngredientsForItem(menu._id),
-      })),
+      filteredMenus.map(async menu => {
+        const ingredients = await this.ingredientService.getIngredientsForItem(menu.fullName);
+        const itemAllergens = await this.allergenService.getItemAllergensForItem(menu.fullName);
+
+        return {
+          ...menu,
+          ingredients,
+          allergens: itemAllergens,
+        };
+      })
     );
   }
-
 }

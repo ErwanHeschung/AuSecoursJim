@@ -4,7 +4,6 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
-import { IngredientService } from '../../services/no-bff/ingredient.service';
 
 @Component({
   selector: 'app-basket-item',
@@ -22,22 +21,7 @@ export class BasketItemComponent {
   public editIcon: IconDefinition = ICONS['edit'];
   private originalIngredients: { [key: string]: number } = {};
 
-  constructor(
-    private basketService: BasketService,
-    @Inject('INGREDIENT_SERVICE') private ingredientService: IngredientService
-  ) {}
-
-  ngOnInit() {
-    if (this.item?.fullName) {
-      this.ingredientService.getItemIngredients(this.item.fullName).subscribe({
-        next: (ingredients: any) => {
-          ingredients.forEach((ing: any) => {
-            this.originalIngredients[ing.name] = ing.quantity;
-          });
-        },
-      });
-    }
-  }
+  constructor(private basketService: BasketService) {}
 
   public deleteFromBasket(basketItemId: string | undefined): void {
     if (basketItemId) {

@@ -9,7 +9,7 @@ export type Item = {
   category: string;
   image: string;
   ingredients?: Ingredient[];
-  allergens?: string[];
+  allergens?: Allergen[];
 };
 
 export type BasketItem = Item & {

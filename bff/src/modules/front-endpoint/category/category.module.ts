@@ -7,13 +7,15 @@ import { MenuService } from 'src/modules/back-proxy/menu/menu.service';
 import { IngredientService } from 'src/modules/data-provider/ingredient/ingredient.service';
 import { IngredientModule } from 'src/modules/data-provider/ingredient/ingredient.module';
 import { MenuModule } from 'src/modules/back-proxy/menu/menu.module';
+import { AllergenModule } from 'src/modules/data-provider/allergen/allergen.module';
 
 @Module({
   imports: [
     HttpModule,
     ConfigModule,
     IngredientModule,
-    MenuModule
+    MenuModule,
+    AllergenModule
   ],
   controllers: [CategoryController],
   providers: [CategoryService],

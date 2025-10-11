@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { PersonList } from '../../core/models/person-list.model';
+import { SliderComponent } from '../../shared/components/slider/slider.component';
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -24,6 +25,7 @@ type BasketSelected = {
   imports: [
     CommonModule,
     CounterComponent,
+    SliderComponent,
     PaymentLayoutComponent,
     ErrorBannerComponent,
   ],
@@ -33,14 +35,11 @@ export class SplitPaymentComponent {
   showError: boolean = false;
   basket!: Basket;
   items!: BasketSelected[];
-  numberOfPersons: number = 2;
+  numberOfPersons: number = 1;
   totalOrder: number = 0;
   mode: 'euro' | 'items' = 'euro';
 
-  persons = [
-    { name: 'Personne 1', amount: 0 },
-    { name: 'Personne 2', amount: 0 },
-  ];
+  persons = [{ name: 'Personne 1', amount: 0 }];
 
   constructor(
     private basketService: BasketService,
@@ -83,6 +82,9 @@ export class SplitPaymentComponent {
 
     this.numberOfPersons = newCount;
     this.updatePersonsCount();
+    const baseAmount =
+      Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
+    this.persons.forEach(p => (p.amount = baseAmount));
   }
 
   onModeChange(newMode: 'euro' | 'items') {
@@ -112,11 +114,17 @@ export class SplitPaymentComponent {
   }
 
   validateForm(): void {
-    if (this.mode === 'euro') {
+    if (this.persons.length < 2) {
+      this.persons[0].amount = this.totalOrder;
+      this.showError = false;
+    } else if (this.mode === 'euro') {
       this.showError = this.currentTotal !== this.totalOrder;
-    } else {
+    } else if (this.mode === 'items') {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
+      if (allSelected) {
+        this.computeAmountPerPersonItemMode();
+      }
     }
     if (!this.showError) {
       this.processPayment();
@@ -124,9 +132,6 @@ export class SplitPaymentComponent {
   }
 
   private processPayment(): void {
-    if (this.mode === 'items') {
-      this.computeAmountPerPersonItemMode();
-    }
     this.save();
     console.log('Redirect to payment page');
     this.router.navigate([ROUTES.payment]);

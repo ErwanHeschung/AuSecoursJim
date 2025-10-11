@@ -9,6 +9,7 @@ import { IPaymentService } from '../../core/models/interfaces/payment';
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { PersonList } from '../../core/models/person-list.model';
+import { ROUTES } from '../../core/utils/constant';
 
 @Component({
   selector: 'app-payment',
@@ -80,7 +81,7 @@ export class PaymentComponent {
   private trackOrder() {
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
       if (orderId) {
-        this.router.navigate(['order-tracking', orderId]);
+        this.router.navigate([ROUTES.orderTrackingQRcode]);
       }
     });
   }

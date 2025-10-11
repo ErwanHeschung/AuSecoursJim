@@ -5,6 +5,7 @@ import { ROUTES } from '../../core/utils/constant';
 import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { IOrderService } from '../../core/models/interfaces/order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-tracking-qrcode',
@@ -21,7 +22,8 @@ export class OrderTrackingQRcodeComponent implements OnInit {
 
   constructor(
     @Inject('ORDER_SERVICE') private orderService: IOrderService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private routes: Router
   ) {}
 
   ngOnInit() {
@@ -30,5 +32,9 @@ export class OrderTrackingQRcodeComponent implements OnInit {
         this.orderTrackingUrl = `${this.baseUrl}/${orderId}`;
       }
     });
+  }
+
+  redirectToMenu() {
+    this.routes.navigate([ROUTES.landing]);
   }
 }

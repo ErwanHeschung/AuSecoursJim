@@ -62,10 +62,7 @@
         <!-- EURO mode -->
         <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
           <div class="person-row" *ngFor="let p of persons; let i = index">
-            <app-counter
-              [(value)]="p.amount"
-              [limit]="totalOrder"
-            ></app-counter>
+            <app-slider [(value)]="p.amount" [limit]="totalOrder"></app-slider>
             <span class="person">{{ p.name }}</span>
           </div>
 

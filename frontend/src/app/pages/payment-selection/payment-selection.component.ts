@@ -7,6 +7,7 @@ import { ROUTES } from '../../core/utils/constant';
 import { BasketService } from '../../shared/services/basket.service';
 import { OrderService } from '../../shared/services/no-bff/order.service';
 import { PaymentService } from '../../shared/services/no-bff/payment.service';
+import { Basket } from '../../core/models/basket.model';
 
 @Component({
   selector: 'app-payment-selection',
@@ -15,6 +16,7 @@ import { PaymentService } from '../../shared/services/no-bff/payment.service';
   styleUrl: './payment-selection.component.scss',
 })
 export class PaymentSelectionComponent {
+  private basket!: Basket;
   public options: {
     label: string;
     icon: IconDefinition;
@@ -31,10 +33,20 @@ export class PaymentSelectionComponent {
     private paymentService: PaymentService
   ) {}
 
+  ngOnInit() {
+    this.basketService.basket$.subscribe(basket => {
+      this.basket = basket;
+    });
+  }
+
   selectCash() {
+    this.orderService
+      .prepareOrderOnFirstFreeOrderNumber(this.basket)
+      .subscribe();
     this.paymentService
       .pay(this.basketService.getTotal())
       .subscribe(result => console.log(result));
+    this.router.navigate([ROUTES.orderTrackingQRcode]);
   }
 
   selectCard() {

@@ -5,9 +5,9 @@ import { OptionSelectionLayoutComponent } from '../../layouts/option-selection-l
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { BasketService } from '../../shared/services/basket.service';
-import { OrderService } from '../../shared/services/no-bff/order.service';
-import { PaymentService } from '../../shared/services/no-bff/payment.service';
 import { Basket } from '../../core/models/basket.model';
+import { IOrderService } from '../../core/models/interfaces/order';
+import { IPaymentService } from '../../core/models/interfaces/payment';
 
 @Component({
   selector: 'app-payment-selection',
@@ -29,8 +29,8 @@ export class PaymentSelectionComponent {
   constructor(
     private router: Router,
     private basketService: BasketService,
-    private orderService: OrderService,
-    private paymentService: PaymentService
+    @Inject('ORDER_SERVICE') private orderService: IOrderService,
+    @Inject('PAYMENT_SERVICE') private paymentService: IPaymentService
   ) {}
 
   ngOnInit() {

@@ -1,12 +1,11 @@
 import { HttpService } from "@nestjs/axios";
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { firstValueFrom } from "rxjs";
 import { PreparationDto } from "src/common/dto/preparation.dto";
 
 @Injectable()
 export class PreparationProxy {
-    private readonly logger = new Logger(PreparationProxy.name);
     
     private backendUrl: string;
 
@@ -16,7 +15,6 @@ export class PreparationProxy {
     ) {
         this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
         this.backendUrl += '/kitchen';
-        this.logger.log(this.backendUrl);
     }
 
 

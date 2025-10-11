@@ -10,13 +10,13 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { OrderModule } from './modules/front-endpoint/order/order.module';
 import { PaymentModule } from './modules/front-endpoint/payment/payment.module';
 import { AllergenModule } from './modules/data-provider/allergen/allergen.module';
-import { OrderTrackingGateway } from './modules/websocket/order-tracking.gateway';
 import { OrderTrackingModule } from './modules/websocket/order-tracking.module';
+import { AxiosLoggingInterceptor } from './interceptors/logging.interceptor';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), 
-    HttpModule.register({}),
+    HttpModule,
     MenuModule,
     CategoryModule,
     OrderModule,
@@ -31,6 +31,9 @@ import { OrderTrackingModule } from './modules/websocket/order-tracking.module';
     IngredientModule,
     AllergenModule,
     OrderTrackingModule
+  ],
+  providers: [
+    AxiosLoggingInterceptor,
   ],
 })
 export class AppModule {}

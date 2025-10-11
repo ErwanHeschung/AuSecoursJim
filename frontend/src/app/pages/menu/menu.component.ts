@@ -76,7 +76,6 @@ export class MenuComponent implements OnInit {
     this.categoryService.getItemsByCategoryName(categoryName).subscribe({
       next: (initializedItems: Item[]) => {
         this.allItems = initializedItems;
-        console.log(initializedItems);
         this.applyFilters();
       },
       error: err =>

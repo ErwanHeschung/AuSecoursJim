@@ -51,7 +51,6 @@ export class SplitPaymentComponent {
       this.STORAGE_KEY
     );
     if (saved) {
-      console.log('Saved payment data found. Redirect to payment page');
       this.router.navigate([ROUTES.payment]);
     }
   }
@@ -128,7 +127,6 @@ export class SplitPaymentComponent {
       this.computeAmountPerPersonItemMode();
     }
     this.save();
-    console.log('Redirect to payment page');
     this.router.navigate([ROUTES.payment]);
   }
 

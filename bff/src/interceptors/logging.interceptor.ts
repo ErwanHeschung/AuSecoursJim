@@ -1,4 +1,6 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger, OnModuleInit } from '@nestjs/common';
+import { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -10,12 +12,27 @@ export class LoggingInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const httpMethod = req.method;
     const url = req.url;
-    // const controllerName = context.getClass().name;
-    // const methodName = context.getHandler().name;
 
     this.logger.log(`Received [${httpMethod}] ${url}`);
 
     return next.handle();
   }
 
+}
+
+
+@Injectable()
+export class AxiosLoggingInterceptor implements OnModuleInit {
+  private readonly logger = new Logger('HttpClient');
+
+  constructor(private readonly httpService: HttpService) { }
+
+  onModuleInit() {
+    const axios = this.httpService.axiosRef;
+
+    axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+      this.logger.log(`Sending ${config.method?.toUpperCase()} request to ${config.url}`);
+      return config;
+    });
+  }
 }

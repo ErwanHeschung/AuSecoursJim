@@ -37,4 +37,8 @@ export class OrderTrackingQRcodeComponent implements OnInit {
   redirectToMenu() {
     this.routes.navigate([ROUTES.landing]);
   }
+
+  copyToClipboard() {
+    navigator.clipboard.writeText(this.orderTrackingUrl);
+  }
 }

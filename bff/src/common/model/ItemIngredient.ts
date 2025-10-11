@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Ingredient } from "./ingredient";
 
 @Entity()
+@Unique('UQ_item_ingredient', ['itemName', 'ingredient'])
 export class ItemIngredient {
     @PrimaryGeneratedColumn('uuid')
     _id: string;

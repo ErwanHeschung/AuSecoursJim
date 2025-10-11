@@ -21,12 +21,12 @@ export class AllergenService {
     async getItemAllergensForItem(itemName: string): Promise<AllergenDTO[]> {
         const itemAllergens = await this.itemAllergenRepository.find({
             where: { itemName },
-            relations: ['ingredient'],
+            relations: ['allergen'],
         });
 
         return itemAllergens.map(ia => ({
-            name: ia.ingredient.name,
-            display: ia.ingredient.display,
+            name: ia.allergen.name,
+            display: ia.allergen.display,
         }));
     }
 }

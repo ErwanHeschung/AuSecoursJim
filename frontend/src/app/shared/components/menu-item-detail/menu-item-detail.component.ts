@@ -63,9 +63,6 @@ export class MenuItemDetailComponent implements OnInit {
       ingredients: this.menuItem.ingredients
         ? JSON.parse(JSON.stringify(this.menuItem.ingredients))
         : undefined,
-      ...(this.isBasketItem(this.menuItem) && {
-        basketItemId: this.menuItem.basketItemId,
-      }),
     };
 
     if (this.isEditMode && this.isBasketItem(this.menuItem)) {

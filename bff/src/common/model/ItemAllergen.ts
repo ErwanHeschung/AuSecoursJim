@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Allergen } from "./allergen";
 
 @Entity()
+@Unique('UQ_item_allergen', ['itemName', 'allergen'])
 export class ItemAllergen {
     @PrimaryGeneratedColumn('uuid')
     _id: string;
@@ -11,5 +12,5 @@ export class ItemAllergen {
 
     @ManyToOne(() => Allergen)
     @JoinColumn({ name: 'allergen_id' })
-    ingredient: Allergen;
+    allergen: Allergen;
 }

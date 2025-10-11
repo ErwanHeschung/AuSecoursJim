@@ -23,7 +23,7 @@ while true; do
       echo "Starting $short_name ($item_id)"
       curl -s -X POST "$API_URL$PREPARATION_ITEM_PATH/$item_id/start" > /dev/null
 
-      sleep 10
+      sleep 1
 
       echo "Finishing $short_name ($item_id)"
       curl -s -X POST "$API_URL$PREPARATION_ITEM_PATH/$item_id/finish" > /dev/null

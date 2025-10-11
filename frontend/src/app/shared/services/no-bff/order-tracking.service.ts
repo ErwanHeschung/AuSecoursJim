@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { PreparationService } from './gateway-calls/preparation.service';
 import { interval, map, Observable, startWith, switchMap } from 'rxjs';
 import { IOrderTrackingService } from '../../../core/models/interfaces/order-tracking';
-import { OrderTrackingStatus } from '../../../core/models/order-tracking-status';
 import { TableService } from './gateway-calls/table.service';
 
 @Injectable({

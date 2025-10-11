@@ -1,0 +1,17 @@
+<div class="progress">
+  <div class="progress-container">
+    <div
+      class="progress-bar"
+      [style.width.%]="progress"
+      [class.complete]="progress === 100"
+    >
+      <div
+        class="percentage"
+        [style.left.%]="progress"
+        [style.transform]="'translateX(-50%)'"
+      >
+        {{ progress }}%
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="slider">
+  <input
+    type="range"
+    min="0"
+    [max]="limit"
+    [(ngModel)]="value"
+    (ngModelChange)="valueChange.emit($any($event))"
+    step="0.5"
+  />
+  <span class="count">{{ value }}</span>
+</div>

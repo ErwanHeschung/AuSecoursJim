@@ -1,0 +1,124 @@
+<app-payment-layout>
+  <div class="bill-container">
+    <app-error-banner
+      [(visible)]="showError"
+      [message]="
+        mode === 'euro'
+          ? 'Le total doit être égal au total de la commande (' +
+            totalOrder +
+            '€)'
+          : 'Tous les articles doivent être sélectionnés'
+      "
+    >
+    </app-error-banner>
+
+    <h2>Partager l’addition</h2>
+
+    <div class="page-wrapper" [class.dimmed]="showError">
+      <!-- Number of persons -->
+      <div class="persons">
+        <label>Nombre de personnes</label>
+        <div class="counter">
+          <app-counter
+            [value]="numberOfPersons"
+            (valueChange)="onNumberOfPersonsChanged($event)"
+          >
+          </app-counter>
+        </div>
+      </div>
+
+      <div class="card mode-box">
+        <!-- Mode selection tabs -->
+        <div class="tabs">
+          <button
+            class="tab"
+            [class.active]="mode === 'euro'"
+            (click)="onModeChange('euro')"
+          >
+            Euro
+          </button>
+          <button
+            class="tab"
+            [class.active]="mode === 'items'"
+            (click)="onModeChange('items')"
+          >
+            Par élément
+          </button>
+        </div>
+
+        <!-- 1 person mode -->
+        <ng-container *ngIf="persons.length === 1">
+          <div class="person-row" *ngFor="let p of persons; let i = index">
+            <strong>{{ totalOrder }}€</strong>
+            <span class="person">{{ p.name }}</span>
+          </div>
+
+          <div class="total">
+            <span>Total de la commande : </span>
+            <strong>{{ totalOrder }}€</strong>
+          </div>
+        </ng-container>
+
+        <!-- EURO mode -->
+        <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
+          <div class="person-row" *ngFor="let p of persons; let i = index">
+            <app-slider [(value)]="p.amount" [limit]="totalOrder"></app-slider>
+            <span class="person">{{ p.name }}</span>
+          </div>
+
+          <div class="totalOrder">
+            <span>Total : </span>
+            <strong>{{ currentTotal }}€</strong>
+          </div>
+
+          <div class="total">
+            <span>Total de la commande : </span>
+            <strong>{{ totalOrder }}€</strong>
+          </div>
+        </ng-container>
+
+        <!-- ITEMS mode -->
+        <ng-container *ngIf="mode === 'items' && persons.length >= 2">
+          <div
+            class="items-grid"
+            [ngStyle]="{ '--person-count': persons.length }"
+          >
+            <!-- Person number row -->
+            <div class="grid-header">Personne</div>
+            <div class="grid-header"></div>
+            <div class="grid-header" *ngFor="let p of persons; let j = index">
+              {{ j + 1 }}
+            </div>
+
+            <!-- Item rows -->
+            <ng-container *ngFor="let item of items; let i = index">
+              <img
+                [src]="item.basketItems.image"
+                alt="{{ item.basketItems.fullName }}"
+                class="grid-image"
+              />
+              <div class="grid-price">{{ item.basketItems.price }}€</div>
+              <div
+                class="grid-checkbox"
+                *ngFor="let p of persons; let j = index"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="item.selected.includes(j)"
+                  (change)="toggleItemSelection(i, j)"
+                />
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Pay button -->
+      <div class="pay-box">
+        <button class="button-primary pay-button" (click)="validateForm()">
+          Payer
+        </button>
+      </div>
+    </div>
+  </div>
+</app-payment-layout>

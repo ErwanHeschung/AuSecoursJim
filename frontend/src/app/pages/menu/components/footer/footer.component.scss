@@ -1,0 +1,22 @@
+footer {
+  width: 100%;
+  height: var(--footer-height);
+  background-color: var(--secondary-color);
+
+  box-shadow: var(--base-shadow);
+  border-top: var(--base-border);
+
+  color: var(--primary-color);
+
+  display: flex;
+  justify-content: end;
+}
+
+#validate {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  padding: 4vmin;
+  gap: 4vmin;
+}

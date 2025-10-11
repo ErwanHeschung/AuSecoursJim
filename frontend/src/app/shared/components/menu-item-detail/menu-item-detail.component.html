@@ -1,0 +1,34 @@
+<img [src]="menuItem.image" alt="{{ menuItem.fullName }}" class="item-image" />
+<h2>{{ menuItem.fullName }}</h2>
+<div class="ingredients-section">
+  @if (menuItem.ingredients && menuItem.ingredients.length > 0) {
+    <h3>Remove ingredients</h3>
+    <ul>
+      @for (ingredient of menuItem.ingredients; track ingredient.name) {
+        <li>
+          <app-counter [(value)]="ingredient.quantity" [limit]="2" />
+          <span class="ingredient-name">{{ ingredient.name }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>
+<div class="actions">
+  <button
+    class="delete-btn"
+    (click)="deleteFromBasket()"
+    [disabled]="!isPresentInBasket"
+  >
+    <fa-icon [icon]="trashIcon"></fa-icon>
+  </button>
+  <div class="quantity-selector">
+    <select [(ngModel)]="quantity">
+      @for (n of maxQuantity; track n) {
+        <option [value]="n">{{ 'x' + n }}</option>
+      }
+    </select>
+  </div>
+  <button class="add-to-cart-btn" (click)="addToBasket()">
+    {{ isEditMode ? 'Update' : 'Add' }} - {{ menuItem.price * quantity }}€
+  </button>
+</div>

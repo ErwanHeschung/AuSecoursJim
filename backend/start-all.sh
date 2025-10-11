@@ -2,7 +2,7 @@
 
 source ./framework.sh
 
-echo "starting all"
+echo "starting all backend services"
 docker-compose --env-file ./.env.docker \
                --file menu-service/docker-compose-menu.yml \
                --file dining-service/docker-compose-dining.yml \

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { BasketDto } from 'src/common/dto/basket.dto';
 import { OrderItemDto } from 'src/common/dto/item.dto';
-import { TableProxy } from 'src/proxies/table.proxy';
+import { TableProxy } from 'src/modules/back-proxy/table.proxy';
 
 @Injectable()
 export class OrderService {

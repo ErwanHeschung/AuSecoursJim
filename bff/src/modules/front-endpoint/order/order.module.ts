@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
-import { TableProxy } from 'src/proxies/table.proxy';
+import { TableProxy } from 'src/modules/back-proxy/table.proxy';
 
 @Module({
   imports: [

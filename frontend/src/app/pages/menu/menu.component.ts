@@ -11,8 +11,6 @@ import { Allergen } from '../../core/models/allergen.model';
 import { ICategoryService } from '../../core/models/interfaces/category';
 import { FilterAllergensComponent } from '../../shared/components/filter-allergens/filter-allergens.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { IAllergenService } from '../../core/models/interfaces/allergen';
-import { switchMap, map } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -32,7 +30,9 @@ export class MenuComponent implements OnInit {
   protected ICONS = ICONS;
 
   protected categories: Category[] = [];
+
   protected items: Item[] = [];
+  protected allItems: Item[] = [];
 
   protected selectedCategory: Category | null = null;
 
@@ -44,11 +44,8 @@ export class MenuComponent implements OnInit {
 
   protected itemPopup: boolean = false;
 
-  private allItemsWithAllergens: Item[] = [];
-
   constructor(
-    @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService,
-    @Inject('ALLERGEN_SERVICE') private allergenService: IAllergenService
+    @Inject('CATEGORY_SERVICE') private categoryService: ICategoryService
   ) {}
 
   ngOnInit(): void {
@@ -71,46 +68,28 @@ export class MenuComponent implements OnInit {
   }
 
   public openItemDetails(item: Item): void {
-    // TODO: Open item details popup
     this.selectedItem = item;
     this.toggleItemPopup();
   }
 
   private initializeItems(categoryName: string) {
-    this.categoryService
-      .getItemsByCategoryName(categoryName)
-      .pipe(
-        switchMap((items: Item[]) =>
-          this.allergenService.getDishesWithAllergens().pipe(
-            map((dishesWithAllergens: string[][]) => {
-              const dishMap = new Map<string, string[]>(
-                dishesWithAllergens.map(d => [d[0], d.slice(1)])
-              );
-
-              return items.map(item => ({
-                ...item,
-                allergens: dishMap.get(item.fullName) || [],
-              }));
-            })
-          )
-        )
-      )
-      .subscribe({
-        next: (initializedItems: Item[]) => {
-          this.allItemsWithAllergens = initializedItems;
-
-          this.applyFilters();
-        },
-        error: err =>
-          console.error('Erreur lors de l’initialisation des items :', err),
-      });
+    this.categoryService.getItemsByCategoryName(categoryName).subscribe({
+      next: (initializedItems: Item[]) => {
+        this.allItems = initializedItems;
+        console.log(initializedItems);
+        this.applyFilters();
+      },
+      error: err =>
+        console.error("Erreur lors de l'initialisation des items :", err),
+    });
   }
 
   private applyFilters() {
-    const excludedIds = this.selectedAllergens.map(a => a.id);
-
-    this.items = this.allItemsWithAllergens.filter(item =>
-      excludedIds.every(ex => !(item.allergens || []).includes(ex))
+    const excludedName = this.selectedAllergens.map(a => a.name);
+    this.items = this.allItems.filter(item =>
+      excludedName.every(
+        ex => !(item.allergens || []).some(allergen => allergen.name === ex)
+      )
     );
   }
 

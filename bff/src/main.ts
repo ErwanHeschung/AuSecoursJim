@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
+import { DataSource } from 'typeorm';
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +20,11 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   app.useGlobalInterceptors(new LoggingInterceptor());
+
+  const dataSource = app.get(DataSource);
+
+  const sql = fs.readFileSync(path.join(__dirname, '../db-init/init.sql'), 'utf-8');
+  await dataSource.query(sql);
 
   await app.listen(process.env.PORT ?? 4100);
 }

@@ -9,7 +9,7 @@ import { Basket } from '../../../core/models/basket.model';
   providedIn: 'root',
 })
 export class OrderServiceBFF implements IOrderService {
- private apiUrl: string = environment.apiUrl + '/order';
+  private apiUrl: string = environment.apiUrl + '/order';
 
   private latestOrderIdSubject: BehaviorSubject<string | null> =
     new BehaviorSubject<string | null>(null);

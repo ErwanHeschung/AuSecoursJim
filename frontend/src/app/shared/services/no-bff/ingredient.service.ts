@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, shareReplay, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Ingredient } from '../../../core/models/ingredient.model';
-import { IIngredientService } from '../../../core/models/interfaces/ingredient';
 import { ingredientData } from '../../../../assets/ingredients';
 
 @Injectable({
   providedIn: 'root',
 })
-export class IngredientService implements IIngredientService {
+export class IngredientService {
   private ingredientData$: Observable<Record<string, Ingredient[]>> =
     of(ingredientData);
 

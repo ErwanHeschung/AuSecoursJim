@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IngredientDto } from './ingredient.dto';
+import { AllergenDTO } from './allergen.dto';
 
 export class ItemDto {
   @ApiProperty()
@@ -22,6 +23,9 @@ export class ItemDto {
 
   @ApiProperty({ type: [IngredientDto], required: false })
   ingredients?: IngredientDto[];
+
+  @ApiProperty({ type: [AllergenDTO], required: false })
+  allergens?: AllergenDTO[];
 }
 
 

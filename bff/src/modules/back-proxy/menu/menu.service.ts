@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { ItemDto } from '../../common/dto/item.dto';
+import { ItemDto } from '../../../common/dto/item.dto';
 
 @Injectable()
 export class MenuService {

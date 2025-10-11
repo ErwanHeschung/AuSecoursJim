@@ -67,7 +67,6 @@ export class PaymentComponent {
             .indexOf(false);
         });
     } else {
-      console.log('All payments completed. Order can be created');
       this.createOrder();
     }
   }

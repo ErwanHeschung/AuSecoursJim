@@ -56,7 +56,6 @@ export class OrderTrackingComponent {
           this.orderService.finishOrder(this.orderId).subscribe(() => {
             this.orderCompleted = true;
             this.localStorageService.clear();
-            console.log('Order marked as finished');
             setTimeout(() => {
               this.router.navigate([ROUTES.landing]);
             }, 4000);

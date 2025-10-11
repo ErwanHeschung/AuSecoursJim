@@ -21,29 +21,32 @@ export class OrderTrackingGateway {
         @ConnectedSocket() client: Socket
     ) {
         const intervalId = setInterval(async () => {
-            const order = await this.tableProxy.getOrder(orderId);
-            const preparations = await this.preaprationProxy.getPreparations(
-                'readyToBeServed',
-                order.tableNumber
-            );
+            try {
+                const order = await this.tableProxy.getOrder(orderId);
+                const preparations = await this.preaprationProxy.getPreparations(
+                    'readyToBeServed',
+                    order.tableNumber
+                );
 
-            const orderPrepIds = order.preparations.map(p => p._id);
-            const readyIds = preparations.map(p => p._id);
-            const readyCount = orderPrepIds.filter(id => readyIds.includes(id)).length;
-            const total = orderPrepIds.length;
+                const orderPrepIds = order.preparations.map(p => p._id);
+                const readyIds = preparations.map(p => p._id);
+                const readyCount = orderPrepIds.filter(id => readyIds.includes(id)).length;
+                const total = orderPrepIds.length;
+                const progress = total > 0 ? Math.round((readyCount / total) * 100) : 0;
 
-            const progress = total > 0 ? Math.round((readyCount / total) * 100) : 0;
+                client.emit('orderUpdate', { progress });
 
-
-            client.emit('orderUpdate', {
-                progress: total > 0 ? Math.round((readyCount / total) * 100) : 0,
-            });
-
-            if (progress === 100) {
+                if (progress === 100) {
+                    clearInterval(intervalId);
+                }
+            } catch (error) {
                 clearInterval(intervalId);
+                client.disconnect(true);
             }
         }, 2000);
 
-        client.on('disconnect', () => clearInterval(intervalId));
+        client.on('disconnect', () => {
+            clearInterval(intervalId);
+        });
     }
 }

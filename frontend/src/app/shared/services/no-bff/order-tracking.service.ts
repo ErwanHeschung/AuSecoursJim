@@ -33,7 +33,6 @@ export class OrderTrackingService implements IOrderTrackingService {
                     readyIds.includes(id)
                   ).length;
                   const total = orderPrepIds.length;
-                  console.log({ orderPrepIds, readyIds, readyCount });
 
                   return total > 0 ? Math.round((readyCount / total) * 100) : 0;
                 })

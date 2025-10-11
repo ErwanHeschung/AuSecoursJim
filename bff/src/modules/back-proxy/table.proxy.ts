@@ -1,5 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { OrderItemDto } from "src/common/dto/item.dto";
 import { OrderDto } from "src/common/dto/order.dto";
@@ -7,7 +7,6 @@ import { TableDto } from "src/common/dto/table.dto";
 
 @Injectable()
 export class TableProxy {
-    private readonly logger = new Logger(TableProxy.name);
     
     private backendUrl: string;
 
@@ -17,7 +16,6 @@ export class TableProxy {
     ) {
         this.backendUrl = this.config.get<string>('GATEWAY_URL_WITH_PORT') ?? '';
         this.backendUrl += '/dining';
-        this.logger.log(this.backendUrl);
     }
 
 

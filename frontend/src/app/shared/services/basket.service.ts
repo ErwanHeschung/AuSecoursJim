@@ -3,6 +3,7 @@ import { BasketItem } from '../../core/models/item.model';
 import { BehaviorSubject } from 'rxjs';
 import { Basket } from '../../core/models/basket.model';
 import { LocalStorageService } from './local-storage.service';
+import { Ingredient } from '../../core/models/ingredient.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,27 @@ export class BasketService {
     items: [],
   });
   public basket$ = this.basketSubject.asObservable();
+  private originalIngredientsMap = new Map<string, Ingredient[]>();
 
   constructor(private localStorageService: LocalStorageService) {
-    const saved = this.localStorageService.getItem<Basket>(this.STORAGE_KEY);
-    if (saved) {
-      this.basketSubject.next(saved);
-    } else {
-      this.basketSubject.next({ _id: undefined, items: [] });
+    const savedBasket = this.localStorageService.getItem<Basket>(
+      this.STORAGE_KEY
+    );
+    if (savedBasket) {
+      this.basketSubject.next(savedBasket);
+    }
+
+    const savedOriginal = this.localStorageService.getItem<
+      Record<string, Ingredient[]>
+    >(`${this.STORAGE_KEY}_original`);
+    if (savedOriginal) {
+      this.originalIngredientsMap = new Map(Object.entries(savedOriginal));
     }
   }
 
   public addItem(item: BasketItem): void {
     const basket = this.basketSubject.value!;
+    const originalSnapshot = this.getOriginal(item._id);
 
     const existing = basket.items.find(
       i =>
@@ -36,11 +46,10 @@ export class BasketService {
     if (existing) {
       existing.quantity += item.quantity;
     } else {
-      const newItem = {
+      basket.items.push({
         ...item,
         basketItemId: this.generateBasketItemId(),
-      };
-      basket.items.push(newItem);
+      });
     }
 
     this.basketSubject.next(basket);
@@ -129,11 +138,33 @@ export class BasketService {
   }
 
   private save() {
-    if (this.basketSubject.value) {
-      this.localStorageService.setItem(
-        this.STORAGE_KEY,
-        this.basketSubject.value
+    const basket = this.basketSubject.value;
+    if (basket) {
+      this.localStorageService.setItem(this.STORAGE_KEY, basket);
+      const mapObj: Record<string, Ingredient[]> = {};
+      this.originalIngredientsMap.forEach((value, key) => {
+        mapObj[key] = value;
+      });
+      this.localStorageService.setItem(`${this.STORAGE_KEY}_original`, mapObj);
+    }
+  }
+
+  public storeOriginal(itemId: string, ingredients: Ingredient[]): void {
+    if (!this.originalIngredientsMap.has(itemId)) {
+      this.originalIngredientsMap.set(
+        itemId,
+        ingredients.map(ing => ({ ...ing }))
       );
     }
+  }
+
+  public getOriginal(itemId: string): Ingredient[] {
+    return (
+      this.originalIngredientsMap.get(itemId)?.map(ing => ({ ...ing })) ?? []
+    );
+  }
+
+  public hasOriginal(itemId: string): boolean {
+    return this.originalIngredientsMap.has(itemId);
   }
 }

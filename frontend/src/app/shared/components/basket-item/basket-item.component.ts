@@ -32,44 +32,50 @@ export class BasketItemComponent {
   public editItem(): void {
     this.edit.emit(this.item);
   }
-
   get removedIngredientsSummary(): string {
-    if (!this.item.ingredients || this.item.ingredients.length === 0) {
-      return '';
+    if (!this.item.ingredients?.length) return '';
+
+    const originalMap = this.basketService.getOriginal(this.item._id).reduce(
+      (acc, ing) => {
+        acc[ing.name] = ing.quantity;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    const removedIngredients: string[] = [];
+
+    for (const name in originalMap) {
+      const originalQty = originalMap[name];
+      const current = this.item.ingredients.find(ing => ing.name === name);
+      if (!current || current.quantity < originalQty) {
+        removedIngredients.push(name);
+      }
     }
 
-    const removedIngredients = this.item.ingredients
-      .filter(ing => ing.quantity === 0)
-      .map(ing => ing.name);
-
-    if (removedIngredients.length === 0) {
-      return '';
-    }
-
-    return `No ${removedIngredients.join(', ')}`;
+    return removedIngredients.length
+      ? `No ${removedIngredients.join(', ')}`
+      : '';
   }
 
   get addedIngredientsSummary(): string {
-    if (
-      !this.item.ingredients ||
-      this.item.ingredients.length === 0 ||
-      Object.keys(this.originalIngredients).length === 0
-    ) {
-      return '';
-    }
+    if (!this.item.ingredients?.length) return '';
+
+    const originalMap = this.basketService.getOriginal(this.item._id).reduce(
+      (acc, ing) => {
+        acc[ing.name] = ing.quantity;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     const addedIngredients = this.item.ingredients
-      .filter(ing => {
-        const original = this.originalIngredients[ing.name];
-        return original !== undefined && ing.quantity > original;
-      })
+      .filter(ing => (originalMap[ing.name] ?? 0) < ing.quantity)
       .map(ing => ing.name);
 
-    if (addedIngredients.length === 0) {
-      return '';
-    }
-
-    return `Extra ${addedIngredients.join(', ')}`;
+    return addedIngredients.length
+      ? `Extra ${addedIngredients.join(', ')}`
+      : '';
   }
 
   get hasModifications(): boolean {

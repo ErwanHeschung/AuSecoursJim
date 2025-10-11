@@ -35,6 +35,13 @@ export class MenuItemDetailComponent implements OnInit {
   constructor(private basketService: BasketService) {}
 
   ngOnInit() {
+    if (!this.basketService.hasOriginal(this.menuItem._id)) {
+      this.basketService.storeOriginal(
+        this.menuItem._id,
+        this.menuItem.ingredients ?? []
+      );
+    }
+
     this.quantity = this.isBasketItem(this.menuItem)
       ? this.menuItem.quantity
       : 1;
@@ -56,6 +63,9 @@ export class MenuItemDetailComponent implements OnInit {
       ingredients: this.menuItem.ingredients
         ? JSON.parse(JSON.stringify(this.menuItem.ingredients))
         : undefined,
+      ...(this.isBasketItem(this.menuItem) && {
+        basketItemId: this.menuItem.basketItemId,
+      }),
     };
 
     if (this.isEditMode && this.isBasketItem(this.menuItem)) {

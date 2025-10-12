@@ -42,6 +42,12 @@ export class MenuItemDetailComponent implements OnInit {
       );
     }
 
+    if (!this.isEditMode && this.menuItem.ingredients) {
+      this.menuItem.ingredients = this.basketService.getOriginal(
+        this.menuItem._id
+      );
+    }
+
     this.quantity = this.isBasketItem(this.menuItem)
       ? this.menuItem.quantity
       : 1;

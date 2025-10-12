@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OrderTrackingStatus } from '../../core/models/order-tracking-status';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -9,6 +9,7 @@ import { IOrderTrackingService } from '../../core/models/interfaces/order-tracki
 import { IOrderService } from '../../core/models/interfaces/order';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { ROUTES } from '../../core/utils/constant';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-order-tracking',
@@ -16,7 +17,7 @@ import { ROUTES } from '../../core/utils/constant';
   templateUrl: './order-tracking.component.html',
   styleUrl: './order-tracking.component.scss',
 })
-export class OrderTrackingComponent {
+export class OrderTrackingComponent implements OnDestroy {
   public status: OrderTrackingStatus = OrderTrackingStatus.InProgress;
 
   public inProgressIcon: IconDefinition = ICONS['dineIn'];
@@ -26,6 +27,7 @@ export class OrderTrackingComponent {
   public progress: number = 0;
   public orderId!: string;
   private orderCompleted: boolean = false;
+  private preparationSub?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +42,7 @@ export class OrderTrackingComponent {
   ngOnInit(): void {
     this.orderId = this.route.snapshot.paramMap.get('orderId')!;
 
-    this.orderTrackingService
+    this.preparationSub = this.orderTrackingService
       .trackPreparation(this.orderId, 2000)
       .subscribe((progress: number) => {
         this.progress = progress;
@@ -69,5 +71,9 @@ export class OrderTrackingComponent {
       newStatus === OrderTrackingStatus.InProgress
         ? this.inProgressIcon
         : this.completedIcon;
+  }
+
+  ngOnDestroy() {
+    this.preparationSub?.unsubscribe();
   }
 }

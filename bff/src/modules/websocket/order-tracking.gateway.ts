@@ -12,7 +12,7 @@ import { PreparationProxy } from '../back-proxy/preparation.proxy';
 export class OrderTrackingGateway {
     constructor(
         private readonly tableProxy: TableProxy,
-        private readonly preaprationProxy: PreparationProxy,
+        private readonly preparationProxy: PreparationProxy,
     ) { }
 
     @SubscribeMessage('subscribeOrder')
@@ -20,33 +20,48 @@ export class OrderTrackingGateway {
         @MessageBody() orderId: string,
         @ConnectedSocket() client: Socket
     ) {
-        const intervalId = setInterval(async () => {
-            try {
-                const order = await this.tableProxy.getOrder(orderId);
-                const preparations = await this.preaprationProxy.getPreparations(
-                    'readyToBeServed',
-                    order.tableNumber
-                );
+        try {
+            const order = await this.tableProxy.getOrder(orderId);
+            const orderPrepIds = order.preparations.map(p => p._id);
 
-                const orderPrepIds = order.preparations.map(p => p._id);
-                const readyIds = preparations.map(p => p._id);
-                const readyCount = orderPrepIds.filter(id => readyIds.includes(id)).length;
-                const total = orderPrepIds.length;
-                const progress = total > 0 ? Math.round((readyCount / total) * 100) : 0;
+            let isActive = true;
 
-                client.emit('orderUpdate', { progress });
+            const pollPreparations = async () => {
+                if (!isActive) return;
 
-                if (progress === 100) {
-                    clearInterval(intervalId);
+                try {
+                    const preparations = await this.preparationProxy.getPreparations(
+                        'readyToBeServed',
+                        order.tableNumber
+                    );
+
+                    const readyIds = preparations.map(p => p._id);
+                    const readyCount = orderPrepIds.filter(id => readyIds.includes(id)).length;
+                    const total = orderPrepIds.length;
+                    const progress = total > 0 ? Math.round((readyCount / total) * 100) : 0;
+
+                    client.emit('orderUpdate', { progress });
+
+                    if (progress < 100) {
+                        setTimeout(pollPreparations, 2000);
+                    } else {
+                        isActive = false;
+                    }
+                } catch (error) {
+                    isActive = false;
+                    client.emit('error', { message: 'Failed to fetch preparations' });
+                    client.disconnect(true);
                 }
-            } catch (error) {
-                clearInterval(intervalId);
-                client.disconnect(true);
-            }
-        }, 2000);
+            };
 
-        client.on('disconnect', () => {
-            clearInterval(intervalId);
-        });
+            pollPreparations();
+
+            client.on('disconnect', () => {
+                isActive = false;
+            });
+        } catch (error) {
+            client.emit('error', { message: 'Failed to fetch order' });
+            client.disconnect(true);
+        }
     }
 }

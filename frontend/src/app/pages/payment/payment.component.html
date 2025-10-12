@@ -1,13 +1,13 @@
 <app-payment-layout>
   <div class="bill-container">
-    <h2>Paiement</h2>
+    <h2>Payment</h2>
     <div class="person">
       <p>{{ currentPerson.name }}</p>
-      <p>Montant à payer : {{ currentPerson.amount.toFixed(2) }} €</p>
+      <p>Amount to pay : {{ currentPerson.amount.toFixed(2) }} €</p>
     </div>
     <div class="pay-box">
       <button class="button-primary pay-button" (click)="validateForm()">
-        Payer
+        Pay
       </button>
     </div>
   </div>

@@ -4,20 +4,20 @@
       [(visible)]="showError"
       [message]="
         mode === 'euro'
-          ? 'Le total doit être égal au total de la commande (' +
+          ? 'The total must be equal to the total of the order (' +
             totalOrder +
             '€)'
-          : 'Tous les articles doivent être sélectionnés'
+          : 'Every items must be selected'
       "
     >
     </app-error-banner>
 
-    <h2>Partager l’addition</h2>
+    <h2>Split bill</h2>
 
     <div class="page-wrapper" [class.dimmed]="showError">
       <!-- Number of persons -->
       <div class="persons">
-        <label>Nombre de personnes</label>
+        <label>Number of people</label>
         <div class="counter">
           <app-counter
             [value]="numberOfPersons"
@@ -42,7 +42,7 @@
             [class.active]="mode === 'items'"
             (click)="onModeChange('items')"
           >
-            Par élément
+            By item
           </button>
         </div>
 
@@ -54,7 +54,7 @@
           </div>
 
           <div class="total">
-            <span>Total de la commande : </span>
+            <span>Total amount : </span>
             <strong>{{ totalOrder }}€</strong>
           </div>
         </ng-container>
@@ -72,7 +72,7 @@
           </div>
 
           <div class="total">
-            <span>Total de la commande : </span>
+            <span>Total amount : </span>
             <strong>{{ totalOrder }}€</strong>
           </div>
         </ng-container>
@@ -84,7 +84,7 @@
             [ngStyle]="{ '--person-count': persons.length }"
           >
             <!-- Person number row -->
-            <div class="grid-header">Personne</div>
+            <div class="grid-header">Person</div>
             <div class="grid-header"></div>
             <div class="grid-header" *ngFor="let p of persons; let j = index">
               {{ j + 1 }}
@@ -116,7 +116,7 @@
       <!-- Pay button -->
       <div class="pay-box">
         <button class="button-primary pay-button" (click)="validateForm()">
-          Payer
+          Pay
         </button>
       </div>
     </div>

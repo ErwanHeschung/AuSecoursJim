@@ -39,7 +39,7 @@ export class SplitPaymentComponent {
   totalOrder: number = 0;
   mode: 'euro' | 'items' = 'euro';
 
-  persons = [{ name: 'Personne 1', amount: 0 }];
+  persons = [{ name: 'Person 1', amount: 0 }];
 
   constructor(
     private basketService: BasketService,
@@ -73,7 +73,7 @@ export class SplitPaymentComponent {
   onNumberOfPersonsChanged(newCount: number) {
     if (newCount > this.numberOfPersons) {
       for (let i = this.numberOfPersons + 1; i <= newCount; i++) {
-        this.persons.push({ name: `Personne ${i}`, amount: 0 });
+        this.persons.push({ name: `Person ${i}`, amount: 0 });
       }
     } else if (newCount < this.numberOfPersons) {
       this.persons.splice(newCount);

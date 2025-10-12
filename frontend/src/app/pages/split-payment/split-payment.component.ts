@@ -58,10 +58,14 @@ export class SplitPaymentComponent {
     this.updatePersonsCount();
     this.basketService.basket$.subscribe(basket => {
       this.basket = basket;
-      this.items = basket.items.map(item => ({
-        basketItems: item,
-        selected: [],
-      }));
+
+      this.items = basket.items.flatMap(item =>
+        Array.from({ length: item.quantity }, () => ({
+          basketItems: item,
+          selected: [],
+        }))
+      );
+
       this.totalOrder = this.basketService.getTotal();
     });
   }

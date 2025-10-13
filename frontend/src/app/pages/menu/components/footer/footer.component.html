@@ -7,7 +7,9 @@
     <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
     <span>{{ basketQuantity }} items</span>
     <span>{{ basketPrice }} €</span>
-    <button class="button-primary">Validate</button>
+    <button class="button-primary" [disabled]="basketQuantity === 0">
+      Validate
+    </button>
   </div>
 </footer>
 

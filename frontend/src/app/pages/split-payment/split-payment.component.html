@@ -48,18 +48,19 @@
         <!-- EURO mode -->
         <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
           <div class="person-row" *ngFor="let p of persons; let i = index">
-            <app-slider [(value)]="p.amount" [limit]="totalOrder"></app-slider>
+            <input type="text" class="input" [value]="p.amount" (focus)="onInputFocus(i, p.amount)" readonly />
+
             <span class="person">{{ p.name }}</span>
           </div>
 
           <div class="totalOrder">
             <span>Total : </span>
-            <strong>{{ currentTotal }}€</strong>
+            <strong>{{ currentTotal | number:'1.2-2' }}€</strong>
           </div>
 
           <div class="total">
             <span>Total amount : </span>
-            <strong>{{ totalOrder }}€</strong>
+            <strong>{{ totalOrder | number:'1.2-2' }}€</strong>
           </div>
         </ng-container>
 
@@ -114,4 +115,11 @@
       </div>
     </div>
   </div>
+
+  <div id="keyboardContainer" class="simple-keyboard-wrapper" [class.active]="keyboardVisible">
+    <button class="keyboard-close" (click)="hideKeyboard()">Close keyboard</button>
+    <div class="simple-keyboard"></div>
+  </div>
+
+
 </app-payment-layout>

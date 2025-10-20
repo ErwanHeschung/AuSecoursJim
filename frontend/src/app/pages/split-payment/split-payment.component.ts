@@ -84,14 +84,37 @@ export class SplitPaymentComponent {
     }
 
     this.numberOfPersons = newCount;
+
+    this.items.forEach(item => {
+      item.selected = [];
+    });
+
+    this.refreshAmountPerPerson();
+
     this.updatePersonsCount();
-    const baseAmount =
-      Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
-    this.persons.forEach(p => (p.amount = baseAmount));
   }
+
+  refreshAmountPerPerson() {
+    this.items.forEach(item => {
+      item.selected = [];
+    });
+
+    if (this.mode == 'items') {
+      this.persons.forEach(p => (p.amount = 0));
+    }
+    else if (this.mode == 'euro') {
+      const baseAmount =
+        Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
+      this.persons.forEach(p => (p.amount = baseAmount));
+    }
+  }
+
 
   onModeChange(newMode: 'euro' | 'items') {
     this.mode = newMode;
+    this.persons.forEach(p => (p.amount = 0));
+
+    this.refreshAmountPerPerson();
   }
 
   toggleItemSelection(itemIndex: number, personIndex: number) {
@@ -101,6 +124,7 @@ export class SplitPaymentComponent {
     } else {
       selected.push(personIndex);
     }
+    this.computeAmountPerPersonItemMode();
   }
 
   computeAmountPerPersonItemMode(): void {
@@ -120,9 +144,11 @@ export class SplitPaymentComponent {
     if (this.persons.length < 2) {
       this.persons[0].amount = this.totalOrder;
       this.showError = false;
-    } else if (this.mode === 'euro') {
+    }
+    else if (this.mode === 'euro') {
       this.showError = this.currentTotal !== this.totalOrder;
-    } else if (this.mode === 'items') {
+    }
+    else if (this.mode === 'items') {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
       if (allSelected) {

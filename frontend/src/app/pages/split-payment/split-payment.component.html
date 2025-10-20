@@ -1,15 +1,12 @@
 <app-payment-layout>
   <div class="bill-container">
-    <app-error-banner
-      [(visible)]="showError"
-      [message]="
+    <app-error-banner [(visible)]="showError" [message]="
         mode === 'euro'
           ? 'The total must be equal to the total of the order (' +
             totalOrder +
             '€)'
           : 'Every items must be selected'
-      "
-    >
+      ">
     </app-error-banner>
 
     <h2>Split bill</h2>
@@ -19,10 +16,7 @@
       <div class="persons">
         <label>Number of people</label>
         <div class="counter">
-          <app-counter
-            [value]="numberOfPersons"
-            (valueChange)="onNumberOfPersonsChanged($event)"
-          >
+          <app-counter [value]="numberOfPersons" [min]="1" (valueChange)="onNumberOfPersonsChanged($event)">
           </app-counter>
         </div>
       </div>
@@ -30,18 +24,10 @@
       <div class="card mode-box">
         <!-- Mode selection tabs -->
         <div class="tabs">
-          <button
-            class="tab"
-            [class.active]="mode === 'euro'"
-            (click)="onModeChange('euro')"
-          >
+          <button class="tab" [class.active]="mode === 'euro'" (click)="onModeChange('euro')">
             Euro
           </button>
-          <button
-            class="tab"
-            [class.active]="mode === 'items'"
-            (click)="onModeChange('items')"
-          >
+          <button class="tab" [class.active]="mode === 'items'" (click)="onModeChange('items')">
             By item
           </button>
         </div>
@@ -62,27 +48,25 @@
         <!-- EURO mode -->
         <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
           <div class="person-row" *ngFor="let p of persons; let i = index">
-            <app-slider [(value)]="p.amount" [limit]="totalOrder"></app-slider>
+            <input type="text" class="input" [value]="p.amount" (focus)="onInputFocus(i, p.amount)" readonly />
+
             <span class="person">{{ p.name }}</span>
           </div>
 
           <div class="totalOrder">
             <span>Total : </span>
-            <strong>{{ currentTotal }}€</strong>
+            <strong>{{ currentTotal | number:'1.2-2' }}€</strong>
           </div>
 
           <div class="total">
             <span>Total amount : </span>
-            <strong>{{ totalOrder }}€</strong>
+            <strong>{{ totalOrder | number:'1.2-2' }}€</strong>
           </div>
         </ng-container>
 
         <!-- ITEMS mode -->
         <ng-container *ngIf="mode === 'items' && persons.length >= 2">
-          <div
-            class="items-grid"
-            [ngStyle]="{ '--person-count': persons.length }"
-          >
+          <div class="items-grid" [ngStyle]="{ '--person-count': persons.length }">
             <!-- Person number row -->
             <div class="grid-header">Person</div>
             <div class="grid-header"></div>
@@ -92,24 +76,34 @@
 
             <!-- Item rows -->
             <ng-container *ngFor="let item of items; let i = index">
-              <img
-                [src]="item.basketItems.image"
-                alt="{{ item.basketItems.fullName }}"
-                class="grid-image"
-              />
+              <img [src]="item.basketItems.image" alt="{{ item.basketItems.fullName }}" class="grid-image" />
               <div class="grid-price">{{ item.basketItems.price }}€</div>
-              <div
-                class="grid-checkbox"
-                *ngFor="let p of persons; let j = index"
-              >
-                <input
-                  type="checkbox"
-                  [checked]="item.selected.includes(j)"
-                  (change)="toggleItemSelection(i, j)"
-                />
+              <div class="grid-checkbox" *ngFor="let p of persons; let j = index">
+                <input type="checkbox" [checked]="item.selected.includes(j)" (change)="toggleItemSelection(i, j)" />
               </div>
             </ng-container>
+
+
           </div>
+          <ng-container>
+            <div *ngIf="persons.length > 1">
+              <div class="person-row" *ngFor="let p of persons; let i = index">
+                <strong>
+                  {{
+                  p.amount % 1 === 0
+                  ? p.amount
+                  : (p.amount | number:'1.0-2')
+                  }}€
+                </strong>
+                <span class="person">{{ p.name }}</span>
+              </div>
+            </div>
+
+            <div class="total">
+              <span>Total amount : </span>
+              <strong>{{ totalOrder }}€</strong>
+            </div>
+          </ng-container>
         </ng-container>
       </div>
 
@@ -121,4 +115,11 @@
       </div>
     </div>
   </div>
+
+  <div id="keyboardContainer" class="simple-keyboard-wrapper" [class.active]="keyboardVisible">
+    <button class="keyboard-close" (click)="hideKeyboard()">Close keyboard</button>
+    <div class="simple-keyboard"></div>
+  </div>
+
+
 </app-payment-layout>

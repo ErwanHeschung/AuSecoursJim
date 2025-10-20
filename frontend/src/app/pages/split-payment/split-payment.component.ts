@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
@@ -11,6 +11,8 @@ import { ROUTES } from '../../core/utils/constant';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { PersonList } from '../../core/models/person-list.model';
 import { SliderComponent } from '../../shared/components/slider/slider.component';
+import Keyboard from "simple-keyboard";
+
 
 type BasketSelected = {
   basketItems: BasketItem;
@@ -84,14 +86,37 @@ export class SplitPaymentComponent {
     }
 
     this.numberOfPersons = newCount;
+
+    this.items.forEach(item => {
+      item.selected = [];
+    });
+
+    this.refreshAmountPerPerson();
+
     this.updatePersonsCount();
-    const baseAmount =
-      Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
-    this.persons.forEach(p => (p.amount = baseAmount));
   }
+
+  refreshAmountPerPerson() {
+    this.items.forEach(item => {
+      item.selected = [];
+    });
+
+    if (this.mode == 'items') {
+      this.persons.forEach(p => (p.amount = 0));
+    }
+    else if (this.mode == 'euro') {
+      const baseAmount =
+        Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
+      this.persons.forEach(p => (p.amount = baseAmount));
+    }
+  }
+
 
   onModeChange(newMode: 'euro' | 'items') {
     this.mode = newMode;
+    this.persons.forEach(p => (p.amount = 0));
+
+    this.refreshAmountPerPerson();
   }
 
   toggleItemSelection(itemIndex: number, personIndex: number) {
@@ -101,6 +126,7 @@ export class SplitPaymentComponent {
     } else {
       selected.push(personIndex);
     }
+    this.computeAmountPerPersonItemMode();
   }
 
   computeAmountPerPersonItemMode(): void {
@@ -120,9 +146,11 @@ export class SplitPaymentComponent {
     if (this.persons.length < 2) {
       this.persons[0].amount = this.totalOrder;
       this.showError = false;
-    } else if (this.mode === 'euro') {
+    }
+    else if (this.mode === 'euro') {
       this.showError = this.currentTotal !== this.totalOrder;
-    } else if (this.mode === 'items') {
+    }
+    else if (this.mode === 'items') {
       const allSelected = this.items.every(item => item.selected.length > 0);
       this.showError = !allSelected;
       if (allSelected) {
@@ -156,5 +184,70 @@ export class SplitPaymentComponent {
       })),
     };
     this.localStorageService.setItem<PersonList>(this.STORAGE_KEY, personList);
+  }
+
+  private keyboard!: Keyboard;
+  activeInputIndex: number | null = null;
+  keyboardVisible: boolean = false;
+
+  onInputFocus(index: number, currentValue: number) {
+    this.activeInputIndex = index;
+    if (this.keyboard) {
+      this.keyboard.setInput(currentValue.toString());
+    }
+    this.keyboardVisible = true;
+  }
+
+  hideKeyboard() {
+    this.keyboardVisible = false;
+    this.activeInputIndex = null;
+  }
+
+
+  ngAfterViewInit() {
+    const container = document.querySelector(".simple-keyboard") as HTMLElement;
+    if (!container) return;
+    this.keyboard = new Keyboard({
+      onChange: input => this.onKeyboardChange(input),
+      onKeyPress: button => this.onKeyPress(button),
+      layout: {
+        default: ["1 2 3", "4 5 6", "7 8 9", "{bksp} 0 ."],
+      },
+      theme: "hg-theme-default hg-layout-numeric numeric-theme"
+    });
+  }
+
+  onKeyboardChange(input: string) {
+    if (this.activeInputIndex !== null) {
+      const person = this.persons[this.activeInputIndex];
+      const parsed = parseFloat(input.replace(',', '.'));
+      person.amount = isNaN(parsed) ? 0 : parsed;
+    }
+  }
+
+  onKeyPress(button: string) {
+    if (button === "{bksp}") {
+      const input = this.keyboard.getInput();
+      this.keyboard.setInput(input.slice(0, -1));
+      this.onKeyboardChange(this.keyboard.getInput());
+    }
+  }
+
+  ngOnDestroy() {
+    this.keyboard = undefined as any;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    if (
+      target.closest('.simple-keyboard-wrapper') ||
+      target.classList.contains('input')
+    ) {
+      return;
+    }
+
+    this.hideKeyboard();
   }
 }

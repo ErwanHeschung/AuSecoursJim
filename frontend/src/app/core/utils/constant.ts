@@ -1,5 +1,6 @@
 export const ROUTES = {
   landing: '',
+  groupCommand: 'group-command',
   menu: 'menu',
   splitPayment: 'splitPayment',
   paymentSelection: 'payment-selection',

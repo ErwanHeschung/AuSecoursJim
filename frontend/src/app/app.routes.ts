@@ -9,6 +9,11 @@ export const routes: Routes = [
       import('./pages/landing/landing.component').then(m => m.LandingComponent),
   },
   {
+    path: ROUTES.groupCommand,
+    loadComponent: () =>
+      import('./pages/group-command/group-command.component').then(m => m.GroupCommandComponent),
+  },
+  {
     path: ROUTES.paymentSelection,
     loadComponent: () =>
       import('./pages/payment-selection/payment-selection.component').then(

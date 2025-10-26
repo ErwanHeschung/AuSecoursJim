@@ -1,0 +1,21 @@
+<div class="group-command-container">
+    <img class="logo" src="/logo.webp" alt="Logo" class="logo" />
+    <div id="input-group-command-container">
+        <div id="input-order-id">
+            <label>Group Id</label>
+            <input type="text" class="input" [value]="orderId" (focus)="onInputFocus(orderId)" readonly />
+        </div>
+        <div id="counter">
+            <label>Number of people</label>
+            <app-counter [value]="numberOfPersons" [min]="1">
+            </app-counter>
+        </div>
+    </div>
+    <button class="button-primary" (click)="validateGroupOrder()">
+        Validate
+    </button>
+    <div id="keyboardContainer" class="simple-keyboard-wrapper" [class.active]="keyboardVisible">
+        <button class="keyboard-close" (click)="hideKeyboard()">Close keyboard</button>
+        <div class="simple-keyboard"></div>
+    </div>
+</div>

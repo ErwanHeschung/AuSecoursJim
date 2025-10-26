@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { PersonList } from '../../core/models/person-list.model';
-import { SliderComponent } from '../../shared/components/slider/slider.component';
 import Keyboard from "simple-keyboard";
 
 
@@ -27,7 +26,6 @@ type BasketSelected = {
   imports: [
     CommonModule,
     CounterComponent,
-    SliderComponent,
     PaymentLayoutComponent,
     ErrorBannerComponent,
   ],

@@ -1,14 +1,11 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { GroupsService } from '../services/groups.service';
 import { GroupDto } from '../dto/group.dto';
 import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.exception';
 import { GetGroupParams } from '../params/get-group.params';
-
-class UpdateNumberOfPersonsDto {
-  numberOfPersons: number;
-}
+import { UpdateNumberOfPersonsDto } from '../dto/update-number-of-persons.dto';
 
 @ApiTags('groups')
 @Controller('/groups')
@@ -32,6 +29,7 @@ export class GroupsController {
 
 
   @ApiParam({ name: 'groupId' })
+  @ApiBody({ type: UpdateNumberOfPersonsDto })
   @ApiOkResponse({ type: GroupDto, description: 'Number of persons updated' })
   @ApiNotFoundResponse({
     type: GroupIdNotFoundException,

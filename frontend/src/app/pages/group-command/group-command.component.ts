@@ -35,8 +35,6 @@ export class GroupCommandComponent {
     const url = `${this.apiUrl}/${this.orderId}/set-number`;
     const body = { numberOfPersons: this.numberOfPersons };
 
-    console.log(this.numberOfPersons);
-
     this.http.post(url, body).subscribe({
       next: (res) => {
         console.log('API Response :', res);
@@ -49,7 +47,6 @@ export class GroupCommandComponent {
   }
 
   onNumberOfPersonsChanged(newCount: number) {
-    console.log("444");
     this.numberOfPersons = newCount;
   }
 

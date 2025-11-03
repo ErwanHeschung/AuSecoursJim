@@ -11,7 +11,7 @@ export class GroupDto {
 
   @IsNotEmpty()
   @IsPositive()
-  members: number;
+  numberOfPersons: number;
 
   static GroupDtoFactory(group: Group): GroupDto {
     return group; // Update this function if Group != GroupDto

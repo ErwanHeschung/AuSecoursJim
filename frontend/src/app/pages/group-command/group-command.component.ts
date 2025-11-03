@@ -1,9 +1,11 @@
+import { environment } from '../../../environments/environment';
 import { Component, HostListener } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import Keyboard from "simple-keyboard";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-group-command',
@@ -13,12 +15,14 @@ import Keyboard from "simple-keyboard";
   styleUrl: './group-command.component.scss',
 })
 export class GroupCommandComponent {
+  private apiUrl: string = environment.apiUrl + '/group/groups';
   numberOfPersons: number = 1;
   orderId: string = "";
 
   constructor(
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
     this.localStorageService.clear();
   }
@@ -28,10 +32,23 @@ export class GroupCommandComponent {
   }
 
   validateGroupOrder() {
-    // Add verification for the order id with group order API
-    this.navigateToMenus();
+    const url = `${this.apiUrl}/${this.orderId}/set-number`;
+    const body = { numberOfPersons: this.numberOfPersons };
+
+    this.http.post(url, body).subscribe({
+      next: (res) => {
+        console.log('API Response :', res);
+        this.navigateToMenus();
+      },
+      error: (err) => {
+        console.error('Error during group update :', err);
+      }
+    });
   }
 
+  onNumberOfPersonsChanged(newCount: number) {
+    this.numberOfPersons = newCount;
+  }
 
   private keyboard!: Keyboard;
   keyboardVisible: boolean = false;

@@ -9,7 +9,7 @@ export class GroupsService {
 
   constructor(
     @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
-  ) {}
+  ) { }
 
 
   async findAll(): Promise<Group[]> {
@@ -26,5 +26,26 @@ export class GroupsService {
 
     return foundItem;
   }
+
+  async setNumberOfPersons(groupId: number, numberOfPersons: number) {
+    const group = await this.findByGroupId(groupId);
+
+    const updatedGroup = await this.groupModel
+      .findOneAndUpdate(
+        { groupId },
+        { $set: { numberOfPersons } },
+        { new: true, lean: true }
+      )
+      .exec();
+
+    if (!updatedGroup) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    return updatedGroup;
+  }
+
+
+
 
 }

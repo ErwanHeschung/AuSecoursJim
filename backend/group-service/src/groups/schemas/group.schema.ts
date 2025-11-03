@@ -17,7 +17,7 @@ export class Group {
 
   @ApiProperty()
   @Prop({ required: true })
-  members: number;
+  numberOfPersons: number;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

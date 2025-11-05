@@ -1,0 +1,25 @@
+<div class="item-card" [class.selected]="quantity > 0">
+  <div class="quantity-badge" [class.hidden]="quantity <= 0">
+    {{ quantity }}
+  </div>
+  <img [src]="item.image" [alt]="item.fullName" class="item-image" />
+  <div class="item-name">{{ item.fullName }}</div>
+
+  <!-- Temporary buttons for increment/decrement -->
+  <div class="controls">
+    <button
+      class="decrement"
+      aria-label="Decrease"
+      (click)="requestDecrement()"
+    >
+      -
+    </button>
+    <button
+      class="increment"
+      aria-label="Increase"
+      (click)="requestIncrement()"
+    >
+      +
+    </button>
+  </div>
+</div>

@@ -46,4 +46,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/payment/payment.component').then(m => m.PaymentComponent),
   },
+  {
+    path: ROUTES.groupItemSelection,
+    loadComponent: () =>
+      import(
+        './pages/group-item-selection/group-item-selection.component'
+      ).then(m => m.GroupSelectionComponent),
+  },
 ];

@@ -1,0 +1,62 @@
+<app-payment-layout [groupId]="groupId" [nbPersons]="nbPersons">
+  <h1 class="title">
+    <fa-icon [icon]="group" class="group"></fa-icon> Group Order
+  </h1>
+
+  <div class="section">
+    <h2 class="section-title">Starter</h2>
+    <div class="items-grid">
+      <app-group-item
+        *ngFor="let item of itemsByCategory('starter')"
+        [item]="item"
+        [quantity]="getQuantity(item)"
+        (increment)="onIncrement(item)"
+        (decrement)="onDecrement(item)"
+      >
+      </app-group-item>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Main</h2>
+    <div class="items-grid">
+      <app-group-item
+        *ngFor="let item of itemsByCategory('main')"
+        [item]="item"
+        [quantity]="getQuantity(item)"
+        (increment)="onIncrement(item)"
+        (decrement)="onDecrement(item)"
+      >
+      </app-group-item>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Dessert</h2>
+    <div class="items-grid">
+      <app-group-item
+        *ngFor="let item of itemsByCategory('dessert')"
+        [item]="item"
+        [quantity]="getQuantity(item)"
+        (increment)="onIncrement(item)"
+        (decrement)="onDecrement(item)"
+      >
+      </app-group-item>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="selection-status" id="selectionStatus">
+      <h1>Menu selected : {{ nbMenu }}/{{ nbPersons }}</h1>
+    </div>
+    <button
+      class="nav-button"
+      id="nextButton"
+      aria-label="Next"
+      [disabled]="nbMenu !== nbPersons"
+      (click)="goNext()"
+    >
+      <fa-icon [icon]="arrowRight" class="arrow"></fa-icon>
+    </button>
+  </div>
+</app-payment-layout>

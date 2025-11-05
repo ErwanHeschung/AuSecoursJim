@@ -14,11 +14,5 @@ export class PaymentLayoutComponent {
 
   ngOnInit(): void {
     this.showButtons = this.nbPersons > 0 && this.groupId !== '';
-    console.log(
-      'PaymentLayoutComponent initialized with groupId:',
-      this.groupId,
-      'and nbPersons:',
-      this.nbPersons
-    );
   }
 }

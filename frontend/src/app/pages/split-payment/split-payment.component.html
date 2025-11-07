@@ -39,14 +39,15 @@
         <!-- EURO mode -->
         <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
           <div class="person-row" *ngFor="let p of persons; let i = index">
-            <input type="text" class="input" [value]="p.amount" (focus)="onInputFocus(i, p.amount)" readonly />
+            <input type="text" class="input" [value]="formatAmount(p.amount)" (focus)="onInputFocus(i, p.amount)"
+              readonly />
 
             <span class="person">{{ p.name }}</span>
           </div>
 
           <div class="totalOrder">
             <span>Total : </span>
-            <strong>{{ currentTotal | number:'1.2-2' }}€</strong>
+            <strong>{{ formatAmount(currentTotal) }}€</strong>
           </div>
         </ng-container>
 

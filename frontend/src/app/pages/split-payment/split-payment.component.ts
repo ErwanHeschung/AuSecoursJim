@@ -108,8 +108,7 @@ export class SplitPaymentComponent {
       this.persons.forEach(p => (p.amount = 0));
     }
     else if (this.mode == 'euro') {
-      const baseAmount =
-        Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
+      const baseAmount = this.totalOrder / this.persons.length;
       this.persons.forEach(p => (p.amount = baseAmount));
     }
   }
@@ -179,6 +178,10 @@ export class SplitPaymentComponent {
       '--persons-count',
       this.persons.length.toString()
     );
+  }
+
+  formatAmount(amount: number): string {
+    return parseFloat(amount.toFixed(2)).toString();
   }
 
   private save(): void {

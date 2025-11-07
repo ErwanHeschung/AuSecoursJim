@@ -8,4 +8,5 @@ export const ROUTES = {
   orderTrackingWithoutId: 'order-tracking',
   orderTrackingQRcode: 'order-tracking-qrcode',
   payment: 'payment',
+  groupItemSelection: 'group-item-selection',
 };

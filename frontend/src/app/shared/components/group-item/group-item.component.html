@@ -1,0 +1,7 @@
+<div class="item-card" [class.selected]="quantity > 0">
+  <div class="quantity-badge" [class.hidden]="quantity <= 0">
+    {{ quantity }}
+  </div>
+  <img [src]="item.image" [alt]="item.fullName" class="item-image" />
+  <div class="item-name">{{ item.fullName }}</div>
+</div>

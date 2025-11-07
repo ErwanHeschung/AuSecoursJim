@@ -15,7 +15,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
   styleUrl: './order-tracking-qrcode.component.scss',
 })
 export class OrderTrackingQRcodeComponent implements OnInit {
-  public orderTrackingUrl!: string;
+  public orderTrackingUrl: string = `localhost:4200/${ROUTES.orderTrackingWithoutId}`;
 
   private baseUrl: string = `localhost:4200/${ROUTES.orderTrackingWithoutId}`;
 

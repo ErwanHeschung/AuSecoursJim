@@ -155,6 +155,15 @@ h2 {
   margin: 2.8vh;
 }
 
+#payment-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  font-weight: bold;
+  margin: 2.8vh;
+}
+
 .person-cell {
   width: var(--person-col-size);
   min-width: var(--person-col-size);

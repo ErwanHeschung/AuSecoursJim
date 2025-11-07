@@ -60,14 +60,17 @@ export class PaymentComponent {
       .pay(this.currentPerson.amount)
       .subscribe((result: boolean) => {
         this.save();
-        this.currentPersonIndex = this.people.persons
-          .map(p => p.hasPayed)
-          .indexOf(false);
+
+        const nextIndex = this.people.persons.findIndex(p => !p.hasPayed);
+
+        if (nextIndex !== -1) {
+          this.currentPersonIndex = nextIndex;
+        } else {
+          this.currentPersonIndex = this.people.persons.length - 1;
+          this.createOrder();
+          this.trackOrder();
+        }
       });
-    if (this.currentPersonIndex === this.people.persons.length - 1) {
-      this.createOrder();
-      this.trackOrder();
-    }
   }
 
   private createOrder(): void {

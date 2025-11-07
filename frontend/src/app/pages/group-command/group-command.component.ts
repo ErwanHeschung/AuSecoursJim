@@ -38,6 +38,7 @@ export class GroupCommandComponent {
     this.http.post(url, body).subscribe({
       next: (res) => {
         console.log('API Response :', res);
+        this.localStorageService.setItem("order", res);
         this.navigateToMenus();
       },
       error: (err) => {

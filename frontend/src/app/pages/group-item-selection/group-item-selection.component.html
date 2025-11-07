@@ -12,6 +12,7 @@
         [quantity]="getQuantity(item)"
         (increment)="onIncrement(item)"
         (decrement)="onDecrement(item)"
+        (click)="openItemDetails(item)"
       >
       </app-group-item>
     </div>
@@ -26,6 +27,7 @@
         [quantity]="getQuantity(item)"
         (increment)="onIncrement(item)"
         (decrement)="onDecrement(item)"
+        (click)="openItemDetails(item)"
       >
       </app-group-item>
     </div>
@@ -40,6 +42,7 @@
         [quantity]="getQuantity(item)"
         (increment)="onIncrement(item)"
         (decrement)="onDecrement(item)"
+        (click)="openItemDetails(item)"
       >
       </app-group-item>
     </div>
@@ -60,3 +63,12 @@
     </button>
   </div>
 </app-payment-layout>
+
+@if (itemPopup) {
+  <app-popup (close)="toggleItemPopup()">
+    <app-menu-item-detail
+      [menuItem]="selectedItem"
+      (close)="toggleItemPopup()"
+    ></app-menu-item-detail>
+  </app-popup>
+}

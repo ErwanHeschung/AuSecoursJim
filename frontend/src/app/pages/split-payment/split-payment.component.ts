@@ -11,6 +11,7 @@ import { ROUTES } from '../../core/utils/constant';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { PersonList } from '../../core/models/person-list.model';
 import Keyboard from "simple-keyboard";
+import { GroupOrder } from '../../core/models/group-order.model';
 
 
 type BasketSelected = {
@@ -36,6 +37,8 @@ export class SplitPaymentComponent {
   basket!: Basket;
   items!: BasketSelected[];
   numberOfPersons: number = 1;
+  groupId: number;
+  isOwner: boolean = false;
   totalOrder: number = 0;
   mode: 'euro' | 'items' = 'euro';
 
@@ -49,6 +52,8 @@ export class SplitPaymentComponent {
     const saved = this.localStorageService.getItem<PersonList>(
       this.STORAGE_KEY
     );
+    const order: GroupOrder | null = this.localStorageService.getItem("order");
+    this.groupId = order ? order.groupId : -1;
     if (saved) {
       this.router.navigate([ROUTES.payment]);
     }
@@ -163,6 +168,10 @@ export class SplitPaymentComponent {
   private processPayment(): void {
     this.save();
     this.router.navigate([ROUTES.payment]);
+  }
+
+  setOwnerPay() {
+    this.isOwner = !this.isOwner;
   }
 
   private updatePersonsCount() {

@@ -20,8 +20,12 @@
           </app-counter>
         </div>
       </div>
+      <div id="payment-group" *ngIf="this.groupId != -1">
+        <label>Group owner</label>
+        <input type="checkbox" [checked]="isOwner" (change)="setOwnerPay()" />
+      </div>
 
-      <div class="card mode-box">
+      <div class="card mode-box" *ngIf="persons.length > 1">
         <!-- Mode selection tabs -->
         <div class="tabs">
           <button class="tab" [class.active]="mode === 'euro'" (click)="onModeChange('euro')">
@@ -31,19 +35,6 @@
             By item
           </button>
         </div>
-
-        <!-- 1 person mode -->
-        <ng-container *ngIf="persons.length === 1">
-          <div class="person-row" *ngFor="let p of persons; let i = index">
-            <strong>{{ totalOrder }}€</strong>
-            <span class="person">{{ p.name }}</span>
-          </div>
-
-          <div class="total">
-            <span>Total amount : </span>
-            <strong>{{ totalOrder }}€</strong>
-          </div>
-        </ng-container>
 
         <!-- EURO mode -->
         <ng-container *ngIf="mode === 'euro' && persons.length >= 2">
@@ -56,11 +47,6 @@
           <div class="totalOrder">
             <span>Total : </span>
             <strong>{{ currentTotal | number:'1.2-2' }}€</strong>
-          </div>
-
-          <div class="total">
-            <span>Total amount : </span>
-            <strong>{{ totalOrder | number:'1.2-2' }}€</strong>
           </div>
         </ng-container>
 
@@ -98,13 +84,13 @@
                 <span class="person">{{ p.name }}</span>
               </div>
             </div>
-
-            <div class="total">
-              <span>Total amount : </span>
-              <strong>{{ totalOrder }}€</strong>
-            </div>
           </ng-container>
         </ng-container>
+      </div>
+
+      <div class="total">
+        <span>Total amount : </span>
+        <strong>{{ totalOrder }}€</strong>
       </div>
 
       <!-- Pay button -->

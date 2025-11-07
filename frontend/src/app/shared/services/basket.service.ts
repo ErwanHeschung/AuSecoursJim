@@ -169,61 +169,6 @@ export class BasketService {
     }
   }
 
-  public setItemQuantityForId(
-    item:
-      | BasketItem
-      | {
-          _id: string;
-          price: number;
-          image?: string;
-          fullName?: string;
-          shortName?: string;
-          category?: string;
-          ingredients?: any[];
-        },
-    quantity: number
-  ): void {
-    const basket = this.basketSubject.value!;
-    const existing = basket.items.find(
-      i =>
-        i._id === item._id &&
-        this.areIngredientsEqual(i.ingredients, (item as any).ingredients)
-    );
-
-    if (this.IS_GROUP_ORDER && this.groupLimit && item.category) {
-      const category = (item as any).category as string;
-      const categoryTotal = basket.items
-        .filter(i => i.category === category)
-        .reduce((s, it) => s + it.quantity, 0);
-      const existingQty = existing ? existing.quantity : 0;
-      const newCategoryTotal = categoryTotal - existingQty + quantity;
-      if (newCategoryTotal > this.groupLimit) {
-        return;
-      }
-    }
-
-    if (existing) {
-      existing.quantity = quantity;
-      if (existing.quantity <= 0) {
-        this.removeItem(existing.basketItemId || '');
-      } else {
-        this.basketSubject.next(basket);
-        this.save();
-      }
-    } else {
-      if (quantity > 0) {
-        const toAdd: BasketItem = {
-          ...item,
-          quantity,
-          basketItemId: this.generateBasketItemId(),
-        } as BasketItem;
-        basket.items.push(toAdd);
-        this.basketSubject.next(basket);
-        this.save();
-      }
-    }
-  }
-
   public getItemQuantity(itemId: string): number {
     const basket = this.basketSubject.value!;
     return basket.items

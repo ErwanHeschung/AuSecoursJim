@@ -169,14 +169,15 @@ export class GroupSelectionComponent implements OnDestroy {
     if (categoryCount >= this.nbPersons) {
       return;
     }
-    this.basketService.setItemQuantityForId(item as any, current + 1);
+    const toAdd = { ...item, quantity: 1 } as any;
+    this.basketService.addItem(toAdd);
     this.computeNbMenu();
   }
 
   onDecrement(item: Item): void {
     const current = this.getQuantity(item);
     if (current > 0) {
-      this.basketService.setItemQuantityForId(item as any, current - 1);
+      this.basketService.updateItemQuantity(item._id, current - 1);
       this.computeNbMenu();
     }
   }

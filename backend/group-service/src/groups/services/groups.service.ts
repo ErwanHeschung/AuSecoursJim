@@ -3,7 +3,7 @@ import { Group, GroupDocument } from '../schemas/group.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.exception';
-import { GroupDto } from '../dto/group.dto';
+import { GroupDto, StatusDTO } from '../dto/group.dto';
 import { MenuProxyService } from './menu-proxy.service';
 import { MenuItem } from '../schemas/menu-item.schema';
 
@@ -20,6 +20,7 @@ export class GroupsService {
     completedGroup._id = group._id;
     completedGroup.groupId = group.groupId;
     completedGroup.numberOfPersons = group.numberOfPersons;
+    completedGroup.status = group.status;
 
     completedGroup.menuItems = [];
     for (let menuItemFullName of group.menuItemFullNames) {
@@ -60,6 +61,10 @@ export class GroupsService {
       throw new GroupIdNotFoundException(groupId);
     }
 
+    if (group.status === StatusDTO.CLOSED) {
+      throw new Error('Cannot join: group is closed');
+    }
+
     const totalJoined =
       (Number(group.joinedPersons) || 0) + Number(numberOfPersons);
     if (totalJoined > group.numberOfPersons) {
@@ -76,7 +81,25 @@ export class GroupsService {
       groupId: updatedGroup.groupId,
       numberOfPersons: updatedGroup.numberOfPersons,
       menuItems:null,
-      joinedPersons:updatedGroup.joinedPersons
+      joinedPersons:updatedGroup.joinedPersons,
+      status: updatedGroup.status
     };
+  }
+
+  async closeGroup(groupId: number): Promise<GroupDto> {
+    const group = await this.findByGroupId(groupId);
+
+    const updatedGroup = await this.groupModel
+      .findOneAndUpdate(
+        { groupId },
+        { $set: { status: StatusDTO.CLOSED } },
+        { new: true, lean: true }
+      )
+      .exec();
+
+    if (!updatedGroup) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+    return await this.completeGroup(updatedGroup);
   }
 }

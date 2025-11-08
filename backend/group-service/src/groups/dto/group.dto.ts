@@ -19,4 +19,11 @@ export class GroupDto {
   joinedPersons: number;
 
   menuItems: MenuItem[];
+
+  status: StatusDTO;
+}
+
+export enum StatusDTO {
+  OPEN = "OPEN",
+  CLOSED = "CLOSED",
 }

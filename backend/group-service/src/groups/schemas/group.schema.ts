@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { StatusDTO } from '../dto/group.dto';
 
 export type GroupDocument = Group & Document;
 
@@ -26,6 +27,10 @@ export class Group {
   @ApiProperty({ description: 'Number of people who have joined the group', default: 0 })
   @Prop({ default: 0 })
   joinedPersons: number;
+
+  @ApiProperty({ description: 'Status of the group' })
+  @Prop({ required: true, default: StatusDTO.OPEN })
+  status: StatusDTO;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

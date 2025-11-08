@@ -146,7 +146,9 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
     return this.basketService.getItemQuantity(item._id);
   }
 
-  goNext(): void {}
+  goNext(): void {
+    this.router.navigate(['/menu']);
+  }
 
   ngOnDestroy(): void {
     if (this.basketSub) this.basketSub.unsubscribe();

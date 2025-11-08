@@ -1,7 +1,21 @@
 <app-popup (close)="closePopup()">
   <div class="wrapper">
     <h2>My Order</h2>
+    @if(groupBasketQuantity !== 0){
+      <div class="items">
+        <h3>Group Items</h3>
+        @for (item of groupBasket.items; track item.basketItemId) {
+          <app-basket-item
+            [item]="item"
+            [group]="true"
+          ></app-basket-item>
+        }
+      </div>
+    }
     <div class="items">
+      @if(groupBasketQuantity !== 0 && basketQuantity !== 0){
+        <h3>Extras</h3>
+      }
       @for (item of basket.items; track item.basketItemId) {
         <app-basket-item
           [item]="item"
@@ -10,7 +24,7 @@
       }
     </div>
     <div class="summary">
-      <span>Items : {{ basketQuantity }}</span>
+      <span>Items : {{ basketQuantity + groupBasketQuantity }}</span>
       <span>Total : {{ basketTotal }}€</span>
     </div>
     <button class="button-primary" (click)="choosePaymentMethod()">

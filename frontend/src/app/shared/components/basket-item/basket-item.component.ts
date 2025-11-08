@@ -15,6 +15,7 @@ import { BasketService } from '../../services/basket.service';
 export class BasketItemComponent {
   @Input() item!: BasketItem;
   @Input() quantity!: number;
+  @Input() group: boolean = false;
   @Output() edit = new EventEmitter<BasketItem>();
 
   public trashIcon: IconDefinition = ICONS['trash'];

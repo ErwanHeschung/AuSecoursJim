@@ -58,13 +58,11 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const group = this.localStorageService.getItem<Group>('group');
-    // Get the number YOU inputted when joining
     const myNumberOfPersons =
       this.localStorageService.getItem<number>('myNumberOfPersons');
 
     if (group) {
       this.groupId = group.groupId.toString();
-      // Use YOUR number, not the group capacity
       this.nbPersons = myNumberOfPersons || 1;
       this.basketService.setGroupLimit(this.nbPersons);
 
@@ -87,11 +85,15 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
 
   private basketSub?: Subscription;
 
-  itemsByCategory(category: 'starter' | 'main' | 'dessert'): Item[] {
+  itemsByCategory(
+    category: 'starter' | 'main' | 'dessert' | 'beverage'
+  ): Item[] {
     return this.items.filter(i => i.category.toLowerCase() === category);
   }
 
-  selectionCount(category?: 'starter' | 'main' | 'dessert'): number {
+  selectionCount(
+    category?: 'starter' | 'main' | 'dessert' | 'beverage'
+  ): number {
     if (category) {
       return this.itemsByCategory(category).reduce(
         (s, it) => s + this.basketService.getItemQuantity(it._id),
@@ -105,7 +107,11 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   }
 
   onIncrement(item: Item): void {
-    const category = item.category as 'starter' | 'main' | 'dessert';
+    const category = item.category as
+      | 'starter'
+      | 'main'
+      | 'dessert'
+      | 'beverage';
     const categoryCount = this.selectionCount(category);
     const perItemMax = this.nbPersons;
     const current = this.getQuantity(item);
@@ -132,7 +138,8 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
     const starters = this.selectionCount('starter');
     const mains = this.selectionCount('main');
     const desserts = this.selectionCount('dessert');
-    this.nbMenu = Math.min(starters, mains, desserts);
+    const beverages = this.selectionCount('beverage');
+    this.nbMenu = Math.min(starters, mains, desserts, beverages);
   }
 
   getQuantity(item: Item): number {

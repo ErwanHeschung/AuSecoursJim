@@ -48,6 +48,22 @@
     </div>
   </div>
 
+  <div class="section">
+    <h2 class="section-title">Beverage</h2>
+    <div class="items-grid">
+      @for (item of itemsByCategory('beverage'); track item._id) {
+        <app-group-item
+          [item]="item"
+          [quantity]="getQuantity(item)"
+          (increment)="onIncrement(item)"
+          (decrement)="onDecrement(item)"
+          (click)="openItemDetails(item)"
+        >
+        </app-group-item>
+      }
+    </div>
+  </div>
+
   <div class="footer">
     <div class="selection-status" id="selectionStatus">
       <h1>Menu selected : {{ nbMenu }}/{{ nbPersons }}</h1>

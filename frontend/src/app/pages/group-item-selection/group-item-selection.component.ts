@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
@@ -12,6 +12,8 @@ import { GroupItemComponent } from '../../shared/components/group-item/group-ite
 import { Item } from '../../core/models/item.model';
 import { MenuItemDetailComponent } from '../../shared/components/menu-item-detail/menu-item-detail.component';
 import { PopupComponent } from '../../shared/components/popup/popup.component';
+import { GroupService } from '../../shared/services/no-bff/group.service';
+import { Group } from '../../core/models/group.model';
 
 @Component({
   selector: 'app-group-item-selection',
@@ -27,7 +29,7 @@ import { PopupComponent } from '../../shared/components/popup/popup.component';
     PopupComponent,
   ],
 })
-export class GroupSelectionComponent implements OnDestroy {
+export class GroupSelectionComponent implements OnInit, OnDestroy {
   public arrowLeft: IconDefinition = ICONS['arrowLeft'];
   public arrowRight: IconDefinition = ICONS['arrowRight'];
   public group: IconDefinition = ICONS['group'];
@@ -37,112 +39,52 @@ export class GroupSelectionComponent implements OnDestroy {
   protected nbPersons: number = 3;
   protected nbMenu: number = 0;
 
-  // Mock basket item -> To be removed
-  mock: Item = {
-    _id: '1',
-    shortName: 'Sample Item',
-    fullName: 'Mock item full name',
-    image: 'burger.png',
-    price: 10.0,
-    category: 'Food',
-  };
-
-  items: Item[] = [
-    {
-      ...this.mock,
-      _id: '1',
-      shortName: 'Starter 1',
-      fullName: 'Starter 1',
-      image: 'burger.png',
-      category: 'starter',
-    },
-    {
-      ...this.mock,
-      _id: '2',
-      shortName: 'Starter 2',
-      fullName: 'Starter 2',
-      image: 'burger.png',
-      category: 'starter',
-    },
-    {
-      ...this.mock,
-      _id: '3',
-      shortName: 'Starter 3',
-      fullName: 'Starter 3',
-      image: 'burger.png',
-      category: 'starter',
-    },
-
-    {
-      ...this.mock,
-      _id: '4',
-      shortName: 'Main 1',
-      fullName: 'Main 1',
-      image: 'burger.png',
-      category: 'main',
-    },
-    {
-      ...this.mock,
-      _id: '5',
-      shortName: 'Main 2',
-      fullName: 'Main 2',
-      image: 'burger.png',
-      category: 'main',
-    },
-    {
-      ...this.mock,
-      _id: '6',
-      shortName: 'Main 3',
-      fullName: 'Main 3',
-      image: 'burger.png',
-      category: 'main',
-    },
-
-    {
-      ...this.mock,
-      _id: '7',
-      shortName: 'Dessert 1',
-      fullName: 'Dessert 1',
-      image: 'burger.png',
-      category: 'dessert',
-    },
-    {
-      ...this.mock,
-      _id: '8',
-      shortName: 'Dessert 2',
-      fullName: 'Dessert 2',
-      image: 'burger.png',
-      category: 'dessert',
-    },
-    {
-      ...this.mock,
-      _id: '9',
-      shortName: 'Dessert 3',
-      fullName: 'Dessert 3',
-      image: 'burger.png',
-      category: 'dessert',
-    },
-  ];
+  items: Item[] = [];
 
   protected selectedItem: Item = this.items[0];
 
   constructor(
     private basketService: BasketService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private groupService: GroupService
   ) {
     this.basketService.setIsGroupOrder(true);
     this.basketService.setGroupLimit(this.nbPersons);
     this.basketSub = this.basketService.basket$.subscribe(() => {
       this.computeNbMenu();
     });
-    this.computeNbMenu();
+  }
+
+  ngOnInit(): void {
+    const group = this.localStorageService.getItem<Group>('group');
+
+    if (group) {
+      this.groupId = group.groupId.toString();
+      this.nbPersons = group.numberOfPersons;
+      this.basketService.setGroupLimit(this.nbPersons);
+
+      this.groupService.getGroupMenuItems(group.groupId).subscribe({
+        next: menuItems => {
+          this.items = menuItems;
+          if (this.items.length > 0) {
+            this.selectedItem = this.items[0];
+          }
+          this.computeNbMenu();
+        },
+        error: err => {
+          console.error('Error fetching group menu items:', err);
+        },
+      });
+    } else {
+      this.computeNbMenu();
+    }
   }
 
   private basketSub?: Subscription;
 
   itemsByCategory(category: 'starter' | 'main' | 'dessert'): Item[] {
-    return this.items.filter(i => i.category === category);
+    return this.items.filter(i => i.category.toLowerCase() === category);
   }
 
   selectionCount(category?: 'starter' | 'main' | 'dessert'): number {

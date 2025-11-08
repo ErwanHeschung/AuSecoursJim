@@ -1,6 +1,7 @@
 <div class="item-card" [class.selected]="quantity > 0">
   <div class="quantity-badge" [class.hidden]="quantity <= 0">
-    {{ quantity }}
+    <!-- FOR ERWAN : added the + because the quantity was treated as string instead of a number so i was seeing 05 when i input 5 items -->
+    {{ +quantity }}
   </div>
   <img [src]="item.image" [alt]="item.fullName" class="item-image" />
   <div class="item-name">{{ item.shortName }}</div>

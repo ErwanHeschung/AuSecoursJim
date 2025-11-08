@@ -96,12 +96,12 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   ): number {
     if (category) {
       return this.itemsByCategory(category).reduce(
-        (s, it) => s + this.basketService.getItemQuantity(it._id),
+        (s, it) => s + Number(this.basketService.getItemQuantity(it._id)),
         0
       );
     }
     return this.items.reduce(
-      (s, it) => s + this.basketService.getItemQuantity(it._id),
+      (s, it) => s + Number(this.basketService.getItemQuantity(it._id)),
       0
     );
   }
@@ -112,9 +112,9 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
       | 'main'
       | 'dessert'
       | 'beverage';
-    const categoryCount = this.selectionCount(category);
+    const categoryCount = Number(this.selectionCount(category));
     const perItemMax = this.nbPersons;
-    const current = this.getQuantity(item);
+    const current = Number(this.getQuantity(item));
     if (current >= perItemMax) {
       return;
     }

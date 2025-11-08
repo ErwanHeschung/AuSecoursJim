@@ -63,19 +63,21 @@ export class BasketService {
       const category = item.category;
       const categoryTotal = basket.items
         .filter(i => i.category === category)
-        .reduce((s, it) => s + it.quantity, 0);
-      const existingQty = existing ? existing.quantity : 0;
+        .reduce((s, it) => s + Number(it.quantity), 0);
+      const existingQty = existing ? Number(existing.quantity) : 0;
       const newCategoryTotal =
         categoryTotal -
         existingQty +
-        (existing ? existingQty + item.quantity : item.quantity);
+        (existing
+          ? existingQty + Number(item.quantity)
+          : Number(item.quantity));
       if (newCategoryTotal > this.groupLimit) {
         return;
       }
     }
 
     if (existing) {
-      existing.quantity += item.quantity;
+      existing.quantity = Number(existing.quantity) + Number(item.quantity);
     } else {
       basket.items.push({
         ...item,
@@ -173,7 +175,7 @@ export class BasketService {
     const basket = this.basketSubject.value!;
     return basket.items
       .filter(i => i._id === itemId)
-      .reduce((s, it) => s + it.quantity, 0);
+      .reduce((s, it) => s + Number(it.quantity || 0), 0);
   }
 
   public clearBasket(): void {

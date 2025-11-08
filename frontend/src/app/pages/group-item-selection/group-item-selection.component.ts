@@ -58,10 +58,14 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const group = this.localStorageService.getItem<Group>('group');
+    // Get the number YOU inputted when joining
+    const myNumberOfPersons =
+      this.localStorageService.getItem<number>('myNumberOfPersons');
 
     if (group) {
       this.groupId = group.groupId.toString();
-      this.nbPersons = group.numberOfPersons;
+      // Use YOUR number, not the group capacity
+      this.nbPersons = myNumberOfPersons || 1;
       this.basketService.setGroupLimit(this.nbPersons);
 
       this.groupService.getGroupMenuItems(group.groupId).subscribe({

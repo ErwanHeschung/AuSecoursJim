@@ -34,10 +34,13 @@ export class GroupCommandComponent {
     this.groupService.joinGroup(this.numberOfPersons, this.groupId).subscribe({
       next: group => {
         this.localStorageService.setItem('group', group);
+        this.localStorageService.setItem(
+          'myNumberOfPersons',
+          this.numberOfPersons
+        );
         this.navigateToGroupItemSelection();
         this.errorMessage = '';
         this.errorVisible = false;
-        console.log(group);
       },
       error: err => {
         console.error('Error during group update :', err);

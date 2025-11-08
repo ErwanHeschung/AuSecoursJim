@@ -1,28 +1,28 @@
-import { environment } from '../../../environments/environment';
 import { Component, HostListener } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
 import Keyboard from "simple-keyboard";
-import { HttpClient } from '@angular/common/http';
+import { GroupService } from '../../shared/services/no-bff/group.service';
+import { ErrorBannerComponent } from "../../shared/components/error-banner/error-banner.component";
 
 @Component({
   selector: 'app-group-command',
-  imports: [
-    CounterComponent],
+  imports: [CounterComponent, ErrorBannerComponent],
   templateUrl: './group-command.component.html',
   styleUrl: './group-command.component.scss',
 })
 export class GroupCommandComponent {
-  private apiUrl: string = environment.apiUrl + '/group/groups';
-  numberOfPersons: number = 1;
-  orderId: string = "";
+  public numberOfPersons: number = 1;
+  public groupId: string = '';
+  public errorMessage!: string;
+  public errorVisible: boolean = false;
 
   constructor(
     private localStorageService: LocalStorageService,
     private router: Router,
-    private http: HttpClient
+    private groupService: GroupService
   ) {
     this.localStorageService.clear();
   }
@@ -30,20 +30,20 @@ export class GroupCommandComponent {
   private navigateToMenus(): void {
     this.router.navigate([ROUTES.menu]);
   }
-
-  validateGroupOrder() {
-    const url = `${this.apiUrl}/${this.orderId}/set-number`;
-    const body = { numberOfPersons: this.numberOfPersons };
-
-    this.http.post(url, body).subscribe({
-      next: (res) => {
-        console.log('API Response :', res);
-        this.localStorageService.setItem("order", res);
+  public joinGroup() {
+    this.groupService.joinGroup(this.numberOfPersons, this.groupId).subscribe({
+      next: group => {
+        this.localStorageService.setItem('group', group);
         this.navigateToMenus();
+        this.errorMessage = '';
+        this.errorVisible = false;
+        console.log(group)
       },
-      error: (err) => {
+      error: err => {
         console.error('Error during group update :', err);
-      }
+        this.errorMessage = err.error?.details || 'Une erreur est survenue';
+        this.errorVisible = true;
+      },
     });
   }
 
@@ -65,26 +65,25 @@ export class GroupCommandComponent {
     this.keyboardVisible = false;
   }
 
-
   ngAfterViewInit() {
-    const container = document.querySelector(".simple-keyboard") as HTMLElement;
+    const container = document.querySelector('.simple-keyboard') as HTMLElement;
     if (!container) return;
     this.keyboard = new Keyboard({
       onChange: input => this.onKeyboardChange(input),
       onKeyPress: button => this.onKeyPress(button),
       layout: {
-        default: ["1 2 3", "4 5 6", "7 8 9", "{bksp} 0"],
+        default: ['1 2 3', '4 5 6', '7 8 9', '{bksp} 0'],
       },
-      theme: "hg-theme-default hg-layout-numeric numeric-theme"
+      theme: 'hg-theme-default hg-layout-numeric numeric-theme',
     });
   }
 
   onKeyboardChange(input: string) {
-    this.orderId = input;
+    this.groupId = input;
   }
 
   onKeyPress(button: string) {
-    if (button === "{bksp}") {
+    if (button === '{bksp}') {
       const input = this.keyboard.getInput();
       this.keyboard.setInput(input.slice(0, -1));
       this.onKeyboardChange(this.keyboard.getInput());

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsPositive } from "class-validator";
+import { IsNotEmpty, IsString, IsPositive, IsNumber, Min } from "class-validator";
 import { MenuItem } from "../schemas/menu-item.schema";
 
 export class GroupDto {
@@ -12,6 +12,11 @@ export class GroupDto {
   @IsNotEmpty()
   @IsPositive()
   numberOfPersons: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(0)
+  joinedPersons: number;
 
   menuItems: MenuItem[];
 }

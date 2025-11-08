@@ -68,6 +68,7 @@
   <app-popup (close)="toggleItemPopup()">
     <app-menu-item-detail
       [menuItem]="selectedItem"
+      [basketService]="groupBasketService"
       (close)="toggleItemPopup()"
     ></app-menu-item-detail>
   </app-popup>

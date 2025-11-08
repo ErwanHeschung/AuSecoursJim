@@ -11,7 +11,7 @@ export class GroupDto {
 
   @IsNotEmpty()
   @IsPositive()
-  members: number;
+  numberOfPersons: number;
 
   menuItems: MenuItem[];
 }

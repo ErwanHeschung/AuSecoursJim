@@ -21,7 +21,7 @@ export class GroupsService {
 
     completedGroup._id = group._id;
     completedGroup.groupId = group.groupId;
-    completedGroup.members = group.members;
+    completedGroup.numberOfPersons = group.numberOfPersons;
 
     completedGroup.menuItems = [];
     for (let menuItemFullName of group.menuItemFullNames) {
@@ -49,8 +49,28 @@ export class GroupsService {
     return await this.completeGroup(group);
   }
 
+  
   async getGroupMenuItems(groupId: number): Promise<MenuItem[]> {
     return (await this.findByGroupId(groupId)).menuItems;
+  }
+
+
+  async setNumberOfPersons(groupId: number, numberOfPersons: number): Promise<GroupDto> {
+    const group = await this.findByGroupId(groupId);
+
+    const updatedGroup = await this.groupModel
+      .findOneAndUpdate(
+        { groupId },
+        { $set: { numberOfPersons } },
+        { new: true, lean: true }
+      )
+      .exec();
+
+    if (!updatedGroup) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    return await this.completeGroup(updatedGroup);
   }
 
 }

@@ -11,6 +11,7 @@ import { ROUTES } from '../../core/utils/constant';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { PersonList } from '../../core/models/person-list.model';
 import Keyboard from "simple-keyboard";
+import { GroupOrder } from '../../core/models/group-order.model';
 
 
 type BasketSelected = {
@@ -36,6 +37,8 @@ export class SplitPaymentComponent {
   basket!: Basket;
   items!: BasketSelected[];
   numberOfPersons: number = 1;
+  groupId: number;
+  isOwner: boolean = false;
   totalOrder: number = 0;
   mode: 'euro' | 'items' = 'euro';
 
@@ -49,6 +52,8 @@ export class SplitPaymentComponent {
     const saved = this.localStorageService.getItem<PersonList>(
       this.STORAGE_KEY
     );
+    const order: GroupOrder | null = this.localStorageService.getItem("order");
+    this.groupId = order ? order.groupId : -1;
     if (saved) {
       this.router.navigate([ROUTES.payment]);
     }
@@ -103,8 +108,7 @@ export class SplitPaymentComponent {
       this.persons.forEach(p => (p.amount = 0));
     }
     else if (this.mode == 'euro') {
-      const baseAmount =
-        Math.floor((this.totalOrder / this.persons.length) * 2) / 2;
+      const baseAmount = this.totalOrder / this.persons.length;
       this.persons.forEach(p => (p.amount = baseAmount));
     }
   }
@@ -165,11 +169,19 @@ export class SplitPaymentComponent {
     this.router.navigate([ROUTES.payment]);
   }
 
+  setOwnerPay() {
+    this.isOwner = !this.isOwner;
+  }
+
   private updatePersonsCount() {
     document.documentElement.style.setProperty(
       '--persons-count',
       this.persons.length.toString()
     );
+  }
+
+  formatAmount(amount: number): string {
+    return parseFloat(amount.toFixed(2)).toString();
   }
 
   private save(): void {

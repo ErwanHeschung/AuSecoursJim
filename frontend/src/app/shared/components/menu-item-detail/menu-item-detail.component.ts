@@ -82,6 +82,8 @@ export class MenuItemDetailComponent implements OnInit {
   public deleteFromBasket(): void {
     if (this.isBasketItem(this.menuItem) && this.menuItem.basketItemId) {
       this.basketService.removeItem(this.menuItem.basketItemId);
+    } else {
+      this.basketService.removeItemsByItemId(this.menuItem._id);
     }
     this.close.emit();
   }

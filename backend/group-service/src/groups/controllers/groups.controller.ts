@@ -1,5 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { GroupsService } from '../services/groups.service';
 import { GroupDto } from '../dto/group.dto';
@@ -7,12 +7,13 @@ import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.excep
 import { GetGroupParams } from '../params/get-group.params';
 import { MenuItem } from '../schemas/menu-item.schema';
 
+import { UpdateNumberOfPersonsDto } from '../dto/update-number-of-persons.dto';
 
 @ApiTags('groups')
 @Controller('/groups')
 export class GroupsController {
 
-  constructor(private readonly groupsService: GroupsService) {}
+  constructor(private readonly groupsService: GroupsService) { }
 
   @ApiOkResponse({ type: GroupDto, isArray: true })
   @Get()
@@ -35,6 +36,22 @@ export class GroupsController {
   @Get(':groupId/menuItems')
   async getGroupMenuItems(@Param() groupParams: GetGroupParams): Promise<MenuItem[]> {
     return await this.groupsService.getGroupMenuItems(groupParams.groupId);
+  }
+
+
+  @ApiParam({ name: 'groupId' })
+  @ApiBody({ type: UpdateNumberOfPersonsDto })
+  @ApiOkResponse({ type: GroupDto, description: 'Number of persons updated' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found'
+  })
+  @Post(':groupId/set-number')
+  async setNumberOfPersons(
+    @Param('groupId') groupId: number,
+    @Body('numberOfPersons') numberOfPersons: number,
+  ): Promise<GroupDto> {
+    return await this.groupsService.setNumberOfPersons(groupId, numberOfPersons);
   }
 
 }

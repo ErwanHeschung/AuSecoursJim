@@ -1,6 +1,17 @@
 <div class="payment-layout">
-    <img src="/logo.webp" alt="Logo" class="logo" />
-    <div class="payment-content">
-        <ng-content></ng-content>
+  <img src="/logo.webp" alt="Logo" class="logo" />
+  <div class="group-info" *ngIf="showButtons">
+    <div class="group-block">
+      <div class="block-title">GroupId :</div>
+      <div class="block-info">{{ groupId || '—' }}</div>
     </div>
+
+    <div class="group-block">
+      <div class="block-title">Number persons :</div>
+      <div class="block-info">{{ nbPersons }}</div>
+    </div>
+  </div>
+  <div class="payment-content">
+    <ng-content></ng-content>
+  </div>
 </div>

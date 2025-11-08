@@ -36,7 +36,6 @@ export class MenuProxyService {
         throw new MenuItemFullNameNotFoundException(menuItemFullName);
     }
     return menuItem;
-    // const requestResponse: AxiosResponse<MenuItem> = await firstValueFrom(this.httpService.get(`${this._baseUrl}${this._menusPath}/${menuItemFullName}`));
-    // return requestResponse.data;
   }
+
 }

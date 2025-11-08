@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsPositive } from "class-validator";
-import { Group } from "../schemas/group.schema";
+import { MenuItem } from "../schemas/menu-item.schema";
 
 export class GroupDto {
   @IsNotEmpty()
@@ -13,8 +13,5 @@ export class GroupDto {
   @IsPositive()
   numberOfPersons: number;
 
-  static GroupDtoFactory(group: Group): GroupDto {
-    return group; // Update this function if Group != GroupDto
-  }
-
+  menuItems: MenuItem[];
 }

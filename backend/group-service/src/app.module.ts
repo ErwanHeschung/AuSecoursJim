@@ -12,12 +12,13 @@ import { StartupLogicService } from './shared/services/startup-logic.service';
 
 import { HealthModule } from './health/health.module';
 import { GroupsModule } from './groups/groups.module';
+import dependenciesConfig from './shared/config/dependencies.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, mongodbConfig, swaggeruiConfig],
+      load: [appConfig, mongodbConfig, swaggeruiConfig, dependenciesConfig],
     }),
     MongooseModule.forRootAsync({
       useClass: MongooseConfigService,

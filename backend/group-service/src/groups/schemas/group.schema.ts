@@ -18,6 +18,10 @@ export class Group {
   @ApiProperty()
   @Prop({ required: true })
   members: number;
+
+  @ApiProperty()
+  @Prop({ required: true })
+  menuItemFullNames: string[];
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

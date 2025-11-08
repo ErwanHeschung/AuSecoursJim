@@ -2,12 +2,11 @@
   <div
     id="validate"
     (click)="toggleBasketPopup()"
-    [class.disabled]="!basketQuantity"
   >
     <fa-icon [icon]="cartIcon" class="icon"></fa-icon>
-    <span>{{ basketQuantity }} items</span>
+    <span>{{ basketQuantity + groupBasketQuantity }} items</span>
     <span>{{ basketPrice }} €</span>
-    <button class="button-primary" [disabled]="basketQuantity === 0">
+    <button class="button-primary" [disabled]="basketQuantity === 0 && groupBasketQuantity === 0">
       Validate
     </button>
   </div>

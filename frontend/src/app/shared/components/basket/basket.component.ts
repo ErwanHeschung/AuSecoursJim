@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ROUTES } from '../../../core/utils/constant';
 import { BasketItem } from '../../../core/models/item.model';
 import { MenuItemDetailComponent } from '../menu-item-detail/menu-item-detail.component';
+import { GroupBasketService } from '../../services/group-basket.service';
 
 @Component({
   selector: 'app-basket',
@@ -18,16 +19,21 @@ export class BasketComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   public basket!: Basket;
+  public groupBasket!: Basket;
   public editingItem: BasketItem | null = null;
 
   constructor(
     private basketService: BasketService,
+    private groupBasketService: GroupBasketService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.basketService.basket$.subscribe(basket => {
       this.basket = basket;
+    });
+    this.groupBasketService.basket$.subscribe(groupBasket => {
+      this.groupBasket = groupBasket;
     });
   }
 
@@ -37,6 +43,10 @@ export class BasketComponent implements OnInit {
 
   get basketQuantity(): number {
     return this.basketService.getQuantity();
+  }
+
+  get groupBasketQuantity(): number {
+    return this.groupBasketService.getQuantity();
   }
 
   public closePopup() {

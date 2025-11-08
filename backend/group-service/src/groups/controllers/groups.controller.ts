@@ -1,5 +1,5 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { GroupsService } from '../services/groups.service';
 import { GroupDto } from '../dto/group.dto';
@@ -7,13 +7,10 @@ import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.excep
 import { GetGroupParams } from '../params/get-group.params';
 import { MenuItem } from '../schemas/menu-item.schema';
 
-import { UpdateNumberOfPersonsDto } from '../dto/update-number-of-persons.dto';
-
 @ApiTags('groups')
 @Controller('/groups')
 export class GroupsController {
-
-  constructor(private readonly groupsService: GroupsService) { }
+  constructor(private readonly groupsService: GroupsService) {}
 
   @ApiOkResponse({ type: GroupDto, isArray: true })
   @Get()
@@ -23,35 +20,44 @@ export class GroupsController {
 
   @ApiParam({ name: 'groupId' })
   @ApiOkResponse({ type: GroupDto })
-  @ApiNotFoundResponse({ type: GroupIdNotFoundException, description: 'Group not found' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found',
+  })
   @Get(':groupId')
   async findByGroupId(@Param() groupParams: GetGroupParams): Promise<GroupDto> {
     return await this.groupsService.findByGroupId(groupParams.groupId);
   }
 
-
   @ApiParam({ name: 'groupId' })
   @ApiOkResponse({ type: GroupDto })
-  @ApiNotFoundResponse({ type: GroupIdNotFoundException, description: 'Group not found' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found',
+  })
   @Get(':groupId/menuItems')
-  async getGroupMenuItems(@Param() groupParams: GetGroupParams): Promise<MenuItem[]> {
+  async getGroupMenuItems(
+    @Param() groupParams: GetGroupParams,
+  ): Promise<MenuItem[]> {
     return await this.groupsService.getGroupMenuItems(groupParams.groupId);
   }
 
-
   @ApiParam({ name: 'groupId' })
-  @ApiBody({ type: UpdateNumberOfPersonsDto })
+  @ApiQuery({
+    name: 'numberOfPersons',
+    type: Number,
+    description: 'Number of people joining the group',
+  })
   @ApiOkResponse({ type: GroupDto, description: 'Number of persons updated' })
   @ApiNotFoundResponse({
     type: GroupIdNotFoundException,
-    description: 'Group not found'
+    description: 'Group not found',
   })
-  @Post(':groupId/set-number')
-  async setNumberOfPersons(
+  @Post(':groupId/join')
+  async joinGroup(
     @Param('groupId') groupId: number,
-    @Body('numberOfPersons') numberOfPersons: number,
+    @Query('numberOfPersons') numberOfPersons: number,
   ): Promise<GroupDto> {
-    return await this.groupsService.setNumberOfPersons(groupId, numberOfPersons);
+    return await this.groupsService.join(groupId, numberOfPersons);
   }
-
 }

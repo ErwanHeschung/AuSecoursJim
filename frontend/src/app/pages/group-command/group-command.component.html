@@ -1,18 +1,37 @@
 <div class="group-command-container">
-    <img class="logo" src="/logo.webp" alt="Logo" class="logo" />
+    <img src="/logo.webp" alt="Logo" class="logo" />
+    <app-error-banner
+    [message]="errorMessage"
+    [visible]="errorVisible"
+    (visibleChange)="errorVisible = $event">
+    </app-error-banner>
+
     <div id="input-group-command-container">
-        <div id="input-order-id">
-            <label>Group Id</label>
-            <input type="text" class="input" [value]="orderId" (focus)="onInputFocus(orderId)" readonly />
+        <div class="input-order-id">
+            <label for="groupId">Group ID</label>
+            <input
+                id="groupId"
+                type="text"
+                class="input"
+                [value]="groupId"
+                (focus)="onInputFocus(groupId)"
+                readonly
+            />
         </div>
-        <div id="counter">
-            <label>Number of people</label>
-            <app-counter [value]="numberOfPersons" [min]="1" [max]="10000"
+
+        <div class="counter">
+            <label for="numberOfPersons">Number of people</label>
+            <app-counter
+                id="numberOfPersons"
+                [value]="numberOfPersons"
+                [min]="1"
+                [max]="20"
                 (valueChange)="onNumberOfPersonsChanged($event)">
             </app-counter>
         </div>
     </div>
-    <button class="button-primary" (click)="validateGroupOrder()">
+
+    <button class="button-primary" (click)="joinGroup()">
         Validate
     </button>
     <div id="keyboardContainer" class="simple-keyboard-wrapper" [class.active]="keyboardVisible">

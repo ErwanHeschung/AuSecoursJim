@@ -22,6 +22,10 @@ export class Group {
   @ApiProperty()
   @Prop({ required: true })
   menuItemFullNames: string[];
+
+  @ApiProperty({ description: 'Number of people who have joined the group', default: 0 })
+  @Prop({ default: 0 })
+  joinedPersons: number;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

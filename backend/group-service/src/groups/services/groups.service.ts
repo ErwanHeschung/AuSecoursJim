@@ -9,12 +9,10 @@ import { MenuItem } from '../schemas/menu-item.schema';
 
 @Injectable()
 export class GroupsService {
-
   constructor(
     @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
     private readonly menuProxyService: MenuProxyService,
   ) {}
-
 
   private async completeGroup(group: Group): Promise<GroupDto> {
     const completedGroup = new GroupDto();
@@ -25,22 +23,25 @@ export class GroupsService {
 
     completedGroup.menuItems = [];
     for (let menuItemFullName of group.menuItemFullNames) {
-      try { completedGroup.menuItems.push(await this.menuProxyService.getMenuItem(menuItemFullName)); }
-      catch(exception) {}
+      try {
+        completedGroup.menuItems.push(
+          await this.menuProxyService.getMenuItem(menuItemFullName),
+        );
+      } catch (exception) {}
     }
 
     return completedGroup;
   }
 
-
   async findAll(): Promise<GroupDto[]> {
     const groups: Group[] = await this.groupModel.find().lean();
-    return await Promise.all(groups.map(group => this.completeGroup(group)));
+    return await Promise.all(groups.map((group) => this.completeGroup(group)));
   }
 
-
   async findByGroupId(groupId: number): Promise<GroupDto> {
-    const group: Group = await this.groupModel.findOne({ groupId: groupId }).lean();
+    const group: Group = await this.groupModel
+      .findOne({ groupId: groupId })
+      .lean();
 
     if (group === null) {
       throw new GroupIdNotFoundException(groupId);
@@ -49,28 +50,33 @@ export class GroupsService {
     return await this.completeGroup(group);
   }
 
-  
   async getGroupMenuItems(groupId: number): Promise<MenuItem[]> {
     return (await this.findByGroupId(groupId)).menuItems;
   }
 
-
-  async setNumberOfPersons(groupId: number, numberOfPersons: number): Promise<GroupDto> {
-    const group = await this.findByGroupId(groupId);
-
-    const updatedGroup = await this.groupModel
-      .findOneAndUpdate(
-        { groupId },
-        { $set: { numberOfPersons } },
-        { new: true, lean: true }
-      )
-      .exec();
-
-    if (!updatedGroup) {
+  async join(groupId: number, numberOfPersons: number): Promise<GroupDto> {
+    const group = await this.groupModel.findOne({ groupId }).exec();
+    if (!group) {
       throw new GroupIdNotFoundException(groupId);
     }
 
-    return await this.completeGroup(updatedGroup);
-  }
+    const totalJoined =
+      (Number(group.joinedPersons) || 0) + Number(numberOfPersons);
+    if (totalJoined > group.numberOfPersons) {
+      throw new Error(
+        `Cannot join: exceeds the max number of persons (${group.numberOfPersons})`,
+      );
+    }
 
+    group.joinedPersons = totalJoined;
+    const updatedGroup = await group.save();
+
+    return {
+      _id: updatedGroup._id.toString(),
+      groupId: updatedGroup.groupId,
+      numberOfPersons: updatedGroup.numberOfPersons,
+      menuItems:null,
+      joinedPersons:updatedGroup.joinedPersons
+    };
+  }
 }

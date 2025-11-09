@@ -124,6 +124,7 @@ export class GroupsService {
       joinedPersons: updatedGroup.joinedPersons,
       status: updatedGroup.status,
       menuItems: null,
+      pricePerMenu:null,
     };
   }
 

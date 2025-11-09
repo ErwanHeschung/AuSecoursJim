@@ -6,6 +6,7 @@ import { GroupDto } from '../dto/group.dto';
 import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.exception';
 import { GetGroupParams } from '../params/get-group.params';
 import { MenuItem } from '../schemas/menu-item.schema';
+import { Table } from '../schemas/table.schema';
 
 @ApiTags('groups')
 @Controller('/groups')
@@ -99,5 +100,45 @@ export class GroupsController {
   @Get(':groupId/orders')
   async getGroupOrders(@Param('groupId') groupId: number): Promise<string[]> {
     return await this.groupsService.getGroupOrders(groupId);
+  }
+
+  @ApiParam({ name: 'groupId' })
+  @ApiOkResponse({ type: [Table], description: 'List of tables in the group' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found',
+  })
+  @Get(':groupId/tables')
+  async getGroupTables(@Param('groupId') groupId: number): Promise<Table[]> {
+    return this.groupsService.getTablesByGroupId(groupId);
+  }
+
+  @ApiParam({ name: 'groupId' })
+  @ApiQuery({
+    name: 'tableNumber',
+    type: Number,
+    description: 'Table number to assign people to',
+  })
+  @ApiQuery({
+    name: 'count',
+    type: Number,
+    description: 'Number of people to assign',
+  })
+  @ApiOkResponse({ description: 'Updated table with new assignedCount' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group or table not found',
+  })
+  @Post(':groupId/tables/assign')
+  async assignPeopleToTable(
+    @Param('groupId') groupId: number,
+    @Query('tableNumber') tableNumber: number,
+    @Query('count') count: number,
+  ) {
+    return this.groupsService.assignPeopleToTable(
+      Number(groupId),
+      Number(tableNumber),
+      Number(count),
+    );
   }
 }

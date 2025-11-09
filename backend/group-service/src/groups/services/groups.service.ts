@@ -6,6 +6,7 @@ import { GroupIdNotFoundException } from '../exceptions/group-id-not-found.excep
 import { GroupDto, StatusDTO } from '../dto/group.dto';
 import { MenuProxyService } from './menu-proxy.service';
 import { MenuItem } from '../schemas/menu-item.schema';
+import { Table } from '../schemas/table.schema';
 
 @Injectable()
 export class GroupsService {
@@ -80,8 +81,8 @@ export class GroupsService {
       _id: updatedGroup._id.toString(),
       groupId: updatedGroup.groupId,
       numberOfPersons: updatedGroup.numberOfPersons,
-      menuItems:null,
-      joinedPersons:updatedGroup.joinedPersons,
+      menuItems: null,
+      joinedPersons: updatedGroup.joinedPersons,
       status: updatedGroup.status,
       pricePerMenu: updatedGroup.pricePerMenu,
     };
@@ -124,7 +125,7 @@ export class GroupsService {
       joinedPersons: updatedGroup.joinedPersons,
       status: updatedGroup.status,
       menuItems: null,
-      pricePerMenu:null,
+      pricePerMenu: null,
     };
   }
 
@@ -135,5 +136,42 @@ export class GroupsService {
     }
 
     return group.orders || [];
+  }
+
+  async getTablesByGroupId(groupId: number): Promise<Table[]> {
+    const group = await this.groupModel.findOne({ groupId }).exec();
+    if (!group) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    return group.tables || [];
+  }
+
+  async assignPeopleToTable(
+    groupId: number,
+    tableNumber: number,
+    count: number,
+  ): Promise<Table> {
+    const group = await this.groupModel.findOne({ groupId }).exec();
+    if (!group) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    const table = group.tables.find((t) => t.tableNumber === tableNumber);
+    if (!table) {
+      throw new Error(`Table ${tableNumber} not found in group ${groupId}`);
+    }
+
+    if ((table.assignedCount || 0) + count > table.capacity) {
+      throw new Error(
+        `Cannot assign ${count} people: exceeds table capacity of ${table.capacity}`,
+      );
+    }
+
+    table.assignedCount = (table.assignedCount || 0) + count;
+
+    await group.save();
+
+    return table;
   }
 }

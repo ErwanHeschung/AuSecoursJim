@@ -11,7 +11,9 @@ export const routes: Routes = [
   {
     path: ROUTES.groupCommand,
     loadComponent: () =>
-      import('./pages/group-command/group-command.component').then(m => m.GroupCommandComponent),
+      import('./pages/group-command/group-command.component').then(
+        m => m.GroupCommandComponent
+      ),
   },
   {
     path: ROUTES.paymentSelection,
@@ -57,5 +59,12 @@ export const routes: Routes = [
       import(
         './pages/group-item-selection/group-item-selection.component'
       ).then(m => m.GroupSelectionComponent),
+  },
+  {
+    path: ROUTES.tableSelection,
+    loadComponent: () =>
+      import('./pages/table-selection/table-selection.component').then(
+        m => m.TableSelectionComponent
+      ),
   },
 ];

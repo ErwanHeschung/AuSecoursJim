@@ -109,6 +109,10 @@ export class PaymentComponent {
 
   private trackOrder() {
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
+      if(this.group){
+        this.router.navigate([ROUTES.tableSelection]);
+        return;
+      }
       if (orderId) {
         this.router.navigate([ROUTES.orderTrackingQRcode]);
       }

@@ -1,0 +1,21 @@
+h2 {
+  margin-bottom: 1rem;
+}
+
+.content{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    padding: 2rem;
+}
+
+.tables {
+    margin:10rem;
+    display: flex;
+    flex: 1;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: auto;
+}

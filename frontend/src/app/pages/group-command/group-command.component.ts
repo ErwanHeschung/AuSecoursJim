@@ -3,9 +3,9 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
 import { CounterComponent } from '../../shared/components/quantity-counter/quantity-counter.component';
-import Keyboard from "simple-keyboard";
+import Keyboard from 'simple-keyboard';
 import { GroupService } from '../../shared/services/no-bff/group.service';
-import { ErrorBannerComponent } from "../../shared/components/error-banner/error-banner.component";
+import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 
 @Component({
   selector: 'app-group-command',
@@ -27,17 +27,20 @@ export class GroupCommandComponent {
     this.localStorageService.clear();
   }
 
-  private navigateToMenus(): void {
-    this.router.navigate([ROUTES.menu]);
+  private navigateToGroupItemSelection(): void {
+    this.router.navigate([ROUTES.groupItemSelection]);
   }
   public joinGroup() {
     this.groupService.joinGroup(this.numberOfPersons, this.groupId).subscribe({
       next: group => {
         this.localStorageService.setItem('group', group);
-        this.navigateToMenus();
+        this.localStorageService.setItem(
+          'myNumberOfPersons',
+          this.numberOfPersons
+        );
+        this.navigateToGroupItemSelection();
         this.errorMessage = '';
         this.errorVisible = false;
-        console.log(group)
       },
       error: err => {
         console.error('Error during group update :', err);

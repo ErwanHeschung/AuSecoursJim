@@ -2,8 +2,8 @@
   <div class="wrapper">
     <h2>My Order</h2>
     @if(groupBasketQuantity !== 0){
+      <h3>Group Items</h3>
       <div class="items">
-        <h3>Group Items</h3>
         @for (item of groupBasket.items; track item.basketItemId) {
           <app-basket-item
             [item]="item"
@@ -12,10 +12,10 @@
         }
       </div>
     }
+    @if(groupBasketQuantity !== 0 && basketQuantity !== 0){
+      <h3>Extras</h3>
+    }
     <div class="items">
-      @if(groupBasketQuantity !== 0 && basketQuantity !== 0){
-        <h3>Extras</h3>
-      }
       @for (item of basket.items; track item.basketItemId) {
         <app-basket-item
           [item]="item"

@@ -27,7 +27,7 @@ export class PaymentComponent {
   private currentPersonIndex: number = 0;
   private basket!: Basket;
   private basketGroup!: Basket;
-  private group!: Group;
+  private group!: Group | null;
 
   constructor(
     @Inject('ORDER_SERVICE') private orderService: IOrderService,
@@ -38,13 +38,7 @@ export class PaymentComponent {
     private router: Router,
     private groupService: GroupService
   ) {
-    this.group = this.localStorageService.getItem<Group>('group') || {
-      _id: '',
-      numberOfPersons: 0,
-      groupId: 0,
-      pricePerMenu: 0,
-      joinedPersons: 0,
-    };
+    this.group = this.localStorageService.getItem<Group>('group');
 
     const saved = this.localStorageService.getItem<PersonList>(
       this.STORAGE_KEY
@@ -75,7 +69,7 @@ export class PaymentComponent {
   validateForm(): void {
     let currentPerson = this.people.persons[this.currentPersonIndex];
     currentPerson.hasPayed = true;
-    if (currentPerson.isOwner) {
+    if (currentPerson.isOwner && this.group) {
       this.groupService.closeGroup(this.group.groupId).subscribe();
     }
     this.paymentService

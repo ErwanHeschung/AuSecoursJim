@@ -33,6 +33,7 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   public arrowLeft: IconDefinition = ICONS['arrowLeft'];
   public arrowRight: IconDefinition = ICONS['arrowRight'];
   public group: IconDefinition = ICONS['group'];
+  public alreadyHaveItems:boolean  = false;
   protected itemPopup: boolean = false;
 
   protected groupId: string = 'group123';
@@ -49,7 +50,6 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
     private router: Router,
     private groupService: GroupService
   ) {
-    this.groupBasketService.setGroupLimit(this.nbPersons);
     this.basketSub = this.groupBasketService.basket$.subscribe(() => {
       this.computeNbMenu();
     });

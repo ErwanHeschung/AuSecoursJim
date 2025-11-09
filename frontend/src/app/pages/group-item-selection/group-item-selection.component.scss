@@ -1,22 +1,9 @@
-:host ::ng-deep app-payment-layout {
-  .payment-layout {
-    min-height: 100vh;
-    height: auto;
-    overflow-y: auto;
-  }
-
-  .logo,
-  .group-info {
-    z-index: 10;
-  }
-
-  .payment-content {
-    padding-top: 18rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
+.items-selection{
+  display: flex;
+  flex-direction: column;
+  height: 65vh;
+  overflow: auto;
+  width: 100%;
 }
 
 .title {
@@ -98,6 +85,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+  width: 80%;
+}
+
+.footer-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button {

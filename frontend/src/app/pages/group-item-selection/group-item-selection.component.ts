@@ -2,7 +2,6 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PaymentLayoutComponent } from '../../layouts/payment-layout/payment-layout.component';
-import { BasketService } from '../../shared/services/basket.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -14,6 +13,7 @@ import { MenuItemDetailComponent } from '../../shared/components/menu-item-detai
 import { PopupComponent } from '../../shared/components/popup/popup.component';
 import { GroupService } from '../../shared/services/no-bff/group.service';
 import { Group } from '../../core/models/group.model';
+import { GroupBasketService } from '../../shared/services/group-basket.service';
 
 @Component({
   selector: 'app-group-item-selection',
@@ -44,14 +44,13 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   protected selectedItem: Item = this.items[0];
 
   constructor(
-    private basketService: BasketService,
+    protected groupBasketService: GroupBasketService,
     private localStorageService: LocalStorageService,
     private router: Router,
     private groupService: GroupService
   ) {
-    this.basketService.setIsGroupOrder(true);
-    this.basketService.setGroupLimit(this.nbPersons);
-    this.basketSub = this.basketService.basket$.subscribe(() => {
+    this.groupBasketService.setGroupLimit(this.nbPersons);
+    this.basketSub = this.groupBasketService.basket$.subscribe(() => {
       this.computeNbMenu();
     });
   }
@@ -64,7 +63,7 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
     if (group) {
       this.groupId = group.groupId.toString();
       this.nbPersons = myNumberOfPersons || 1;
-      this.basketService.setGroupLimit(this.nbPersons);
+      this.groupBasketService.setGroupLimit(this.nbPersons);
 
       this.groupService.getGroupMenuItems(group.groupId).subscribe({
         next: menuItems => {
@@ -96,12 +95,12 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   ): number {
     if (category) {
       return this.itemsByCategory(category).reduce(
-        (s, it) => s + Number(this.basketService.getItemQuantity(it._id)),
+        (s, it) => s + this.groupBasketService.getItemQuantity(it._id),
         0
       );
     }
     return this.items.reduce(
-      (s, it) => s + Number(this.basketService.getItemQuantity(it._id)),
+      (s, it) => s + this.groupBasketService.getItemQuantity(it._id),
       0
     );
   }
@@ -122,14 +121,14 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
       return;
     }
     const toAdd = { ...item, quantity: 1 } as any;
-    this.basketService.addItem(toAdd);
+    this.groupBasketService.addItem(toAdd);
     this.computeNbMenu();
   }
 
   onDecrement(item: Item): void {
     const current = this.getQuantity(item);
     if (current > 0) {
-      this.basketService.updateItemQuantity(item._id, current - 1);
+      this.groupBasketService.updateItemQuantity(item._id, current - 1);
       this.computeNbMenu();
     }
   }
@@ -143,7 +142,7 @@ export class GroupSelectionComponent implements OnInit, OnDestroy {
   }
 
   getQuantity(item: Item): number {
-    return this.basketService.getItemQuantity(item._id);
+    return this.groupBasketService.getItemQuantity(item._id);
   }
 
   goNext(): void {

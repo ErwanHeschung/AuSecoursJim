@@ -14,6 +14,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ICONS } from '../../../core/utils/icon';
 import { BasketService } from '../../services/basket.service';
 import { FormsModule } from '@angular/forms';
+import { GroupBasketService } from '../../services/group-basket.service';
 
 @Component({
   selector: 'app-menu-item-detail',
@@ -29,12 +30,15 @@ export class MenuItemDetailComponent implements OnInit {
 
   @Input() menuItem!: Item | BasketItem;
   @Input() isEditMode: boolean = false;
+  @Input() basketService!: BasketService | GroupBasketService;
 
   @Output() close = new EventEmitter<void>();
 
-  constructor(private basketService: BasketService) {}
+  constructor(private defaultBasketService: BasketService) {}
 
   ngOnInit() {
+    this.basketService = this.basketService ?? this.defaultBasketService;
+
     if (!this.basketService.hasOriginal(this.menuItem._id)) {
       this.basketService.storeOriginal(
         this.menuItem._id,
@@ -62,7 +66,6 @@ export class MenuItemDetailComponent implements OnInit {
   }
 
   public addToBasket(): void {
-    // deep clone the item to avoid reference issues with ingredients
     const itemToAdd = {
       ...this.menuItem,
       quantity: this.quantity,

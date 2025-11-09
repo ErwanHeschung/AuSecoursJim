@@ -32,7 +32,10 @@ export class TableSelectionComponent implements OnInit {
       this.groupService.getGroupTables(this.group.groupId).subscribe(tables => {
         this.tables = tables;
         console.log(tables);
-        this.assignCounts = Array(this.tables.length).fill(0);
+        this.assignCounts = {};
+        this.tables.forEach(table => {
+          this.assignCounts[table.tableNumber] = 0;
+        });
       });
     }
 

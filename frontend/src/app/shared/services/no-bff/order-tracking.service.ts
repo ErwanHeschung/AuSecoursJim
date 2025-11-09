@@ -28,7 +28,6 @@ export class OrderTrackingService implements IOrderTrackingService {
     orderId: string,
     pollIntervalMs = 2000
   ): Observable<number> {
-    console.log(orderId);
     const order$ = this.tableService.getOrder(orderId).pipe(shareReplay(1));
 
     const preparations$ = interval(pollIntervalMs).pipe(
@@ -69,7 +68,6 @@ export class OrderTrackingService implements IOrderTrackingService {
       switchMap(() =>
         this.groupService.getGroupOrders(groupId).pipe(
           switchMap((orderIds: string[]) => {
-            console.log(orderIds)
             if (!orderIds || orderIds.length === 0) return of(0);
 
             const orderProgressObservables = orderIds.map(orderId =>

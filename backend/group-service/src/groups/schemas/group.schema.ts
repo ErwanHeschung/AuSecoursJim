@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { StatusDTO } from '../dto/group.dto';
+import { Table, TableSchema } from './table.schema';
 
 export type GroupDocument = Group & Document;
 
@@ -37,10 +38,14 @@ export class Group {
 
   @Prop({ type: [String], default: [] })
   orders: string[];
-  
+
   @ApiProperty({ description: 'Price per menu for the group' })
   @Prop({ required: true })
   pricePerMenu: number;
+
+  @ApiProperty({ type: [Table], description: 'List of tables in the group' })
+  @Prop({ type: [TableSchema], default: [] })
+  tables: Table[];
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

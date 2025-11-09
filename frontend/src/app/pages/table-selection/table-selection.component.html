@@ -1,0 +1,21 @@
+<div class="content">
+  <h2>Choose your tables</h2>
+  <h3>Remains to place {{ remainingToPlace }} / {{ maxAssignation }}</h3>
+  <div class="tables">
+    @for (table of tables; track table.tableNumber) {
+      <app-table-card
+        [table]="table"
+        [(assignCount)]="assignCounts[table.tableNumber]"
+        [maxAllowed]="remainingToPlace"
+      ></app-table-card>
+    }
+  </div>
+
+  <button
+    (click)="validateSelection()"
+    [disabled]="isValidateDisabled"
+    class="button-primary"
+  >
+    Validate
+  </button>
+</div>

@@ -18,18 +18,18 @@ export class LandingComponent {
     icon: IconDefinition;
     onClick: () => void;
   }[] = [
-    {
-      label: 'Dine in',
+      {
+        label: 'Dine in',
 
-      icon: ICONS['dineIn'],
-      onClick: () => this.selectDineIn(),
-    },
-    {
-      label: 'Takeaway',
-      icon: ICONS['takeaway'],
-      onClick: () => this.selectTakeaway(),
-    },
-  ];
+        icon: ICONS['dineIn'],
+        onClick: () => this.selectDineIn(),
+      },
+      {
+        label: 'Takeaway',
+        icon: ICONS['takeaway'],
+        onClick: () => this.selectTakeaway(),
+      },
+    ];
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -50,5 +50,9 @@ export class LandingComponent {
 
   private navigateToMenus(): void {
     this.router.navigate([ROUTES.menu]);
+  }
+
+  navigateToGroupCommand(): void {
+    this.router.navigate([ROUTES.groupCommand]);
   }
 }

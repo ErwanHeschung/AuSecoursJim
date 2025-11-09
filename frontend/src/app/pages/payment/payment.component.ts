@@ -10,6 +10,9 @@ import { BasketService } from '../../shared/services/basket.service';
 import { Basket } from '../../core/models/basket.model';
 import { PersonList } from '../../core/models/person-list.model';
 import { ROUTES } from '../../core/utils/constant';
+import { GroupService } from '../../shared/services/no-bff/group.service';
+import { Group } from '../../core/models/group.model';
+import { GroupBasketService } from '../../shared/services/group-basket.service';
 
 @Component({
   selector: 'app-payment',
@@ -23,14 +26,26 @@ export class PaymentComponent {
   private readonly STORAGE_KEY = 'payment';
   private currentPersonIndex: number = 0;
   private basket!: Basket;
+  private basketGroup!: Basket;
+  private group!: Group;
 
   constructor(
     @Inject('ORDER_SERVICE') private orderService: IOrderService,
     @Inject('PAYMENT_SERVICE') private paymentService: IPaymentService,
     private localStorageService: LocalStorageService,
     private basketService: BasketService,
-    private router: Router
+    private groupBasketService: GroupBasketService,
+    private router: Router,
+    private groupService: GroupService
   ) {
+    this.group = this.localStorageService.getItem<Group>('group') || {
+      _id: '',
+      numberOfPersons: 0,
+      groupId: 0,
+      pricePerMenu: 0,
+      joinedPersons: 0,
+    };
+
     const saved = this.localStorageService.getItem<PersonList>(
       this.STORAGE_KEY
     );
@@ -48,6 +63,9 @@ export class PaymentComponent {
     this.basketService.basket$.subscribe(basket => {
       this.basket = basket;
     });
+    this.groupBasketService.basket$.subscribe(groupBasket => {
+      this.basketGroup = groupBasket;
+    });
   }
 
   get currentPerson(): Person {
@@ -55,29 +73,46 @@ export class PaymentComponent {
   }
 
   validateForm(): void {
-    this.people.persons[this.currentPersonIndex].hasPayed = true;
+    let currentPerson = this.people.persons[this.currentPersonIndex];
+    currentPerson.hasPayed = true;
+    if (currentPerson.isOwner) {
+      this.groupService.closeGroup(this.group.groupId).subscribe();
+    }
     this.paymentService
       .pay(this.currentPerson.amount)
       .subscribe((result: boolean) => {
         this.save();
-        this.currentPersonIndex = this.people.persons
-          .map(p => p.hasPayed)
-          .indexOf(false);
+
+        const nextIndex = this.people.persons.findIndex(p => !p.hasPayed);
+
+        if (nextIndex !== -1) {
+          this.currentPersonIndex = nextIndex;
+        } else {
+          this.currentPersonIndex = this.people.persons.length - 1;
+          this.createOrder();
+          this.addOrderToGroup();
+          this.trackOrder();
+        }
       });
-    if (this.currentPersonIndex === this.people.persons.length - 1) {
-      this.createOrder();
-      this.trackOrder();
-    }
   }
 
   private createOrder(): void {
+    const mergedBasket: Basket = {
+      _id: this.basket._id ?? this.basketGroup._id,
+      items: [...(this.basket.items || []), ...(this.basketGroup.items || [])],
+    };
+
     this.orderService
-      .prepareOrderOnFirstFreeOrderNumber(this.basket)
+      .prepareOrderOnFirstFreeOrderNumber(mergedBasket)
       .subscribe();
   }
 
   private trackOrder() {
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
+      if(this.group){
+        this.router.navigate([ROUTES.tableSelection]);
+        return;
+      }
       if (orderId) {
         this.router.navigate([ROUTES.orderTrackingQRcode]);
       }
@@ -86,5 +121,13 @@ export class PaymentComponent {
 
   private save(): void {
     this.localStorageService.setItem<PersonList>(this.STORAGE_KEY, this.people);
+  }
+
+  private addOrderToGroup(){
+    this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
+      if (orderId && this.group) {
+        this.groupService.addOrderToGroup(this.group.groupId,orderId).subscribe();
+      }
+    });
   }
 }

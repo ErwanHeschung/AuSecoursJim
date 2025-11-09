@@ -4,7 +4,14 @@
     <button class="button-primary" (click)="copyToClipboard()">
       Copy link
     </button>
-    <p>Scan the QR code to track your order.</p>
+    <p>Scan the QR code to track your 
+      @if(group){
+        group
+      }
+      @else{
+        order
+      }
+    </p>
     <button class="button-primary" (click)="redirectToMenu()">Ok</button>
   </div>
 </app-payment-layout>

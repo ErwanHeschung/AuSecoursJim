@@ -1,6 +1,7 @@
 @import '@fontsource/roboto/400.css';
 @import '@fontsource/roboto/500.css';
 @import '@fontsource/roboto/700.css';
+@import "simple-keyboard/build/css/index.css";
 
 :root {
   --primary-color: #c6230b;
@@ -32,6 +33,7 @@ body {
   cursor: pointer;
   transition: transform 0.3s ease;
   transform: scale(1);
+
   &:active {
     transform: scale(1.1);
   }

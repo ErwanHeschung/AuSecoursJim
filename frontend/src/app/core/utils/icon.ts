@@ -10,6 +10,8 @@ import {
   faTimes,
   faTrash,
   faUtensils,
+  faArrowRight,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const ICONS: { [key: string]: IconDefinition } = {
@@ -22,6 +24,8 @@ export const ICONS: { [key: string]: IconDefinition } = {
   cross: faTimes,
   trash: faTrash,
   edit: faPen,
+  arrowRight: faArrowRight,
+  group: faUserGroup,
 };
 
 library.add(...Object.values(ICONS));

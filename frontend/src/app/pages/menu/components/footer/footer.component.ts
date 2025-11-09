@@ -8,6 +8,7 @@ import { ICONS } from '../../../../core/utils/icon';
 import { Basket } from '../../../../core/models/basket.model';
 import { BasketService } from '../../../../shared/services/basket.service';
 import { BasketComponent } from '../../../../shared/components/basket/basket.component';
+import { GroupBasketService } from '../../../../shared/services/group-basket.service';
 
 @Component({
   selector: 'app-footer',
@@ -20,7 +21,10 @@ export class FooterComponent implements OnInit {
   public basketPopup: boolean = false;
   public basket!: Basket;
 
-  constructor(private basketService: BasketService) {}
+  constructor(
+    private basketService: BasketService,
+    private groupBasketService: GroupBasketService
+  ) {}
 
   ngOnInit() {
     this.basketService.basket$.subscribe(basket => {
@@ -30,6 +34,10 @@ export class FooterComponent implements OnInit {
 
   get basketQuantity(): number {
     return this.basketService.getQuantity();
+  }
+
+  get groupBasketQuantity(): number {
+    return this.groupBasketService.getQuantity();
   }
 
   get basketPrice(): number {

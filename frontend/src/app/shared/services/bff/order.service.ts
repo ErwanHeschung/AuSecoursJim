@@ -29,4 +29,8 @@ export class OrderServiceBFF implements IOrderService {
     this.http.post(`${this.apiUrl}/finish`, { orderId }).subscribe();
     return of();
   }
+
+  finishGroup(groupId: number): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
 }

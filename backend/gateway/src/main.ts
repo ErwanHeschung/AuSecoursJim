@@ -30,6 +30,10 @@ async function bootstrap() {
     target: `http://${dependenciesConfig.dining_service_url_with_port}`,
     changeOrigin: true,
   }));
+  app.use('/group', createProxyMiddleware({
+    target: `http://${dependenciesConfig.group_service_url_with_port}`,
+    changeOrigin: true,
+  }));
 
   // Run the app
   const appPort = configService.get('app.port');

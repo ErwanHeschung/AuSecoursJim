@@ -9,6 +9,13 @@ export const routes: Routes = [
       import('./pages/landing/landing.component').then(m => m.LandingComponent),
   },
   {
+    path: ROUTES.groupCommand,
+    loadComponent: () =>
+      import('./pages/group-command/group-command.component').then(
+        m => m.GroupCommandComponent
+      ),
+  },
+  {
     path: ROUTES.paymentSelection,
     loadComponent: () =>
       import('./pages/payment-selection/payment-selection.component').then(
@@ -45,5 +52,19 @@ export const routes: Routes = [
     path: ROUTES.payment,
     loadComponent: () =>
       import('./pages/payment/payment.component').then(m => m.PaymentComponent),
+  },
+  {
+    path: ROUTES.groupItemSelection,
+    loadComponent: () =>
+      import(
+        './pages/group-item-selection/group-item-selection.component'
+      ).then(m => m.GroupSelectionComponent),
+  },
+  {
+    path: ROUTES.tableSelection,
+    loadComponent: () =>
+      import('./pages/table-selection/table-selection.component').then(
+        m => m.TableSelectionComponent
+      ),
   },
 ];

@@ -1,0 +1,31 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import appConfig from './shared/config/app.config';
+import mongodbConfig from './shared/config/mongodb.config';
+import swaggeruiConfig from './shared/config/swaggerui.config';
+
+import { MongooseConfigService } from './shared/services/mongoose-config.service';
+
+import { StartupLogicService } from './shared/services/startup-logic.service';
+
+import { HealthModule } from './health/health.module';
+import { GroupsModule } from './groups/groups.module';
+import dependenciesConfig from './shared/config/dependencies.config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [appConfig, mongodbConfig, swaggeruiConfig, dependenciesConfig],
+    }),
+    MongooseModule.forRootAsync({
+      useClass: MongooseConfigService,
+    }),
+    HealthModule,
+    GroupsModule,
+  ],
+  providers: [StartupLogicService],
+})
+export class AppModule {}

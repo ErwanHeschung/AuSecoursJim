@@ -7,6 +7,7 @@ import { Basket } from '../../core/models/basket.model';
 import { IOrderService } from '../../core/models/interfaces/order';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { Group } from '../../core/models/group.model';
 
 @Component({
   selector: 'app-order-tracking-qrcode',
@@ -15,21 +16,23 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
   styleUrl: './order-tracking-qrcode.component.scss',
 })
 export class OrderTrackingQRcodeComponent implements OnInit {
-  public orderTrackingUrl!: string;
-
-  private baseUrl: string = `localhost:4200/${ROUTES.orderTrackingWithoutId}`;
+  public orderTrackingUrl: string = `localhost:4200/${ROUTES.orderTracking}`;
+  public group!: Group | null;
+  private baseUrl: string = `localhost:4200/${ROUTES.orderTracking}`;
 
   constructor(
     @Inject('ORDER_SERVICE') private orderService: IOrderService,
-    private basketService: BasketService,
     private routes: Router,
     private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit() {
+    this.group = this.localStorageService.getItem('group');
     this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
-      if (orderId) {
-        this.orderTrackingUrl = `${this.baseUrl}/${orderId}`;
+      if (orderId && !this.group) {
+        this.orderTrackingUrl = `${this.baseUrl}?orderId=${orderId}`;
+      } else if (this.group) {
+        this.orderTrackingUrl = `${this.baseUrl}?groupId=${this.group.groupId}`;
       }
     });
   }

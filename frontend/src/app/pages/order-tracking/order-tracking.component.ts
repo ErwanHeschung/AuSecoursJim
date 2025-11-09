@@ -40,30 +40,51 @@ export class OrderTrackingComponent implements OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.orderId = this.route.snapshot.paramMap.get('orderId')!;
+    this.route.queryParamMap.subscribe(params => {
+      const orderId = params.get('orderId');
+      const groupId = Number(params.get('groupId'));
+      if (orderId) {
+        this.trackOrder(orderId);
+      } else if (groupId !== null) {
+        this.trackGroup(groupId);
+      }
+    });
+  }
 
+  private trackOrder(orderId: string) {
     this.preparationSub = this.orderTrackingService
-      .trackPreparation(this.orderId, 2000)
-      .subscribe((progress: number) => {
-        this.progress = progress;
-        this.status =
-          progress === 100
-            ? OrderTrackingStatus.Completed
-            : OrderTrackingStatus.InProgress;
-        this.updateStatusIcon(this.status);
-        if (
-          this.status === OrderTrackingStatus.Completed &&
-          !this.orderCompleted
-        ) {
-          this.orderService.finishOrder(this.orderId).subscribe(() => {
-            this.orderCompleted = true;
-            this.localStorageService.clear();
-            setTimeout(() => {
-              this.router.navigate([ROUTES.landing]);
-            }, 4000);
-          });
-        }
-      });
+      .trackPreparation(orderId, 2000)
+      .subscribe(progress => this.updateProgress(progress, orderId));
+  }
+
+  private trackGroup(groupId: number) {
+    this.preparationSub = this.orderTrackingService
+      .trackGroupPreparation(groupId, 2000)
+      .subscribe(progress => this.updateProgress(progress, groupId));
+  }
+
+  private updateProgress(progress: number, id: string | number) {
+    this.progress = progress;
+    this.status =
+      progress === 100
+        ? OrderTrackingStatus.Completed
+        : OrderTrackingStatus.InProgress;
+    this.updateStatusIcon(this.status);
+
+    if (this.status === OrderTrackingStatus.Completed && !this.orderCompleted) {
+      this.orderCompleted = true;
+
+      if (this.route.snapshot.queryParamMap.get('orderId')) {
+      this.orderService.finishOrder(id as string).subscribe(() => this.onCompletion());
+    } else if (typeof id === 'number') {
+      this.orderService.finishGroup(id).subscribe(() => this.onCompletion());
+    }
+    }
+  }
+
+  private onCompletion() {
+    this.localStorageService.clear();
+    setTimeout(() => this.router.navigate([ROUTES.landing]), 4000);
   }
 
   public updateStatusIcon(newStatus: OrderTrackingStatus): void {

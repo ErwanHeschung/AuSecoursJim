@@ -1,0 +1,52 @@
+.item-card {
+  background: white;
+  border-radius: 1.2rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.15rem 0.6rem rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+  width: 100%;
+}
+
+:host {
+  display: block;
+  width: 300px;
+}
+
+.item-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 0.8rem;
+  margin-bottom: 0.5rem;
+  background: #2c3e50;
+}
+
+.item-name {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0;
+}
+
+.quantity-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  background: #2c3e50;
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.hidden {
+  display: none;
+}

@@ -66,21 +66,20 @@
     </div>
   </div>
   <div class="footer-wrapper">
-  <div class="footer">
-    <div class="selection-status" id="selectionStatus">
-      <h1>Menu selected : {{ nbMenu }}/{{ nbPersons }}</h1>
+    <div class="footer">
+      <div class="selection-status" id="selectionStatus">
+        <h1>Menu selected : {{ nbMenu }}/{{ nbPersons }}</h1>
+      </div>
+      <button
+        class="nav-button"
+        id="nextButton"
+        aria-label="Next"
+        (click)="goNext()"
+      >
+        <fa-icon [icon]="arrowRight" class="arrow"></fa-icon>
+      </button>
     </div>
-    <button
-      class="nav-button"
-      id="nextButton"
-      aria-label="Next"
-      [disabled]="nbMenu !== nbPersons"
-      (click)="goNext()"
-    >
-      <fa-icon [icon]="arrowRight" class="arrow"></fa-icon>
-    </button>
   </div>
-</div>
 </app-payment-layout>
 
 @if (itemPopup) {

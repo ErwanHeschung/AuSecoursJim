@@ -21,6 +21,8 @@ export class GroupDto {
   menuItems: MenuItem[];
 
   status: StatusDTO;
+
+  pricePerMenu: number;
 }
 
 export enum StatusDTO {

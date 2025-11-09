@@ -82,7 +82,8 @@ export class GroupsService {
       numberOfPersons: updatedGroup.numberOfPersons,
       menuItems:null,
       joinedPersons:updatedGroup.joinedPersons,
-      status: updatedGroup.status
+      status: updatedGroup.status,
+      pricePerMenu: updatedGroup.pricePerMenu,
     };
   }
 

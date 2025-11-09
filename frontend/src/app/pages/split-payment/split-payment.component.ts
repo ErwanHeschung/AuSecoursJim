@@ -39,7 +39,7 @@ export class SplitPaymentComponent {
   protected items!: BasketSelected[];
   protected numberOfPersons: number = 1;
   protected groupId: number;
-  protected groupAmount: number = 135;
+  protected groupAmount: number = 0;
   protected isOwner: boolean = false;
   protected totalOrder: number = 0;
   protected mode: 'euro' | 'items' = 'euro';
@@ -57,7 +57,8 @@ export class SplitPaymentComponent {
     );
     const group: Group | null = this.localStorageService.getItem('group');
     this.groupId = group ? group.groupId : -1;
-    console.log('Loaded group from storage:', group);
+    this.groupAmount = group ? group.pricePerMenu * group.joinedPersons : 0;
+    console.log('Loaded group : ', group);
     if (saved) {
       this.router.navigate([ROUTES.payment]);
     }
@@ -81,7 +82,6 @@ export class SplitPaymentComponent {
     this.groupBasketService.basket$.subscribe(groupBasket => {
       this.groupBasket = groupBasket;
     });
-    this.groupAmount = this.groupBasketService.getTotal();
   }
 
   get currentTotal(): number {

@@ -7,29 +7,31 @@ import { BaseBasketService } from './base-basket.service';
   providedIn: 'root',
 })
 export class GroupBasketService extends BaseBasketService {
-  private groupLimit?: number;
+  private groupLimit: number = 0;
 
   constructor(protected override localStorageService: LocalStorageService) {
     super(localStorageService, 'group_basket');
   }
 
-  public setGroupLimit(limit: number | undefined): void {
+  public setGroupLimit(limit: number): void {
     this.groupLimit = limit;
   }
 
   protected canAddItem(item: BasketItem, existing?: BasketItem): boolean {
-    if (!this.groupLimit || !item.category) return true;
+    if (!item.category) return true;
 
     const basket = this.basketSubject.value!;
     const categoryTotal = basket.items
-      .filter(
-        i =>
-          i.category === item.category &&
-          i.basketItemId !== existing?.basketItemId
-      )
+      .filter(i => i.category === item.category)
       .reduce((s, it) => s + it.quantity, 0);
 
-    return categoryTotal + item.quantity <= this.groupLimit;
+    const newTotal = existing
+      ? categoryTotal -
+        existing.quantity +
+        (existing.quantity + Number(item.quantity))
+      : categoryTotal + Number(item.quantity);
+
+    return newTotal <= this.groupLimit;
   }
 
   protected canUpdateItem(item: BasketItem, index: number): boolean {
@@ -40,6 +42,6 @@ export class GroupBasketService extends BaseBasketService {
       .filter((i, idx) => i.category === item.category && idx !== index)
       .reduce((s, it) => s + it.quantity, 0);
 
-    return categoryTotal + item.quantity <= this.groupLimit;
+    return categoryTotal + item.quantity < this.groupLimit;
   }
 }

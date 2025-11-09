@@ -3,7 +3,7 @@
     <h2>My Order</h2>
     @if(groupBasketQuantity !== 0){
       <h3>Group Items</h3>
-      <div class="items">
+      <div class="items group">
         @for (item of groupBasket.items; track item.basketItemId) {
           <app-basket-item
             [item]="item"
@@ -15,7 +15,7 @@
     @if(groupBasketQuantity !== 0 && basketQuantity !== 0){
       <h3>Extras</h3>
     }
-    <div class="items">
+    <div class="items extra">
       @for (item of basket.items; track item.basketItemId) {
         <app-basket-item
           [item]="item"

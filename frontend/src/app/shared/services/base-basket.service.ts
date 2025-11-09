@@ -70,7 +70,7 @@ export abstract class BaseBasketService {
 
     if (!this.canAddItem(item, existing)) return;
 
-    if (existing) existing.quantity += item.quantity;
+    if (existing) existing.quantity += Number(item.quantity);
     else
       basket.items.push({ ...item, basketItemId: this.generateBasketItemId() });
 

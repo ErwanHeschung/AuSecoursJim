@@ -31,6 +31,10 @@ export class Group {
   @ApiProperty({ description: 'Status of the group' })
   @Prop({ required: true, default: StatusDTO.OPEN })
   status: StatusDTO;
+
+  @ApiProperty({ description: 'Price per menu for the group' })
+  @Prop({ required: true })
+  pricePerMenu: number;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

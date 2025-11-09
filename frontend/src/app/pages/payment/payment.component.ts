@@ -42,6 +42,8 @@ export class PaymentComponent {
       _id: '',
       numberOfPersons: 0,
       groupId: 0,
+      pricePerMenu: 0,
+      joinedPersons: 0,
     };
 
     const saved = this.localStorageService.getItem<PersonList>(

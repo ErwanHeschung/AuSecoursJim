@@ -6,15 +6,16 @@ import { Group } from 'src/groups/schemas/group.schema';
 export class StartupLogicService implements OnApplicationBootstrap {
   constructor(@InjectConnection() private connection: Connection) { }
 
-  createGroup(groupId: number, numberOfPersons: number, menuItemfullNames: string[]): Group {
+  createGroup(groupId: number, numberOfPersons: number, menuItemfullNames: string[], pricePerMenu: number): Group {
     const group: Group = new Group();
     group.groupId = groupId;
     group.numberOfPersons = numberOfPersons;
     group.menuItemFullNames = menuItemfullNames;
+    group.pricePerMenu = pricePerMenu;
     return group;
   }
 
-  async addGroup(groupId: number, numberOfPersons: number, menuItemfullNames: string[]) {
+  async addGroup(groupId: number, numberOfPersons: number, menuItemfullNames: string[], pricePerMenu: number) {
     const groupModel = this.connection.models['Group'];
 
     const alreadyExists = await groupModel.find({ groupId });
@@ -22,7 +23,7 @@ export class StartupLogicService implements OnApplicationBootstrap {
       throw new Error('Group already exists.');
     }
 
-    return groupModel.create(this.createGroup(groupId, numberOfPersons, menuItemfullNames));
+    return groupModel.create(this.createGroup(groupId, numberOfPersons, menuItemfullNames, pricePerMenu));
   }
 
   async onApplicationBootstrap() {
@@ -41,7 +42,7 @@ export class StartupLogicService implements OnApplicationBootstrap {
         // BEVERAGES
         "Bottled coke (33cl)",
         "Café",
-      ]);
+      ], 43);
 
       // === 1. Menu Méditerranéen ===
       await this.addGroup(1, 25, [
@@ -51,14 +52,14 @@ export class StartupLogicService implements OnApplicationBootstrap {
         "Burrata Mozzarella",
         // MAINS
         "Half cooked tuna and octopus grilled on the plancha",
-        "Delicious Pizza Regina",
+        "Beef chuck cooked 48 hours at low temperature",
         // DESSERTS
         "Fresh raspberries and peaches",
         "Dessert of fresh strawberries and vanilla mascarpone mousse",
         // BEVERAGES
-        "Mojito",
+        "Café",
         "Sparkling water",
-      ]);
+      ], 39);
 
       // === 2. Menu Italien ===
       await this.addGroup(2, 36, [
@@ -67,14 +68,14 @@ export class StartupLogicService implements OnApplicationBootstrap {
         "Burrata Mozzarella",
         // MAINS
         "Lasagna al forno",
-        "Delicious Pizza Regina",
+        "Beef chuck cooked 48 hours at low temperature",
         // DESSERTS
         "Speculoos tiramisu",
         "Marmalade of Menton's lemon - Lemon cream - Limoncello jelly and sorbet - Homemade meringue",
         // BEVERAGES
         "Martini",
         "Spritz",
-      ]);
+      ], 40);
 
       // === 3. Menu Classique ===
       await this.addGroup(3, 10, [
@@ -91,7 +92,7 @@ export class StartupLogicService implements OnApplicationBootstrap {
         "Ice Tea (33cl)",
         "Bottled water",
         "Café",
-      ]);
+      ], 37);
 
       // === 4. Menu Fraîcheur ===
       await this.addGroup(4, 16, [
@@ -109,8 +110,7 @@ export class StartupLogicService implements OnApplicationBootstrap {
         // BEVERAGES
         "Lemonade",
         "Apple juice",
-        "Sparkling water",
-      ]);
+      ], 37);
     } 
     catch (exception) {}
   }

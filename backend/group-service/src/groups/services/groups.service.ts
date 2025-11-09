@@ -80,9 +80,10 @@ export class GroupsService {
       _id: updatedGroup._id.toString(),
       groupId: updatedGroup.groupId,
       numberOfPersons: updatedGroup.numberOfPersons,
-      menuItems: null,
-      joinedPersons: updatedGroup.joinedPersons,
+      menuItems:null,
+      joinedPersons:updatedGroup.joinedPersons,
       status: updatedGroup.status,
+      pricePerMenu: updatedGroup.pricePerMenu,
     };
   }
 

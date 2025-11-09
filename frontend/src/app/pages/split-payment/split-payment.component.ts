@@ -58,7 +58,6 @@ export class SplitPaymentComponent {
     const group: Group | null = this.localStorageService.getItem('group');
     this.groupId = group ? group.groupId : -1;
     this.groupAmount = group ? group.pricePerMenu * group.joinedPersons : 0;
-    console.log('Loaded group : ', group);
     if (saved) {
       this.router.navigate([ROUTES.payment]);
     }

@@ -1,0 +1,11 @@
+<div class="table-card" [ngClass]="{ full: isFull(), available: !isFull() }">
+  <h3>Table {{ table.tableNumber }}</h3>
+  <p>{{ table.assignedCount }}/{{ table.capacity }} personnes</p>
+
+  <input
+    type="text"
+    [value]="assignCount"
+    [disabled]="isFull()"
+    (input)="onInputChange($any($event.target).value)"
+  />
+</div>

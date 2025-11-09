@@ -60,4 +60,18 @@ export class GroupsController {
   ): Promise<GroupDto> {
     return await this.groupsService.join(groupId, numberOfPersons);
   }
+
+  @ApiParam({ name: 'groupId' })
+  @ApiOkResponse({ type: GroupDto, description: 'Group is closed' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found'
+  })
+  @Post(':groupId/close')
+  async closeGroup(
+    @Param('groupId') groupId: number,
+  ): Promise<GroupDto> {
+    return await this.groupsService.closeGroup(groupId);
+  }
+
 }

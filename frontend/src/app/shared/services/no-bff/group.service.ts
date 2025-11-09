@@ -29,10 +29,12 @@ export class GroupService {
     numberOfPersons: number,
     groupId: number | string
   ): Observable<Group> {
-    return this.http.post<Group>(
-      `${this.apiUrl}/${groupId}/join`,
-      null,
-      { params: { numberOfPersons: numberOfPersons.toString() } }
-    );
+    return this.http.post<Group>(`${this.apiUrl}/${groupId}/join`, null, {
+      params: { numberOfPersons: numberOfPersons.toString() },
+    });
+  }
+
+  closeGroup(groupId: number | string): Observable<Group> {
+    return this.http.post<Group>(`${this.apiUrl}/${groupId}/close`, null);
   }
 }

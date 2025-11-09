@@ -90,6 +90,7 @@ export class PaymentComponent {
         } else {
           this.currentPersonIndex = this.people.persons.length - 1;
           this.createOrder();
+          this.addOrderToGroup();
           this.trackOrder();
         }
       });
@@ -116,5 +117,13 @@ export class PaymentComponent {
 
   private save(): void {
     this.localStorageService.setItem<PersonList>(this.STORAGE_KEY, this.people);
+  }
+
+  private addOrderToGroup(){
+    this.orderService.latestOrderId$.subscribe((orderId: string | null) => {
+      if (orderId && this.group) {
+        this.groupService.addOrderToGroup(this.group.groupId,orderId).subscribe();
+      }
+    });
   }
 }

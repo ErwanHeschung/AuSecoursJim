@@ -193,7 +193,7 @@ export class SplitPaymentComponent {
   }
 
   private save(): void {
-    const filteredPersons = this.persons.filter(p => p.amount > 0);
+    const filteredPersons = this.persons.filter(p => p.amount >= 0);
     const personList: PersonList = {
       persons: filteredPersons.map((p, index) => ({
         name: p.name,

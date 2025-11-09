@@ -33,6 +33,13 @@ export class OrderTrackingServiceBFF
     });
   }
 
+  trackGroupPreparation(
+    groupId: number,
+    pollIntervalMs: number
+  ): Observable<number> {
+    throw new Error('Method not implemented.');
+  }
+
   ngOnDestroy() {
     this.socket.disconnect();
   }

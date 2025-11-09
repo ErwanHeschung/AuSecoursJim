@@ -80,9 +80,9 @@ export class GroupsService {
       _id: updatedGroup._id.toString(),
       groupId: updatedGroup.groupId,
       numberOfPersons: updatedGroup.numberOfPersons,
-      menuItems:null,
-      joinedPersons:updatedGroup.joinedPersons,
-      status: updatedGroup.status
+      menuItems: null,
+      joinedPersons: updatedGroup.joinedPersons,
+      status: updatedGroup.status,
     };
   }
 
@@ -93,7 +93,7 @@ export class GroupsService {
       .findOneAndUpdate(
         { groupId },
         { $set: { status: StatusDTO.CLOSED } },
-        { new: true, lean: true }
+        { new: true, lean: true },
       )
       .exec();
 
@@ -101,5 +101,37 @@ export class GroupsService {
       throw new GroupIdNotFoundException(groupId);
     }
     return await this.completeGroup(updatedGroup);
+  }
+
+  async addOrderToGroup(groupId: number, orderId: string): Promise<GroupDto> {
+    const group = await this.groupModel.findOne({ groupId }).exec();
+    if (!group) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    if (!group.orders) {
+      group.orders = [];
+    }
+
+    group.orders.push(orderId);
+    const updatedGroup = await group.save();
+
+    return {
+      _id: updatedGroup._id.toString(),
+      groupId: updatedGroup.groupId,
+      numberOfPersons: updatedGroup.numberOfPersons,
+      joinedPersons: updatedGroup.joinedPersons,
+      status: updatedGroup.status,
+      menuItems: null,
+    };
+  }
+
+  async getGroupOrders(groupId: number): Promise<string[]> {
+    const group = await this.groupModel.findOne({ groupId }).exec();
+    if (!group) {
+      throw new GroupIdNotFoundException(groupId);
+    }
+
+    return group.orders || [];
   }
 }

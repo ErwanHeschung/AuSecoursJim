@@ -65,13 +65,39 @@ export class GroupsController {
   @ApiOkResponse({ type: GroupDto, description: 'Group is closed' })
   @ApiNotFoundResponse({
     type: GroupIdNotFoundException,
-    description: 'Group not found'
+    description: 'Group not found',
   })
   @Post(':groupId/close')
-  async closeGroup(
-    @Param('groupId') groupId: number,
-  ): Promise<GroupDto> {
+  async closeGroup(@Param('groupId') groupId: number): Promise<GroupDto> {
     return await this.groupsService.closeGroup(groupId);
   }
 
+  @ApiParam({ name: 'groupId' })
+  @ApiQuery({ name: 'orderId', type: String })
+  @ApiOkResponse({ type: GroupDto, description: 'Order added to group' })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found',
+  })
+  @Post(':groupId/orders')
+  async addOrderToGroup(
+    @Param('groupId') groupId: number,
+    @Query('orderId') orderId: string,
+  ): Promise<GroupDto> {
+    return await this.groupsService.addOrderToGroup(groupId, orderId);
+  }
+
+  @ApiParam({ name: 'groupId' })
+  @ApiOkResponse({
+    type: [String],
+    description: 'List of order IDs for the group',
+  })
+  @ApiNotFoundResponse({
+    type: GroupIdNotFoundException,
+    description: 'Group not found',
+  })
+  @Get(':groupId/orders')
+  async getGroupOrders(@Param('groupId') groupId: number): Promise<string[]> {
+    return await this.groupsService.getGroupOrders(groupId);
+  }
 }

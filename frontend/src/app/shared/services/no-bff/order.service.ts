@@ -5,6 +5,7 @@ import { BasketItem, OrderItem } from '../../../core/models/item.model';
 import { Basket } from '../../../core/models/basket.model';
 import { Table } from '../../../core/models/table.model';
 import { IOrderService } from '../../../core/models/interfaces/order';
+import { GroupService } from './group.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class OrderService implements IOrderService {
   public latestOrderId$: Observable<string | null> =
     this.latestOrderIdSubject.asObservable();
 
-  constructor(private tableService: TableService) {}
+  constructor(private tableService: TableService, private groupService:GroupService) {}
 
   public prepareOrderOnFirstFreeOrderNumber(basket: Basket): Observable<void> {
     return this.getFirstFreeOrderNumber().pipe(
@@ -58,5 +59,23 @@ export class OrderService implements IOrderService {
 
   public finishOrder(orderId: string): Observable<void> {
     return this.tableService.finishOrder(orderId);
+  }
+
+  public finishGroup(groupId: number): Observable<void> {
+    return this.groupService.getGroupOrders(groupId).pipe(
+      switchMap((orderIds: string[]) => {
+        const finishCalls: Observable<void>[] = orderIds.map(orderId =>
+          this.finishOrder(orderId)
+        );
+        return forkJoin(finishCalls).pipe(
+          switchMap(() => {
+            return new Observable<void>(observer => {
+              observer.next();
+              observer.complete();
+            });
+          })
+        );
+      })
+    );
   }
 }

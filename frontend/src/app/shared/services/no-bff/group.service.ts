@@ -37,4 +37,15 @@ export class GroupService {
   closeGroup(groupId: number | string): Observable<Group> {
     return this.http.post<Group>(`${this.apiUrl}/${groupId}/close`, null);
   }
+
+  addOrderToGroup(groupId: number, orderId: string): Observable<Group> {
+    return this.http.post<Group>(
+      `${this.apiUrl}/${groupId}/orders?orderId=${orderId}`,
+      {}
+    );
+  }
+
+  getGroupOrders(groupId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/${groupId}/orders`);
+  }
 }

@@ -5,6 +5,8 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Router } from '@angular/router';
 import { ROUTES } from '../../core/utils/constant';
+import { BasketService } from '../../shared/services/basket.service';
+import { GroupBasketService } from '../../shared/services/group-basket.service';
 
 @Component({
   selector: 'app-landing',
@@ -33,9 +35,13 @@ export class LandingComponent {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private basketService: BasketService,
+    private groupBasketService: GroupBasketService
   ) {
     this.localStorageService.clear();
+    this.basketService.clearBasket();
+    this.groupBasketService.clearBasket();
   }
 
   public selectTakeaway(): void {
